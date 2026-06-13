@@ -38,7 +38,7 @@ body::-webkit-scrollbar-thumb{background:var(--champagne)}
 /* ════════ PRELOADER ════════ */
 #loader{position:fixed;inset:0;z-index:1000;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.6rem;
   transition:opacity .9s ease,visibility .9s ease}
-#loader.hide{opacity:0;visibility:hidden}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
 .loader-mark{font-family:var(--serif);font-size:clamp(2.4rem,6vw,4rem);font-weight:400;letter-spacing:.22em;color:var(--ivory);
   opacity:0;transform:translateY(14px);animation:loaderIn 1s ease forwards .2s}
 .loader-mark span{color:var(--champagne)}
@@ -685,8 +685,13 @@ const burger=document.getElementById('burger'),navLinks=document.getElementById(
 burger.addEventListener('click',()=>{navLinks.classList.toggle('open');});
 navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
 
+function dismissLoader(){
+  const l=document.getElementById('loader');
+  l.classList.add('hide');
+  setTimeout(()=>{l.style.display='none';},1000);
+}
 window.addEventListener('load',()=>{
-  setTimeout(()=>document.getElementById('loader').classList.add('hide'),1700);
+  setTimeout(dismissLoader,1700);
   setTimeout(()=>{
     document.getElementById('heroEyebrow').classList.add('in');
     document.getElementById('heroTitle').classList.add('in');
@@ -695,6 +700,8 @@ window.addEventListener('load',()=>{
     document.getElementById('scrollHint').classList.add('in');
   },1900);
 });
+// Safety net: dismiss after 5s no matter what
+setTimeout(dismissLoader,5000);
 
 /* ── SCROLL REVEAL ── */
 let _io;
