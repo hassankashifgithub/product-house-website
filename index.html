@@ -420,7 +420,8 @@ function silhouette(){
   return g;
 }
 
-new GLTFLoader().load(GLB_URL, gltf=>{
+/* Fetch as ArrayBuffer to avoid DataCloneError from GLTFLoader's Web Worker */
+function applyGltf(gltf){
   const m = gltf.scene;
   m.rotation.y = Math.PI/2;
   m.updateMatrixWorld(true);
@@ -442,10 +443,18 @@ new GLTFLoader().load(GLB_URL, gltf=>{
   });
   car.add(m);
   car.userData.realModel = true;
-}, undefined, err=>{
-  console.warn('GLB load failed, using silhouette', err);
-  car.add(silhouette());
-});
+}
+
+fetch(GLB_URL)
+  .then(r=>{ if(!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+  .then(buf=> new GLTFLoader().parse(buf, '', applyGltf, err=>{
+    console.warn('GLB parse failed, using silhouette', err);
+    car.add(silhouette());
+  }))
+  .catch(err=>{
+    console.warn('GLB fetch failed, using silhouette', err);
+    car.add(silhouette());
+  });
 
 /* ====== SCROLL-SCRUBBED TIMELINE ====== */
 const animState = {
