@@ -3,662 +3,910 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Victory Cars — A Cinematic Showroom</title>
+<title>Victory Cars — Premium Automobiles, Lahore</title>
+<meta name="description" content="Lahore's finest selection of luxury and electric vehicles. Inspected, verified, and delivered with 34 years of trust.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
+/* ── TOKENS ─────────────────────────────────────────────── */
 :root{
-  --obsidian:#0A0A0D;
-  --graphite:#131318;
-  --line:rgba(201,164,92,.16);
+  --black:#0B0B0F;
+  --deep:#111116;
+  --card:#16161C;
+  --border:rgba(255,255,255,.07);
+  --red:#D42B2B;
+  --red-bright:#FF3C3C;
   --gold:#C9A45C;
-  --gold-bright:#E8CD8D;
-  --ivory:#EFEAE0;
-  --muted:rgba(239,234,224,.5);
-  --teal:#2FB8A6;
-  --display:'Marcellus',serif;
-  --body:'Jost',sans-serif;
+  --gold-dim:rgba(201,164,92,.15);
+  --white:#F2F0EB;
+  --muted:rgba(242,240,235,.45);
+  --teal:#2EB5A3;
+  --display:'Bebas Neue',sans-serif;
+  --serif:'Playfair Display',serif;
+  --body:'Inter',sans-serif;
+  --radius:6px;
 }
+
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--obsidian);color:var(--ivory);font-family:var(--body);font-weight:300;overflow-x:hidden}
-::selection{background:var(--gold);color:var(--obsidian)}
-a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:var(--body);font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--red);color:#fff}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;background:none;border:none;font-family:var(--body)}
 
-/* ===== NAV ===== */
-nav{position:fixed;top:0;left:0;right:0;z-index:90;display:flex;justify-content:space-between;align-items:center;
-  padding:1.3rem 4vw;mix-blend-mode:difference}
-.brand{font-family:var(--display);font-size:1.15rem;letter-spacing:.32em;text-transform:uppercase;color:#fff;text-decoration:none}
-.nav-right{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:#fff;opacity:.7}
+/* ── SCROLLBAR ─────────────────────────────────────────── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--deep)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
 
-/* ===== ACT I — CINEMATIC HERO ===== */
-#act1{height:520vh;position:relative}
-.stage-pin{position:sticky;top:0;height:100vh;overflow:hidden}
-#stage3d{position:absolute;inset:0}
-.film-grain{position:absolute;inset:0;pointer-events:none;opacity:.05;z-index:3;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.letterbox{position:absolute;left:0;right:0;height:7vh;background:#000;z-index:4;transition:none}
-.letterbox.top{top:0;transform:translateY(-100%)}
-.letterbox.bot{bottom:0;transform:translateY(100%)}
+/* ── NAV ───────────────────────────────────────────────── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5vw;height:68px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid transparent;transition:background .4s,border-color .4s,backdrop-filter .4s}
+#nav.scrolled{background:rgba(11,11,15,.88);border-color:var(--border);backdrop-filter:blur(14px)}
+.nav-logo{display:flex;align-items:center;gap:.8rem}
+.nav-logo-mark{width:36px;height:36px;background:var(--red);border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:1.3rem;letter-spacing:.04em;color:#fff;flex-shrink:0}
+.nav-brand{font-family:var(--display);font-size:1.45rem;letter-spacing:.18em;color:var(--white)}
+.nav-links{display:flex;align-items:center;gap:2.4rem}
+.nav-links a{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);transition:color .25s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:var(--red);color:#fff;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+  padding:.65rem 1.5rem;border-radius:var(--radius);transition:background .25s,transform .2s}
+.nav-cta:hover{background:var(--red-bright);transform:translateY(-1px)}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;padding:6px;border-radius:4px}
+.nav-hamburger span{display:block;width:22px;height:2px;background:var(--white);transition:all .3s}
 
-.title-card{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;pointer-events:none;text-align:center}
-.title-card .eyebrow{font-size:.7rem;letter-spacing:.6em;text-transform:uppercase;color:var(--gold);margin-bottom:1.4rem}
-.title-card h1{font-family:var(--display);font-weight:400;font-size:clamp(2.6rem,7vw,6rem);line-height:1.04;letter-spacing:.05em}
-.title-card h1 em{font-style:normal;color:var(--gold-bright)}
-.scroll-cue{position:absolute;bottom:4vh;left:50%;transform:translateX(-50%);z-index:6;
-  font-size:.62rem;letter-spacing:.45em;text-transform:uppercase;color:var(--muted);text-align:center}
-.scroll-cue::after{content:'';display:block;width:1px;height:42px;margin:.8rem auto 0;background:linear-gradient(var(--gold),transparent)}
-
-.beat{position:absolute;z-index:5;pointer-events:none;opacity:0}
-.beat .k{font-size:.65rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:.7rem}
-.beat .v{font-family:var(--display);font-size:clamp(1.5rem,3.4vw,2.7rem);letter-spacing:.04em;line-height:1.2}
-#beat1{left:7vw;top:24vh;max-width:34ch}
-#beat2{right:7vw;bottom:22vh;text-align:right;max-width:34ch}
-#beat3{left:0;right:0;bottom:14vh;text-align:center}
-#beat3 .v{font-size:clamp(2rem,5vw,4rem)}
-#beat3 .sub{margin-top:1rem;color:var(--muted);letter-spacing:.2em;font-size:.85rem;text-transform:uppercase}
-
-/* ===== ACT II — INVENTORY EXPERIENCE ===== */
-#act2{position:relative;background:var(--obsidian)}
-.showroom{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding:9rem 0 6rem}
-#bgwash{position:absolute;inset:0;transition:background 1.1s cubic-bezier(.4,0,.2,1);z-index:0;
-  background:radial-gradient(ellipse 70% 55% at 50% 42%, rgba(201,164,92,.10), transparent 70%)}
-.showroom-head{position:relative;z-index:2;text-align:center;margin-bottom:1rem}
-.showroom-head .eyebrow{font-size:.68rem;letter-spacing:.55em;text-transform:uppercase;color:var(--gold)}
-.showroom-head h2{font-family:var(--display);font-weight:400;font-size:clamp(1.9rem,4vw,3.1rem);letter-spacing:.05em;margin-top:.7rem}
-
-.carousel{position:relative;z-index:2;display:grid;grid-template-columns:minmax(3rem,1fr) minmax(0,1100px) minmax(3rem,1fr);align-items:center}
-.car-stage{position:relative;min-height:54vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.car-visual{position:relative;width:min(78vw,860px);aspect-ratio:16/8;display:flex;align-items:center;justify-content:center}
-.car-visual img,.car-visual .ph-render{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
-  filter:drop-shadow(0 40px 50px rgba(0,0,0,.65))}
-.ph-render{display:flex;align-items:center;justify-content:center}
-.ph-render svg{width:82%;height:auto}
-
-/* Car image display in showroom */
-.car-img-wrap{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;border-radius:4px}
-.car-img-wrap img{width:100%;height:100%;object-fit:cover;filter:drop-shadow(0 40px 50px rgba(0,0,0,.65))}
-
-.plinth{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);width:72%;height:14px;border-radius:50%;
-  background:radial-gradient(ellipse, rgba(0,0,0,.75), transparent 70%)}
-.plinth-ring{position:absolute;bottom:calc(6% - 4px);left:50%;transform:translateX(-50%);width:78%;height:26px;border-radius:50%;
-  border:1px solid var(--line)}
-
-.car-id{position:relative;z-index:2;text-align:center;margin-top:.6rem}
-.car-id .car-name{font-family:var(--display);font-weight:400;font-size:clamp(1.7rem,3.6vw,2.8rem);letter-spacing:.06em}
-.car-id .car-tag{margin-top:.5rem;font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
-.car-id .car-tag b{color:var(--teal);font-weight:500}
-.car-id .car-tag b.lx{color:var(--gold)}
-
-.arrow{background:none;border:1px solid var(--line);color:var(--ivory);width:54px;height:54px;border-radius:50%;
-  cursor:pointer;font-size:1.1rem;justify-self:center;transition:border-color .3s,color .3s,transform .3s;z-index:3}
-.arrow:hover{border-color:var(--gold);color:var(--gold);transform:scale(1.07)}
-
-.spec-rail{position:relative;z-index:2;display:flex;justify-content:center;gap:0;margin-top:2.6rem;flex-wrap:wrap}
-.spec{padding:0 2.6rem;text-align:center;border-left:1px solid var(--line)}
-.spec:first-child{border-left:none}
-.spec .sv{font-family:var(--display);font-size:1.45rem;letter-spacing:.04em;color:var(--gold-bright)}
-.spec .sk{margin-top:.35rem;font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
-
-.cta-row{position:relative;z-index:2;display:flex;justify-content:center;gap:1.1rem;margin-top:2.6rem;flex-wrap:wrap}
-.btn{font-family:var(--body);font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;padding:1rem 2.4rem;
-  text-decoration:none;cursor:pointer;border:1px solid var(--gold);transition:all .35s;background:none}
-.btn.solid{background:var(--gold);color:var(--obsidian)}
-.btn.solid:hover{background:transparent;color:var(--gold)}
-.btn.ghost{color:var(--gold)}
-.btn.ghost:hover{background:var(--gold);color:var(--obsidian)}
-
-.dots{position:relative;z-index:2;display:flex;justify-content:center;gap:.8rem;margin-top:3rem}
-.dot{width:34px;height:2px;background:rgba(239,234,224,.18);border:none;cursor:pointer;transition:background .4s;padding:0}
-.dot[aria-current="true"]{background:var(--gold)}
-
-/* gallery strip */
-.gallery{position:relative;z-index:2;display:flex;justify-content:center;gap:1rem;margin-top:3.2rem;padding:0 4vw;flex-wrap:wrap}
-.gal-shot{width:200px;aspect-ratio:16/10;background:var(--graphite);border:1px solid var(--line);overflow:hidden;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;color:rgba(201,164,92,.3);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
-  transition:border-color .3s,transform .4s}
-.gal-shot:hover{border-color:var(--gold);transform:translateY(-4px)}
-.gal-shot img{width:100%;height:100%;object-fit:cover}
-
-/* ===== DETAIL OVERLAY ===== */
-#detail{position:fixed;inset:0;z-index:120;background:rgba(10,10,13,.97);backdrop-filter:blur(8px);
-  overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .5s}
-#detail.open{opacity:1;pointer-events:auto}
-.detail-inner{max-width:1100px;margin:0 auto;padding:7rem 5vw 5rem}
-.detail-close{position:fixed;top:1.6rem;right:2rem;background:none;border:1px solid var(--line);color:var(--ivory);
-  width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:1rem;z-index:5;transition:border-color .3s,color .3s}
-.detail-close:hover{border-color:var(--gold);color:var(--gold)}
-.detail-inner h2{font-family:var(--display);font-weight:400;font-size:clamp(2rem,4.5vw,3.4rem);letter-spacing:.05em}
-.detail-price{color:var(--gold-bright);font-size:1.3rem;letter-spacing:.12em;margin-top:.8rem}
-.detail-visual{margin:3rem 0;display:flex;justify-content:center;border-radius:6px;overflow:hidden;max-height:420px}
-.detail-visual img{max-width:100%;width:100%;object-fit:cover;filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))}
-.detail-visual svg{max-width:100%;filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))}
-.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:2rem}
-.detail-cell{background:var(--obsidian);padding:1.6rem}
-.detail-cell .sk{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--muted)}
-.detail-cell .sv{font-family:var(--display);font-size:1.25rem;margin-top:.5rem;color:var(--ivory)}
-.detail-desc{margin-top:2.6rem;color:var(--muted);line-height:1.9;max-width:62ch}
-.detail-cta{margin-top:3rem}
-
-/* gallery lightbox */
-.lightbox{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .4s}
-.lightbox.open{opacity:1;pointer-events:auto}
-.lightbox img{max-width:90vw;max-height:88vh;object-fit:contain;border-radius:4px}
-.lightbox-close{position:absolute;top:1.4rem;right:1.8rem;background:none;border:1px solid var(--line);
-  color:var(--ivory);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:.9rem;
-  transition:border-color .3s,color .3s}
-.lightbox-close:hover{border-color:var(--gold);color:var(--gold)}
-
-/* ===== FOOTER ===== */
-footer{border-top:1px solid var(--line);padding:2.4rem 5vw;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
-  color:var(--muted);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase}
-
-@media(max-width:720px){
-  .carousel{grid-template-columns:2.6rem 1fr 2.6rem}
-  .arrow{width:42px;height:42px}
-  .spec{padding:0 1.2rem}
-  #beat1,#beat2{max-width:26ch}
+/* ── MOBILE NAV ───────────────────────────────────────── */
+@media(max-width:768px){
+  .nav-links{display:none;position:fixed;inset:68px 0 0;background:rgba(11,11,15,.97);backdrop-filter:blur(20px);
+    flex-direction:column;align-items:center;justify-content:center;gap:2.4rem;z-index:99}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:1rem}
+  .nav-cta{display:none}
+  .nav-hamburger{display:flex}
+  #nav{padding:0 4vw}
 }
-@media(prefers-reduced-motion:reduce){
-  .film-grain{display:none}
+
+/* ── HERO ──────────────────────────────────────────────── */
+#hero{min-height:100vh;display:grid;grid-template-rows:1fr auto;padding-top:68px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg-img{width:100%;height:100%;object-fit:cover;opacity:.28;filter:brightness(.7)}
+.hero-bg-grad{position:absolute;inset:0;background:linear-gradient(135deg,rgba(11,11,15,.92) 0%,rgba(11,11,15,.45) 50%,rgba(11,11,15,.85) 100%)}
+.hero-bg-line{position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;
+  padding:5vh 5vw 3vh;max-width:1400px;margin:0 auto;width:100%}
+.hero-content{}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.8rem;font-size:.67rem;letter-spacing:.45em;text-transform:uppercase;
+  color:var(--red-bright);margin-bottom:1.8rem}
+.hero-eyebrow::before{content:'';display:block;width:28px;height:2px;background:var(--red-bright)}
+.hero-title{font-family:var(--display);font-size:clamp(4rem,8.5vw,8.5rem);line-height:.92;letter-spacing:.02em;color:var(--white)}
+.hero-title em{color:var(--red);font-style:normal;display:block}
+.hero-sub{margin-top:2rem;font-size:1rem;line-height:1.75;color:var(--muted);max-width:40ch}
+.hero-actions{margin-top:2.8rem;display:flex;gap:1.1rem;flex-wrap:wrap}
+.btn-primary{background:var(--red);color:#fff;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:1rem 2.2rem;border-radius:var(--radius);transition:background .25s,transform .2s;border:1px solid var(--red)}
+.btn-primary:hover{background:var(--red-bright);transform:translateY(-2px)}
+.btn-secondary{background:transparent;color:var(--white);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:1rem 2.2rem;border-radius:var(--radius);border:1px solid var(--border);transition:border-color .25s,color .25s}
+.btn-secondary:hover{border-color:var(--white);color:var(--white)}
+.hero-trust{display:flex;gap:2.4rem;margin-top:3.5rem;flex-wrap:wrap}
+.hero-trust-item{display:flex;flex-direction:column}
+.hero-trust-item .num{font-family:var(--display);font-size:2.2rem;letter-spacing:.04em;color:var(--white)}
+.hero-trust-item .num span{color:var(--red)}
+.hero-trust-item .lbl{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
+.hero-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:relative}
+.hero-card-img{width:100%;aspect-ratio:4/3;object-fit:cover;opacity:.9}
+.hero-card-badge{position:absolute;top:1.2rem;left:1.2rem;background:var(--red);color:#fff;font-size:.62rem;
+  letter-spacing:.2em;text-transform:uppercase;padding:.4rem .9rem;border-radius:4px}
+.hero-card-body{padding:1.4rem}
+.hero-card-body h3{font-size:1.1rem;font-weight:500;letter-spacing:.04em}
+.hero-card-body p{font-size:.78rem;color:var(--muted);margin-top:.4rem}
+.hero-card-price{display:flex;justify-content:space-between;align-items:center;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.hero-card-price .price{font-family:var(--display);font-size:1.4rem;color:var(--gold);letter-spacing:.06em}
+.hero-card-price a{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);
+  display:flex;align-items:center;gap:.4rem;transition:gap .2s}
+.hero-card-price a:hover{gap:.7rem}
+.hero-scroll{position:relative;z-index:2;padding:1.5rem 5vw 2.5rem;display:flex;align-items:center;gap:2rem;
+  max-width:1400px;margin:0 auto;width:100%;border-top:1px solid var(--border)}
+.hero-scroll-label{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--muted)}
+.hero-scroll-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;padding:4vh 5vw 2vh}
+  .hero-card{display:none}
+  .hero-title{font-size:clamp(3.5rem,13vw,6rem)}
 }
+
+/* ── TICKER ────────────────────────────────────────────── */
+#ticker{overflow:hidden;background:var(--red);padding:.7rem 0}
+.ticker-track{display:flex;gap:0;white-space:nowrap;animation:ticker 28s linear infinite}
+.ticker-track:hover{animation-play-state:paused}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{font-family:var(--display);font-size:1rem;letter-spacing:.25em;padding:0 2.5rem;color:rgba(255,255,255,.9)}
+.ticker-sep{color:rgba(255,255,255,.35);padding:0 .5rem}
+
+/* ── SECTION SHARED ────────────────────────────────────── */
+.section{padding:7rem 5vw}
+.section-inner{max-width:1300px;margin:0 auto}
+.section-label{display:flex;align-items:center;gap:.8rem;font-size:.65rem;letter-spacing:.45em;text-transform:uppercase;color:var(--red);margin-bottom:1.4rem}
+.section-label::before{content:'';display:block;width:20px;height:2px;background:var(--red)}
+.section-title{font-family:var(--display);font-size:clamp(2.6rem,5.5vw,5rem);letter-spacing:.03em;line-height:.95}
+.section-subtitle{font-size:1rem;color:var(--muted);line-height:1.75;max-width:52ch;margin-top:1.2rem}
+
+/* ── INVENTORY ─────────────────────────────────────────── */
+#inventory{background:var(--deep)}
+.inv-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem;margin-bottom:3.5rem}
+.inv-filters{display:flex;gap:.7rem;flex-wrap:wrap}
+.inv-filter{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;padding:.55rem 1.3rem;border-radius:100px;
+  border:1px solid var(--border);color:var(--muted);transition:all .25s}
+.inv-filter:hover,.inv-filter.active{border-color:var(--red);background:var(--red);color:#fff}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem}
+.car-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;
+  transition:transform .35s,border-color .3s,box-shadow .35s;cursor:pointer}
+.car-card:hover{transform:translateY(-6px);border-color:rgba(212,43,43,.4);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.car-card-img{position:relative;aspect-ratio:16/9;overflow:hidden}
+.car-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.car-card:hover .car-card-img img{transform:scale(1.05)}
+.car-card-type{position:absolute;top:1rem;left:1rem;padding:.35rem .9rem;border-radius:100px;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500}
+.car-card-type.luxury{background:rgba(201,164,92,.18);color:var(--gold);border:1px solid rgba(201,164,92,.3)}
+.car-card-type.ev{background:rgba(46,181,163,.15);color:var(--teal);border:1px solid rgba(46,181,163,.3)}
+.car-card-type.sport{background:rgba(212,43,43,.15);color:var(--red-bright);border:1px solid rgba(212,43,43,.3)}
+.car-card-body{padding:1.5rem}
+.car-card-body h3{font-size:1.08rem;font-weight:500;letter-spacing:.03em;line-height:1.3}
+.car-card-meta{display:flex;gap:1rem;margin-top:.6rem;flex-wrap:wrap}
+.car-card-meta span{font-size:.67rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.3rem}
+.car-card-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:1.2rem -1.5rem;padding:0 1.5rem;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.car-card-spec{padding:.9rem 0;text-align:center}
+.car-card-spec .sv{font-family:var(--display);font-size:1.2rem;letter-spacing:.04em;color:var(--gold)}
+.car-card-spec .sk{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:.2rem}
+.car-card-foot{display:flex;justify-content:space-between;align-items:center;padding-top:1.2rem}
+.car-card-price{font-family:var(--display);font-size:1.55rem;letter-spacing:.06em;color:var(--white)}
+.car-card-actions{display:flex;gap:.6rem}
+.btn-icon{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;color:var(--muted);transition:all .25s}
+.btn-icon:hover{border-color:var(--red);color:var(--red-bright)}
+.btn-icon.wa:hover{border-color:var(--teal);color:var(--teal)}
+
+@media(max-width:600px){
+  .inv-grid{grid-template-columns:1fr}
+}
+
+/* ── WHY US ────────────────────────────────────────────── */
+#why{background:var(--black);position:relative;overflow:hidden}
+#why::before{content:'';position:absolute;top:-30%;right:-10%;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,43,43,.06),transparent 70%);pointer-events:none}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:5rem}
+.why-img{position:relative;border-radius:12px;overflow:hidden}
+.why-img img{width:100%;aspect-ratio:4/5;object-fit:cover;opacity:.85}
+.why-img-badge{position:absolute;bottom:2rem;left:2rem;right:2rem;background:rgba(11,11,15,.92);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:8px;padding:1.4rem}
+.why-img-badge h4{font-family:var(--display);font-size:1.6rem;letter-spacing:.06em}
+.why-img-badge p{font-size:.78rem;color:var(--muted);margin-top:.3rem}
+.why-features{display:flex;flex-direction:column;gap:2rem}
+.why-feat{display:flex;gap:1.4rem;align-items:flex-start;padding:1.6rem;background:var(--card);border:1px solid var(--border);
+  border-radius:8px;transition:border-color .3s,transform .3s}
+.why-feat:hover{border-color:rgba(212,43,43,.3);transform:translateX(8px)}
+.why-feat-icon{width:48px;height:48px;border-radius:8px;background:rgba(212,43,43,.12);border:1px solid rgba(212,43,43,.2);
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.why-feat-text h4{font-size:.95rem;font-weight:600;letter-spacing:.02em}
+.why-feat-text p{font-size:.83rem;color:var(--muted);line-height:1.65;margin-top:.4rem}
+
+@media(max-width:900px){
+  .why-grid{grid-template-columns:1fr;gap:3rem}
+  .why-img{display:none}
+}
+
+/* ── PROCESS ────────────────────────────────────────────── */
+#process{background:var(--deep)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:4rem}
+.process-step{background:var(--card);padding:2.5rem 2rem;position:relative}
+.process-step::before{content:attr(data-n);font-family:var(--display);font-size:5rem;line-height:1;color:rgba(212,43,43,.07);
+  position:absolute;top:1rem;right:1.5rem;letter-spacing:.04em}
+.process-step-icon{font-size:1.8rem;margin-bottom:1.4rem}
+.process-step h4{font-size:1rem;font-weight:600;letter-spacing:.02em}
+.process-step p{font-size:.82rem;color:var(--muted);line-height:1.65;margin-top:.5rem}
+.process-step-n{font-family:var(--display);font-size:.8rem;letter-spacing:.2em;color:var(--red);margin-bottom:.9rem}
+
+@media(max-width:900px){
+  .process-steps{grid-template-columns:1fr 1fr}
+}
+@media(max-width:500px){
+  .process-steps{grid-template-columns:1fr}
+}
+
+/* ── TESTIMONIALS ────────────────────────────────────────── */
+#testimonials{background:var(--black)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:2rem;
+  transition:border-color .3s,transform .3s}
+.testi-card:hover{border-color:rgba(201,164,92,.25);transform:translateY(-4px)}
+.testi-stars{display:flex;gap:.3rem;color:var(--gold);font-size:1rem;margin-bottom:1.2rem}
+.testi-body{font-size:.9rem;line-height:1.75;color:var(--white);font-family:var(--serif);font-style:italic}
+.testi-author{display:flex;align-items:center;gap:1rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.testi-avatar{width:40px;height:40px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:1.1rem;flex-shrink:0}
+.testi-author-info strong{display:block;font-size:.85rem;font-weight:500}
+.testi-author-info span{font-size:.72rem;color:var(--muted)}
+
+@media(max-width:900px){
+  .testi-grid{grid-template-columns:1fr}
+}
+@media(min-width:601px) and (max-width:900px){
+  .testi-grid{grid-template-columns:1fr 1fr}
+  .testi-card:last-child{display:none}
+}
+
+/* ── CTA BANNER ─────────────────────────────────────────── */
+#cta-banner{background:var(--deep);padding:5rem 5vw;position:relative;overflow:hidden}
+#cta-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(212,43,43,.12),transparent 60%)}
+.cta-banner-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:3rem;flex-wrap:wrap;position:relative;z-index:1}
+.cta-banner-text h2{font-family:var(--display);font-size:clamp(2rem,4.5vw,3.8rem);letter-spacing:.04em;line-height:1}
+.cta-banner-text p{font-size:.95rem;color:var(--muted);margin-top:.9rem;max-width:46ch}
+.cta-banner-actions{display:flex;flex-direction:column;gap:1rem;align-items:flex-end}
+.wa-btn{display:flex;align-items:center;gap:.8rem;background:#25D366;color:#fff;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:1.1rem 2rem;border-radius:var(--radius);transition:background .25s,transform .2s}
+.wa-btn:hover{background:#22c05a;transform:translateY(-2px)}
+.wa-btn svg{width:20px;height:20px;fill:#fff}
+.cta-phone{font-size:.78rem;color:var(--muted);letter-spacing:.15em;text-align:right}
+.cta-phone a{color:var(--gold);transition:color .2s}
+.cta-phone a:hover{color:var(--gold-bright,#E8CD8D)}
+
+/* ── DETAIL OVERLAY ─────────────────────────────────────── */
+#detail-overlay{position:fixed;inset:0;z-index:200;background:rgba(11,11,15,.97);backdrop-filter:blur(16px);
+  overflow-y:auto;opacity:0;pointer-events:none;transition:opacity .4s}
+#detail-overlay.open{opacity:1;pointer-events:auto}
+.detail-wrap{max-width:1100px;margin:0 auto;padding:6rem 5vw 4rem}
+.detail-close{position:fixed;top:1.4rem;right:2rem;width:46px;height:46px;border-radius:50%;border:1px solid var(--border);
+  color:var(--muted);font-size:1rem;display:flex;align-items:center;justify-content:center;z-index:5;transition:border-color .25s,color .25s}
+.detail-close:hover{border-color:var(--red);color:var(--red)}
+.detail-top{display:grid;grid-template-columns:1.2fr 1fr;gap:3.5rem;align-items:start}
+.detail-img{border-radius:10px;overflow:hidden}
+.detail-img img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.detail-info-label{font-size:.63rem;letter-spacing:.4em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:.6rem}
+.detail-info-label::before{content:'';width:14px;height:2px;background:var(--red)}
+.detail-info h2{font-family:var(--display);font-size:clamp(2rem,4.5vw,3.5rem);letter-spacing:.04em;margin-top:.8rem;line-height:.95}
+.detail-price{font-family:var(--display);font-size:1.8rem;color:var(--gold);letter-spacing:.1em;margin-top:1rem}
+.detail-desc{font-size:.9rem;color:var(--muted);line-height:1.85;margin-top:1.4rem}
+.detail-specs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;margin-top:2rem}
+.detail-spec{background:var(--card);padding:1.2rem 1.4rem}
+.detail-spec .sk{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.detail-spec .sv{font-family:var(--display);font-size:1.25rem;letter-spacing:.04em;margin-top:.4rem}
+.detail-cta-row{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap}
+.detail-gallery{margin-top:3rem}
+.detail-gallery h3{font-size:.68rem;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.detail-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
+.detail-thumb{aspect-ratio:16/10;border-radius:6px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:border-color .25s}
+.detail-thumb:hover{border-color:var(--gold)}
+.detail-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.detail-thumb:hover img{transform:scale(1.08)}
+@media(max-width:800px){
+  .detail-top{grid-template-columns:1fr}
+  .detail-thumbs{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── LIGHTBOX ────────────────────────────────────────────── */
+#lightbox{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s}
+#lightbox.open{opacity:1;pointer-events:auto}
+#lightbox img{max-width:92vw;max-height:90vh;object-fit:contain;border-radius:6px}
+.lightbox-close{position:absolute;top:1.2rem;right:1.4rem;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.7);font-size:.9rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .25s}
+.lightbox-close:hover{border-color:#fff;color:#fff}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer{background:var(--card);border-top:1px solid var(--border);padding:3.5rem 5vw}
+.footer-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem}
+.footer-brand .logo{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+.footer-brand .mark{width:36px;height:36px;background:var(--red);border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:1.3rem;color:#fff;flex-shrink:0}
+.footer-brand .name{font-family:var(--display);font-size:1.4rem;letter-spacing:.16em}
+.footer-brand p{font-size:.8rem;color:var(--muted);line-height:1.7}
+.footer-col h5{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);margin-bottom:1.2rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.footer-col ul li a{font-size:.82rem;color:var(--muted);transition:color .2s}
+.footer-col ul li a:hover{color:var(--white)}
+.footer-col address{font-style:normal;font-size:.82rem;color:var(--muted);line-height:1.7}
+.footer-col address strong{display:block;color:var(--white);margin-bottom:.4rem;font-weight:500}
+.footer-bottom{max-width:1300px;margin:2.5rem auto 0;padding-top:2rem;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.72rem;color:var(--muted);letter-spacing:.1em}
+.footer-social{display:flex;gap:.8rem}
+.social-link{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:var(--muted);transition:all .25s}
+.social-link:hover{border-color:var(--red);color:var(--red)}
+
+@media(max-width:900px){
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:500px){
+  .footer-inner{grid-template-columns:1fr}
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease}
+.reveal-left.visible{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s ease,transform .7s ease}
+.reveal-right.visible{opacity:1;transform:none}
+[data-delay="1"]{transition-delay:.1s}
+[data-delay="2"]{transition-delay:.2s}
+[data-delay="3"]{transition-delay:.3s}
+[data-delay="4"]{transition-delay:.4s}
+
+/* ── BACK TO TOP ─────────────────────────────────────────── */
+#btt{position:fixed;bottom:2rem;right:2rem;width:46px;height:46px;border-radius:50%;background:var(--red);
+  color:#fff;font-size:1rem;display:flex;align-items:center;justify-content:center;z-index:90;
+  opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .3s,transform .3s;border:none}
+#btt.show{opacity:1;transform:none;pointer-events:auto}
+#btt:hover{background:var(--red-bright)}
 </style>
 </head>
 <body>
 
-<nav>
-  <a class="brand" href="#">VICTORY CARS</a>
-  <span class="nav-right">Lahore · Since 1992</span>
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<nav id="nav">
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark">V</div>
+    <span class="nav-brand">VICTORY CARS</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <a href="#inventory">Inventory</a>
+    <a href="#why">Why Us</a>
+    <a href="#process">Process</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#cta-banner" class="nav-cta">Contact Us</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- ============ ACT I : CINEMATIC HERO ============ -->
-<section id="act1" aria-label="Cinematic introduction">
-  <div class="stage-pin">
-    <div id="stage3d"></div>
-    <div class="letterbox top" id="lbTop"></div>
-    <div class="letterbox bot" id="lbBot"></div>
-    <div class="film-grain"></div>
-
-    <div class="title-card" id="titleCard">
-      <p class="eyebrow">Victory Cars · Lahore</p>
-      <h1>Every arrival<br><em>deserves a witness.</em></h1>
-    </div>
-
-    <div class="beat" id="beat1">
-      <span class="k">Chapter One</span>
-      <span class="v">Thirty-four years of machines worth waiting for.</span>
-    </div>
-
-    <div class="beat" id="beat2">
-      <span class="k">Chapter Two</span>
-      <span class="v">Inspected. Verified. Delivered without a question left.</span>
-    </div>
-
-    <div class="beat" id="beat3">
-      <span class="k">The Showroom</span>
-      <span class="v">Choose your arrival.</span>
-      <div class="sub">Keep scrolling</div>
-    </div>
-
-    <div class="scroll-cue" id="scrollCue">Scroll to begin</div>
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="hero">
+  <div class="hero-bg">
+    <img class="hero-bg-img" src="https://images.unsplash.com/photo-1612825173281-9a193378527e?w=1600&q=85&fit=crop" alt="" aria-hidden="true" loading="eager">
+    <div class="hero-bg-grad"></div>
+    <div class="hero-bg-line"></div>
   </div>
-</section>
-
-<!-- ============ ACT II : INVENTORY EXPERIENCE ============ -->
-<section id="act2" aria-label="Vehicle showcase">
-  <div class="showroom">
-    <div id="bgwash"></div>
-    <div class="showroom-head">
-      <p class="eyebrow">Current Collection</p>
-      <h2 id="collectionTitle">The Showroom</h2>
-    </div>
-
-    <div class="carousel">
-      <button class="arrow" id="prevBtn" aria-label="Previous vehicle">←</button>
-      <div class="car-stage">
-        <div class="car-visual" id="carVisual">
-          <div class="plinth-ring"></div>
-          <div class="plinth"></div>
-        </div>
-        <div class="car-id">
-          <div class="car-name" id="carName"></div>
-          <div class="car-tag" id="carTag"></div>
-        </div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Victory Cars · Lahore · Est. 1992</p>
+      <h1 class="hero-title">ARRIVE<em>IN STYLE.</em></h1>
+      <p class="hero-sub">Lahore's most trusted destination for luxury and electric vehicles. Every car inspected across 210 points. Every promise kept.</p>
+      <div class="hero-actions">
+        <a href="#inventory" class="btn-primary">Browse Collection</a>
+        <a href="https://wa.me/923000000000" target="_blank" rel="noopener" class="btn-secondary">WhatsApp Us →</a>
       </div>
-      <button class="arrow" id="nextBtn" aria-label="Next vehicle">→</button>
+      <div class="hero-trust">
+        <div class="hero-trust-item"><span class="num">34<span>+</span></span><span class="lbl">Years Trusted</span></div>
+        <div class="hero-trust-item"><span class="num">800<span>+</span></span><span class="lbl">Cars Delivered</span></div>
+        <div class="hero-trust-item"><span class="num">210</span><span class="lbl">Point Inspection</span></div>
+        <div class="hero-trust-item"><span class="num">4.9<span>★</span></span><span class="lbl">Google Rating</span></div>
+      </div>
     </div>
-
-    <div class="spec-rail" id="specRail"></div>
-
-    <div class="cta-row">
-      <button class="btn solid" id="detailBtn">View Details</button>
-      <a class="btn ghost" id="waBtn" href="#" target="_blank" rel="noopener">Reserve a Viewing</a>
+    <div class="hero-card" id="heroFeaturedCard">
+      <!-- filled by JS -->
     </div>
-
-    <div class="dots" id="dots" role="tablist" aria-label="Vehicle selector"></div>
-
-    <div class="gallery" id="gallery"></div>
+  </div>
+  <div class="hero-scroll">
+    <span class="hero-scroll-label">Scroll to explore</span>
+    <div class="hero-scroll-line"></div>
   </div>
 </section>
 
-<!-- ============ DETAIL OVERLAY ============ -->
-<div id="detail" role="dialog" aria-modal="true" aria-label="Vehicle details">
-  <button class="detail-close" id="detailClose" aria-label="Close details">✕</button>
-  <div class="detail-inner" id="detailInner"></div>
+<!-- ═══════════════════ TICKER ═══════════════════ -->
+<div id="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack">
+    <!-- duplicated by JS for seamless loop -->
+  </div>
 </div>
 
-<!-- ============ LIGHTBOX ============ -->
-<div id="lightbox" class="lightbox">
-  <button class="lightbox-close" id="lightboxClose" aria-label="Close image">✕</button>
+<!-- ═══════════════════ INVENTORY ═══════════════════ -->
+<section id="inventory" class="section">
+  <div class="section-inner">
+    <div class="inv-head">
+      <div>
+        <p class="section-label reveal">Current Collection</p>
+        <h2 class="section-title reveal" data-delay="1">THE SHOWROOM</h2>
+        <p class="section-subtitle reveal" data-delay="2">Each vehicle sourced globally, imported directly, and prepared to our exacting standards before it earns a place on our floor.</p>
+      </div>
+      <div class="inv-filters reveal" data-delay="2">
+        <button class="inv-filter active" data-filter="all">All</button>
+        <button class="inv-filter" data-filter="luxury">Luxury</button>
+        <button class="inv-filter" data-filter="ev">Electric</button>
+        <button class="inv-filter" data-filter="sport">Sport</button>
+      </div>
+    </div>
+    <div class="inv-grid" id="invGrid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ WHY US ═══════════════════ -->
+<section id="why" class="section">
+  <div class="section-inner">
+    <div class="why-grid">
+      <div class="why-img reveal-left">
+        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80&fit=crop" alt="Victory Cars showroom floor">
+        <div class="why-img-badge">
+          <h4>SINCE 1992</h4>
+          <p>Trusted by Lahore's discerning buyers for over three decades.</p>
+        </div>
+      </div>
+      <div class="why-features reveal-right">
+        <p class="section-label">Why Victory Cars</p>
+        <h2 class="section-title" style="margin-bottom:2.2rem">THE<br>DIFFERENCE<br>YOU FEEL</h2>
+        <div class="why-feat">
+          <div class="why-feat-icon">🔍</div>
+          <div class="why-feat-text">
+            <h4>210-Point Inspection</h4>
+            <p>Every vehicle undergoes our exhaustive mechanical, electrical, and structural audit. We reject anything that doesn't meet our benchmark.</p>
+          </div>
+        </div>
+        <div class="why-feat">
+          <div class="why-feat-icon">📋</div>
+          <div class="why-feat-text">
+            <h4>Verified Documentation</h4>
+            <p>Authenticated import papers, clear title history, and customs clearance — all verified independently, handed to you on delivery.</p>
+          </div>
+        </div>
+        <div class="why-feat">
+          <div class="why-feat-icon">🤝</div>
+          <div class="why-feat-text">
+            <h4>Post-Sale Support</h4>
+            <p>We don't disappear after the handover. Our team stays reachable for questions, service referrals, and trade-in planning.</p>
+          </div>
+        </div>
+        <div class="why-feat">
+          <div class="why-feat-icon">⚡</div>
+          <div class="why-feat-text">
+            <h4>EV Transition Guidance</h4>
+            <p>Switching to electric? We walk you through real-world range, Lahore charging options, and home setup — before you commit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROCESS ═══════════════════ -->
+<section id="process" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal">How It Works</p>
+    <h2 class="section-title reveal" data-delay="1">FROM INTEREST<br>TO IGNITION</h2>
+    <p class="section-subtitle reveal" data-delay="2">A process designed around your time, your trust, and your confidence.</p>
+    <div class="process-steps">
+      <div class="process-step reveal" data-n="01">
+        <p class="process-step-n">01</p>
+        <div class="process-step-icon">🗣️</div>
+        <h4>Consultation</h4>
+        <p>Tell us your requirements — budget, use case, preferences. We curate options that genuinely fit, not just what's in stock.</p>
+      </div>
+      <div class="process-step reveal" data-delay="1" data-n="02">
+        <p class="process-step-n">02</p>
+        <div class="process-step-icon">🚗</div>
+        <h4>Private Viewing</h4>
+        <p>Schedule a one-on-one showroom visit. No pushy staff. Just the car, the keys, and enough time to make a real decision.</p>
+      </div>
+      <div class="process-step reveal" data-delay="2" data-n="03">
+        <p class="process-step-n">03</p>
+        <div class="process-step-icon">📝</div>
+        <h4>Clean Documentation</h4>
+        <p>All paperwork prepared, authenticated, and walked through with you. You'll understand every document you sign.</p>
+      </div>
+      <div class="process-step reveal" data-delay="3" data-n="04">
+        <p class="process-step-n">04</p>
+        <div class="process-step-icon">🏁</div>
+        <h4>Handover</h4>
+        <p>Your vehicle arrives detailed, fuelled, and ready. We walk through every feature until you drive off entirely confident.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ TESTIMONIALS ═══════════════════ -->
+<section id="testimonials" class="section">
+  <div class="section-inner">
+    <p class="section-label reveal">What Our Clients Say</p>
+    <h2 class="section-title reveal" data-delay="1">TRUSTED BY<br>LAHORE</h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-body">"Bought a Land Cruiser ZX from Victory Cars last year. The documentation process was the most transparent I've experienced from any dealer in Pakistan. They showed me every single inspection point."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">A</div>
+          <div class="testi-author-info"><strong>Asad Iqbal</strong><span>DHA, Lahore · Toyota Land Cruiser ZX</span></div>
+        </div>
+      </div>
+      <div class="testi-card reveal" data-delay="1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-body">"My Tesla Model Y from Victory Cars runs flawlessly. What sets them apart is the EV guidance they gave me before purchase — battery health report, charging map, the works. Zero surprises."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">S</div>
+          <div class="testi-author-info"><strong>Sara Mahmood</strong><span>Gulberg, Lahore · Tesla Model Y</span></div>
+        </div>
+      </div>
+      <div class="testi-card reveal" data-delay="2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-body">"Third vehicle purchased from Victory Cars. The Range Rover Vogue was exactly as described. 34 years in business says everything — they have a reputation to protect and they do."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">Z</div>
+          <div class="testi-author-info"><strong>Zain ul Abideen</strong><span>Model Town, Lahore · Range Rover Vogue</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CTA BANNER ═══════════════════ -->
+<div id="cta-banner">
+  <div class="cta-banner-inner">
+    <div class="cta-banner-text reveal-left">
+      <h2>READY TO FIND<br>YOUR VEHICLE?</h2>
+      <p>Message us on WhatsApp or call directly. Our team is available 7 days a week, 10 AM to 8 PM.</p>
+    </div>
+    <div class="cta-banner-actions reveal-right">
+      <a href="https://wa.me/923000000000?text=Assalamu+Alaikum+%E2%80%94+I%27d+like+to+enquire+about+your+current+inventory." target="_blank" rel="noopener" class="wa-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </a>
+      <p class="cta-phone">Or call us: <a href="tel:+923000000000">+92 300 000 0000</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DETAIL OVERLAY ═══════════════════ -->
+<div id="detail-overlay" role="dialog" aria-modal="true" aria-label="Vehicle details">
+  <button class="detail-close" id="detailClose" aria-label="Close">✕</button>
+  <div class="detail-wrap" id="detailWrap"></div>
+</div>
+
+<!-- ═══════════════════ LIGHTBOX ═══════════════════ -->
+<div id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
   <img id="lightboxImg" src="" alt="">
 </div>
 
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer>
-  <span>© 2026 Victory Cars, Lahore</span>
-  <span>Luxury & Electric · Since 1992</span>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="mark">V</div>
+        <span class="name">VICTORY CARS</span>
+      </div>
+      <p>Lahore's premier destination for verified luxury and electric vehicles. Three decades of trust, one standard of excellence.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Collection</h5>
+      <ul>
+        <li><a href="#inventory">All Vehicles</a></li>
+        <li><a href="#inventory">Luxury Sedans</a></li>
+        <li><a href="#inventory">Electric Vehicles</a></li>
+        <li><a href="#inventory">SUVs & 4x4</a></li>
+        <li><a href="#inventory">Sport Models</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#why">About Us</a></li>
+        <li><a href="#process">Our Process</a></li>
+        <li><a href="#testimonials">Client Reviews</a></li>
+        <li><a href="#cta-banner">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <address>
+        <strong>Visit Us</strong>
+        Main Boulevard, Gulberg III<br>
+        Lahore, Punjab, Pakistan<br><br>
+        <strong>Hours</strong>
+        Mon – Sat: 10 AM – 8 PM<br>
+        Sun: 12 PM – 6 PM
+      </address>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Victory Cars, Lahore. All rights reserved.</p>
+    <div class="footer-social">
+      <a href="#" class="social-link" aria-label="Instagram">📸</a>
+      <a href="#" class="social-link" aria-label="Facebook">👍</a>
+      <a href="https://wa.me/923000000000" class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener">💬</a>
+    </div>
+  </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
-</script>
-<script type="module">
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-gsap.registerPlugin(ScrollTrigger);
+<button id="btt" aria-label="Back to top">↑</button>
 
-/* ================= CONFIG ================= */
-const GLB_URL = 'assets/car.glb';
-const WHATSAPP = 'https://wa.me/923000000000';
-
-/*
-  VEHICLES — replace `render` with your own transparent PNG/WebP once available.
-  Gallery `shots` are arrays of image URLs; placeholders use Unsplash until real photos arrive.
-  To update: swap any URL string with a local path like 'assets/mercedes-front.jpg'
-*/
+<script>
+/* ────────────────── VEHICLE DATA ────────────────── */
+const WA = 'https://wa.me/923000000000';
 const VEHICLES = [
   {
-    name:'Mercedes-Benz S 500',
-    type:'Luxury', year:'2023', km:'9,800 km', price:'PKR 14.2 Cr',
-    specs:[['435 hp','Power'],['4.8 s','0–100'],['V6 Hybrid','Drivetrain'],['9,800 km','Driven']],
-    accent:'rgba(201,164,92,.14)',
-    render:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=900&q=80&fit=crop',
+    id:0, name:'Mercedes-Benz S 500', make:'Mercedes-Benz', model:'S 500',
+    type:'luxury', year:2023, km:'9,800 km', price:'PKR 14.2 Cr',
+    specs:[['435 hp','Power'],['4.8 s','0–100 km/h'],['V6 Hybrid','Drivetrain'],['9 Spd','Transmission']],
+    accent:'rgba(201,164,92,.1)',
+    img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=900&q=80&fit=crop',
     shots:[
-      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=500&q=75&fit=crop',
+      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80&fit=crop',
     ],
-    desc:'The benchmark. Executive rear cabin, air suspension, full service history with verified import papers. Hand-checked across 210 inspection points before it ever reached our floor.'
+    desc:'The benchmark of executive transport. Rear-cabin authority, adaptive air suspension, and a full service history verified against authorised dealer records. Hand-checked across 210 inspection points. Imported direct from Germany with authenticated customs documentation.'
   },
   {
-    name:'BYD Atto 3 Premium',
-    type:'EV', year:'2025', km:'1,200 km', price:'PKR 1.05 Cr',
-    specs:[['420 km','Range'],['7.3 s','0–100'],['60.5 kWh','Battery'],['1,200 km','Driven']],
-    accent:'rgba(47,184,166,.13)',
-    render:'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=900&q=80&fit=crop',
+    id:1, name:'BYD Atto 3 Premium', make:'BYD', model:'Atto 3',
+    type:'ev', year:2025, km:'1,200 km', price:'PKR 1.05 Cr',
+    specs:[['420 km','Range'],['7.3 s','0–100 km/h'],['60.5 kWh','Battery'],['Near New','Condition']],
+    accent:'rgba(46,181,163,.1)',
+    img:'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=900&q=80&fit=crop',
     shots:[
-      'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1571987502227-9231b837d92a?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=500&q=75&fit=crop',
+      'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1571987502227-9231b837d92a?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&q=80&fit=crop',
     ],
-    desc:"Pakistan's most practical entry into electric. Near-new, with home charging consultation included — we'll map your daily Lahore routes against real range before you commit."
+    desc:"Pakistan's most practical electric entry point. Near-new with 420 km real-world range. Home charging consultation included — we'll map your Lahore daily routes against actual range before you commit. Battery health certified at 99.2%."
   },
   {
-    name:'Toyota Land Cruiser ZX',
-    type:'Luxury', year:'2024', km:'4,300 km', price:'PKR 12.8 Cr',
-    specs:[['409 hp','Power'],['6.7 s','0–100'],['3.4L TT V6','Engine'],['4,300 km','Driven']],
-    accent:'rgba(201,164,92,.14)',
-    render:'https://images.unsplash.com/photo-1612825173281-9a193378527e?w=900&q=80&fit=crop',
+    id:2, name:'Toyota Land Cruiser ZX', make:'Toyota', model:'Land Cruiser ZX',
+    type:'luxury', year:2024, km:'4,300 km', price:'PKR 12.8 Cr',
+    specs:[['409 hp','Power'],['6.7 s','0–100 km/h'],['3.4L TT V6','Engine'],['4,300 km','Driven']],
+    accent:'rgba(201,164,92,.1)',
+    img:'https://images.unsplash.com/photo-1612825173281-9a193378527e?w=900&q=80&fit=crop',
     shots:[
-      'https://images.unsplash.com/photo-1612825173281-9a193378527e?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&q=75&fit=crop',
+      'https://images.unsplash.com/photo-1612825173281-9a193378527e?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80&fit=crop',
     ],
-    desc:'The unkillable flagship. Fresh import, untouched underbody, every electronic system verified. The vehicle Lahore trusts when the road stops being a road.'
+    desc:"The unkillable flagship. Fresh import from Japan, untouched underbody, every electronic system individually verified. Twin-turbo V6, full KDSS, panoramic roof and the 12.3\" multimedia system. The vehicle Lahore trusts when the road stops being a road."
   },
   {
-    name:'Tesla Model Y Long Range',
-    type:'EV', year:'2024', km:'6,100 km', price:'PKR 2.4 Cr',
-    specs:[['533 km','Range'],['5.0 s','0–100'],['Dual Motor','AWD'],['6,100 km','Driven']],
-    accent:'rgba(47,184,166,.13)',
-    render:'https://images.unsplash.com/photo-1617704548623-340376564e68?w=900&q=80&fit=crop',
+    id:3, name:'Tesla Model Y Long Range', make:'Tesla', model:'Model Y',
+    type:'ev', year:2024, km:'6,100 km', price:'PKR 2.4 Cr',
+    specs:[['533 km','Range'],['5.0 s','0–100 km/h'],['Dual Motor','AWD'],['97%','Battery Health']],
+    accent:'rgba(46,181,163,.1)',
+    img:'https://images.unsplash.com/photo-1617704548623-340376564e68?w=900&q=80&fit=crop',
     shots:[
-      'https://images.unsplash.com/photo-1617704548623-340376564e68?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1571987502227-9231b837d92a?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=500&q=75&fit=crop',
+      'https://images.unsplash.com/photo-1617704548623-340376564e68?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1571987502227-9231b837d92a?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80&fit=crop',
     ],
-    desc:"Software-first luxury. Battery health certified at 97%, charging hardware included, full walkthrough of supercharging alternatives across Punjab on handover."
+    desc:"Software-first luxury. Battery health certified at 97%, full Autopilot hardware, charging equipment included. Complete walkthrough of Punjab's charging infrastructure on handover — we'll make sure you know exactly where to charge across the province."
   },
   {
-    name:'Range Rover Vogue',
-    type:'Luxury', year:'2022', km:'14,000 km', price:'PKR 9.6 Cr',
-    specs:[['395 hp','Power'],['6.1 s','0–100'],['3.0 MHEV','Engine'],['14,000 km','Driven']],
-    accent:'rgba(201,164,92,.14)',
-    render:'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=900&q=80&fit=crop',
+    id:4, name:'Range Rover Vogue SE', make:'Range Rover', model:'Vogue SE',
+    type:'luxury', year:2022, km:'14,000 km', price:'PKR 9.6 Cr',
+    specs:[['395 hp','Power'],['6.1 s','0–100 km/h'],['3.0L MHEV','Engine'],['1 Owner','History']],
+    accent:'rgba(201,164,92,.1)',
+    img:'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=900&q=80&fit=crop',
     shots:[
-      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&q=75&fit=crop',
-      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=500&q=75&fit=crop',
+      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80&fit=crop',
     ],
-    desc:'Presence without effort. One careful owner, dealer-maintained, with the Meridian sound system and executive seating package. Trade-in welcome.'
+    desc:'Presence without effort. One careful owner with full dealer maintenance history. Meridian 23-speaker sound, executive rear seating, full Terrain Response 2, and every ADAS feature operational. Trade-in evaluation available.'
+  },
+  {
+    id:5, name:'BMW M5 Competition', make:'BMW', model:'M5 Competition',
+    type:'sport', year:2023, km:'5,500 km', price:'PKR 8.9 Cr',
+    specs:[['627 hp','Power'],['3.3 s','0–100 km/h'],['4.4L TT V8','Engine'],['M xDrive','AWD']],
+    accent:'rgba(212,43,43,.1)',
+    img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=900&q=80&fit=crop',
+    shots:[
+      'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=800&q=80&fit=crop',
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80&fit=crop',
+    ],
+    desc:"627 horsepower of precise, documented fury. Competition package with M Carbon ceramic brakes, adaptive M suspension, and Merino leather interior. Track-day records clean. Every service carried out at authorised BMW dealers. The last analogue M5."
   },
 ];
 
-/* ================= 3D CINEMATIC STAGE ================= */
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const stageEl = document.getElementById('stage3d');
-const scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x0a0a0d, 10, 40);
-const camera = new THREE.PerspectiveCamera(34, innerWidth/innerHeight, .1, 120);
-const renderer = new THREE.WebGLRenderer({antialias:true});
-renderer.setClearColor(0x0a0a0d);
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setSize(innerWidth, innerHeight);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-stageEl.appendChild(renderer.domElement);
-
-/* dark studio floor */
-const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(120, 120),
-  new THREE.MeshStandardMaterial({color:0x0d0d11, metalness:.55, roughness:.4})
-);
-floor.rotation.x = -Math.PI/2; scene.add(floor);
-
-scene.add(new THREE.AmbientLight(0x1c1c28, 1.8));
-const key = new THREE.SpotLight(0xc9a45c, 420, 60, Math.PI/5, .5);
-key.position.set(6, 10, 6); scene.add(key);
-const rim = new THREE.SpotLight(0x2fb8a6, 140, 60, Math.PI/4, .7);
-rim.position.set(-8, 6, -8); scene.add(rim);
-const sun = new THREE.DirectionalLight(0xffffff, 1.4);
-sun.position.set(4, 8, 5); scene.add(sun);
-
-/* runway light pools */
-for(let i=0;i<6;i++){
-  const pool = new THREE.PointLight(0xc9a45c, 24, 9);
-  pool.position.set(-40 + i*8, 4.5, 0);
-  scene.add(pool);
-}
-
-/* gold parking ring */
-const ring = new THREE.Mesh(
-  new THREE.TorusGeometry(3.3,.016,16,140),
-  new THREE.MeshBasicMaterial({color:0xc9a45c})
-);
-ring.rotation.x = Math.PI/2; ring.position.set(0,.01,0); scene.add(ring);
-
-/* car group */
-const car = new THREE.Group(); scene.add(car);
-const wheels = [];
-
-function silhouette(){
-  const g = new THREE.Group();
-  const paint = new THREE.MeshStandardMaterial({color:0x0e0e13, metalness:.95, roughness:.16});
-  const glass = new THREE.MeshStandardMaterial({color:0x10141a, metalness:1, roughness:.05});
-  const body = new THREE.Mesh(new THREE.BoxGeometry(4.3,.6,1.85), paint); body.position.y=.56; g.add(body);
-  const hood = new THREE.Mesh(new THREE.BoxGeometry(1.3,.34,1.7), paint); hood.position.set(1.6,.45,0); g.add(hood);
-  const cabin = new THREE.Mesh(new THREE.BoxGeometry(2.1,.52,1.62), glass); cabin.position.set(-.25,1.06,0); g.add(cabin);
-  const trim = new THREE.Mesh(new THREE.BoxGeometry(4.32,.035,1.87), new THREE.MeshBasicMaterial({color:0xc9a45c}));
-  trim.position.y=.28; g.add(trim);
-  const wg = new THREE.CylinderGeometry(.43,.43,.3,32);
-  const wm = new THREE.MeshStandardMaterial({color:0x0a0a0a, metalness:.5, roughness:.55});
-  [[1.5,.43,.97],[1.5,.43,-.97],[-1.5,.43,.97],[-1.5,.43,-.97]].forEach(p=>{
-    const w = new THREE.Mesh(wg, wm); w.rotation.x=Math.PI/2; w.position.set(...p); g.add(w); wheels.push(w);
-  });
-  [[2.16,.55,.6],[2.16,.55,-.6]].forEach(p=>{
-    const h = new THREE.Mesh(new THREE.SphereGeometry(.09,16,16), new THREE.MeshBasicMaterial({color:0xfff3d6}));
-    h.position.set(...p); g.add(h);
-    const beam = new THREE.SpotLight(0xfff3d6, 80, 26, Math.PI/7, .6);
-    beam.position.set(...p); beam.target.position.set(p[0]+10, 0, p[2]); g.add(beam, beam.target);
-  });
-  return g;
-}
-
-/* Fetch as ArrayBuffer to avoid DataCloneError from GLTFLoader's Web Worker */
-function applyGltf(gltf){
-  const m = gltf.scene;
-  m.rotation.y = Math.PI/2;
-  m.updateMatrixWorld(true);
-  const box = new THREE.Box3().setFromObject(m);
-  const size = box.getSize(new THREE.Vector3());
-  const scale = 4.8 / Math.max(size.x, size.y, size.z);
-  m.scale.setScalar(scale);
-  m.updateMatrixWorld(true);
-  const box2 = new THREE.Box3().setFromObject(m);
-  const center = box2.getCenter(new THREE.Vector3());
-  m.position.x -= center.x;
-  m.position.z -= center.z;
-  m.position.y -= box2.min.y;
-  m.traverse(o=>{
-    if(o.isMesh){
-      o.castShadow = true; o.receiveShadow = true;
-      if(o.material) o.material.envMapIntensity = 1.2;
-    }
-  });
-  car.add(m);
-  car.userData.realModel = true;
-}
-
-fetch(GLB_URL)
-  .then(r=>{ if(!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
-  .then(buf=> new GLTFLoader().parse(buf, '', applyGltf, err=>{
-    console.warn('GLB parse failed, using silhouette', err);
-    car.add(silhouette());
-  }))
-  .catch(err=>{
-    console.warn('GLB fetch failed, using silhouette', err);
-    car.add(silhouette());
-  });
-
-/* ====== SCROLL-SCRUBBED TIMELINE ====== */
-const animState = {
-  carX:-44, carRotY:0,
-  camX:-30, camY:1.1, camZ:13,
-  lookX:-38, lookY:.8,
-  ringOpacity:0
-};
-ring.material.transparent = true; ring.material.opacity = 0;
-
-const tl = gsap.timeline({
-  scrollTrigger:{ trigger:'#act1', start:'top top', end:'bottom bottom', scrub: reduced ? false : 1.2 }
-});
-
-/* Shot 1 — letterbox opens, car headlights approach */
-tl.to('#lbTop',{yPercent:100, ease:'power2.out', duration:.6},0)
-  .to('#lbBot',{yPercent:-100, ease:'power2.out', duration:.6},0)
-  .to('#scrollCue',{opacity:0, duration:.3},0)
-  .to(animState,{carX:-16, camX:-26, lookX:-20, duration:1.4, ease:'none'},0)
-  .to('#titleCard',{opacity:0, y:-50, duration:.7},.5)
-
-/* Shot 2 — low chase cam */
-  .to(animState,{carX:-4, camX:-10, camY:.9, camZ:7.5, lookX:-2, duration:1.6, ease:'none'},1.2)
-  .to('#beat1',{opacity:1, y:-12, duration:.5},1.5)
-  .to('#beat1',{opacity:0, duration:.4},2.6)
-
-/* Shot 3 — car decelerates into ring */
-  .to(animState,{carX:0, duration:1.4, ease:'power3.out'},2.8)
-  .to(animState,{camX:7, camY:1.6, camZ:9, lookX:0, duration:1.8, ease:'power1.inOut'},2.8)
-  .to(animState,{ringOpacity:1, duration:.6},3.4)
-  .to('#beat2',{opacity:1, y:-12, duration:.5},3.5)
-  .to('#beat2',{opacity:0, duration:.4},4.6)
-
-/* Shot 4 — hero orbit + crane up */
-  .to(animState,{carRotY:Math.PI*0.42, camX:2, camY:3.4, camZ:11.5, lookY:.6, duration:2.2, ease:'power1.inOut'},4.8)
-  .to('#beat3',{opacity:1, duration:.6},5.6)
-  .to('#lbTop',{yPercent:0, duration:.6},6.4)
-  .to('#lbBot',{yPercent:0, duration:.6},6.4);
-
-renderer.setAnimationLoop(()=>{
-  car.position.x = animState.carX;
-  car.rotation.y = animState.carRotY;
-  const rolling = Math.abs(animState.carX) > .05;
-  wheels.forEach(w=>{ if(rolling) w.rotation.z -= .18; });
-  car.position.y = rolling ? Math.sin(Date.now()*.02)*.012 : 0;
-  camera.position.set(animState.camX, animState.camY, animState.camZ);
-  camera.lookAt(animState.lookX, animState.lookY, 0);
-  ring.material.opacity = animState.ringOpacity;
-  renderer.render(scene, camera);
-});
-
-addEventListener('resize', ()=>{
-  camera.aspect = innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-});
-
-/* ================= ACT II — SHOWROOM CAROUSEL ================= */
-let idx = 0;
-const visual   = document.getElementById('carVisual');
-const nameEl   = document.getElementById('carName');
-const tagEl    = document.getElementById('carTag');
-const specRail = document.getElementById('specRail');
-const bgwash   = document.getElementById('bgwash');
-const dotsEl   = document.getElementById('dots');
-const galleryEl= document.getElementById('gallery');
-const waBtn    = document.getElementById('waBtn');
-
-function phRender(type){
-  const stroke = type==='EV' ? '#2FB8A6' : '#C9A45C';
-  return `<div class="ph-render"><svg viewBox="0 0 400 160" fill="none">
-    <path d="M30 120 Q60 70 130 64 L250 60 Q330 62 370 110 L370 122 L30 122 Z"
-      fill="#101016" stroke="${stroke}" stroke-opacity=".5" stroke-width="1.5"/>
-    <path d="M120 64 Q150 36 200 36 L240 38 Q270 42 286 62" stroke="${stroke}" stroke-opacity=".35" stroke-width="1.2" fill="#0c0c12"/>
-    <circle cx="110" cy="122" r="20" fill="#08080b" stroke="${stroke}" stroke-opacity=".55" stroke-width="1.5"/>
-    <circle cx="300" cy="122" r="20" fill="#08080b" stroke="${stroke}" stroke-opacity=".55" stroke-width="1.5"/>
-  </svg></div>`;
-}
-
-VEHICLES.forEach((v,i)=>{
-  const d = document.createElement('button');
-  d.className='dot'; d.setAttribute('role','tab');
-  d.setAttribute('aria-label', v.name);
-  d.addEventListener('click', ()=>go(i));
-  dotsEl.appendChild(d);
-});
-
-function go(n, dir = n>idx ? 1 : -1){
-  idx = (n + VEHICLES.length) % VEHICLES.length;
-  const v = VEHICLES[idx];
-
-  gsap.to([visual, nameEl, tagEl], {opacity:0, x:-50*dir, duration:.35, ease:'power2.in', onComplete(){
-    /* swap car image */
-    visual.querySelectorAll('img,.ph-render,.car-img-wrap').forEach(e=>e.remove());
-    if(v.render){
-      const wrap = document.createElement('div');
-      wrap.className = 'car-img-wrap';
-      const img = document.createElement('img');
-      img.src = v.render;
-      img.alt = v.name;
-      img.loading = 'lazy';
-      wrap.appendChild(img);
-      visual.insertAdjacentElement('afterbegin', wrap);
-    } else {
-      visual.insertAdjacentHTML('afterbegin', phRender(v.type));
-    }
-
-    nameEl.textContent = v.name;
-    tagEl.innerHTML = `<b class="${v.type==='EV'?'':'lx'}">${v.type==='EV'?'Electric':'Luxury'}</b> · ${v.year} · ${v.km} · <span style="color:var(--gold-bright)">${v.price}</span>`;
-
-    specRail.innerHTML = v.specs.map(([sv,sk])=>
-      `<div class="spec"><div class="sv">${sv}</div><div class="sk">${sk}</div></div>`).join('');
-    gsap.from('.spec', {opacity:0, y:22, stagger:.09, duration:.55, ease:'power3.out'});
-
-    galleryEl.innerHTML = v.shots.map(s=>
-      `<div class="gal-shot"><img src="${s}" alt="${v.name}" loading="lazy"></div>`
-    ).join('');
-    gsap.from('.gal-shot', {opacity:0, y:18, stagger:.07, duration:.5, ease:'power2.out'});
-
-    /* clicking a gallery shot opens lightbox */
-    galleryEl.querySelectorAll('.gal-shot').forEach((el,i)=>{
-      el.addEventListener('click', ()=>openLightbox(v.shots[i]));
-    });
-
-    bgwash.style.background = `radial-gradient(ellipse 70% 55% at 50% 42%, ${v.accent}, transparent 70%)`;
-    waBtn.href = `${WHATSAPP}?text=${encodeURIComponent("Assalamu Alaikum — I'd like to view the "+v.name)}`;
-
-    gsap.fromTo([visual, nameEl, tagEl],
-      {opacity:0, x:50*dir},
-      {opacity:1, x:0, duration:.55, ease:'power3.out'});
-  }});
-
-  dotsEl.querySelectorAll('.dot').forEach((d,i)=> d.setAttribute('aria-current', i===idx ? 'true':'false'));
-}
-
-document.getElementById('nextBtn').addEventListener('click', ()=>go(idx+1, 1));
-document.getElementById('prevBtn').addEventListener('click', ()=>go(idx-1, -1));
-addEventListener('keydown', e=>{
-  if(document.getElementById('detail').classList.contains('open')) return;
-  if(document.getElementById('lightbox').classList.contains('open')) return;
-  if(e.key==='ArrowRight') go(idx+1, 1);
-  if(e.key==='ArrowLeft')  go(idx-1, -1);
-});
-
-/* touch swipe */
-let tx0 = null;
-document.querySelector('.car-stage').addEventListener('touchstart', e=>tx0=e.touches[0].clientX, {passive:true});
-document.querySelector('.car-stage').addEventListener('touchend', e=>{
-  if(tx0===null) return;
-  const dx = e.changedTouches[0].clientX - tx0;
-  if(Math.abs(dx)>50) go(idx + (dx<0?1:-1), dx<0?1:-1);
-  tx0=null;
-}, {passive:true});
-
-/* showroom entrance reveal */
-gsap.from('.showroom-head, .car-stage, .cta-row, .dots', {
-  scrollTrigger:{trigger:'#act2', start:'top 70%'},
-  opacity:0, y:46, stagger:.12, duration:.9, ease:'power3.out'
-});
-
-/* ================= DETAIL OVERLAY ================= */
-const detail = document.getElementById('detail');
-const detailInner = document.getElementById('detailInner');
-document.getElementById('detailBtn').addEventListener('click', ()=>{
-  const v = VEHICLES[idx];
-  detailInner.innerHTML = `
-    <p class="eyebrow" style="font-size:.68rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold)">${v.type==='EV'?'Electric':'Luxury'} · ${v.year}</p>
-    <h2 style="margin-top:.8rem">${v.name}</h2>
-    <div class="detail-price">${v.price}</div>
-    <div class="detail-visual">${v.render ? `<img src="${v.render}" alt="${v.name}">` : phRender(v.type)}</div>
-    <div class="detail-grid">
-      ${v.specs.map(([sv,sk])=>`<div class="detail-cell"><div class="sk">${sk}</div><div class="sv">${sv}</div></div>`).join('')}
-      <div class="detail-cell"><div class="sk">Mileage</div><div class="sv">${v.km}</div></div>
-      <div class="detail-cell"><div class="sk">Inspection</div><div class="sv">210-point ✓</div></div>
+/* ────────────────── HERO FEATURED CARD ────────────────── */
+function buildHeroCard(){
+  const v = VEHICLES[2]; // Land Cruiser as hero feature
+  document.getElementById('heroFeaturedCard').innerHTML = `
+    <div class="car-card-img">
+      <img src="${v.img}" alt="${v.name}" loading="eager">
+      <span class="car-card-type luxury">Featured</span>
     </div>
-    <p class="detail-desc">${v.desc}</p>
-    <div class="detail-cta"><a class="btn solid" href="${WHATSAPP}?text=${encodeURIComponent('Assalamu Alaikum — interested in the '+v.name)}" target="_blank" rel="noopener">Reserve This Vehicle</a></div>`;
-  detail.classList.add('open');
-  document.body.style.overflow='hidden';
-  gsap.from('.detail-inner > *', {opacity:0, y:26, stagger:.07, duration:.6, ease:'power3.out'});
+    <div class="car-card-body">
+      <h3>${v.name}</h3>
+      <div class="car-card-meta">
+        <span>📅 ${v.year}</span>
+        <span>🛣 ${v.km}</span>
+        <span>✅ Verified</span>
+      </div>
+      <div class="car-card-foot">
+        <div class="car-card-price">${v.price}</div>
+        <a href="https://wa.me/923000000000?text=${encodeURIComponent('Assalamu Alaikum — I\'d like to enquire about the '+v.name)}" target="_blank" rel="noopener" style="font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--red)">View →</a>
+      </div>
+    </div>`;
+}
+
+/* ────────────────── TICKER ────────────────── */
+function buildTicker(){
+  const items = ['Luxury · Electric · Sport', 'Inspected to 210 Points', 'Lahore Since 1992', 'Import Verified', 'WhatsApp Enquiries Welcome', 'Trade-In Available'];
+  const html = items.map(t=>`<span class="ticker-item">${t}<span class="ticker-sep"> · </span></span>`).join('');
+  const track = document.getElementById('tickerTrack');
+  track.innerHTML = html + html; // duplicate for seamless loop
+}
+
+/* ────────────────── INVENTORY GRID ────────────────── */
+function typeLabel(type){
+  if(type==='ev') return {cls:'ev', label:'Electric'};
+  if(type==='sport') return {cls:'sport', label:'Sport'};
+  return {cls:'luxury', label:'Luxury'};
+}
+
+function buildCard(v){
+  const {cls,label} = typeLabel(v.type);
+  const waMsg = encodeURIComponent(`Assalamu Alaikum — I'd like to enquire about the ${v.name}`);
+  return `<div class="car-card reveal" data-type="${v.type}" data-id="${v.id}">
+    <div class="car-card-img">
+      <img src="${v.img}" alt="${v.name}" loading="lazy">
+      <span class="car-card-type ${cls}">${label}</span>
+    </div>
+    <div class="car-card-body">
+      <h3>${v.name}</h3>
+      <div class="car-card-meta">
+        <span>📅 ${v.year}</span>
+        <span>🛣 ${v.km}</span>
+      </div>
+      <div class="car-card-specs">
+        ${v.specs.slice(0,3).map(([sv,sk])=>`<div class="car-card-spec"><div class="sv">${sv}</div><div class="sk">${sk}</div></div>`).join('')}
+      </div>
+      <div class="car-card-foot">
+        <div class="car-card-price">${v.price}</div>
+        <div class="car-card-actions">
+          <button class="btn-icon wa" title="WhatsApp enquiry" data-wa="${waMsg}">💬</button>
+          <button class="btn-icon" title="View details" data-detail="${v.id}">→</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderInventory(filter='all'){
+  const grid = document.getElementById('invGrid');
+  const filtered = filter==='all' ? VEHICLES : VEHICLES.filter(v=>v.type===filter);
+  grid.innerHTML = filtered.map(buildCard).join('');
+  observeReveal();
+  grid.querySelectorAll('[data-detail]').forEach(btn=>{
+    btn.addEventListener('click', ()=>openDetail(+btn.dataset.detail));
+  });
+  grid.querySelectorAll('[data-wa]').forEach(btn=>{
+    btn.addEventListener('click', ()=>window.open(`${WA}?text=${btn.dataset.wa}`,'_blank'));
+  });
+  grid.querySelectorAll('.car-card-img').forEach((el,i)=>{
+    const card = el.closest('.car-card');
+    el.addEventListener('click', ()=>openDetail(+card.dataset.id));
+  });
+}
+
+/* ────────────────── FILTER ────────────────── */
+document.querySelectorAll('.inv-filter').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.inv-filter').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderInventory(btn.dataset.filter);
+  });
 });
-function closeDetail(){ detail.classList.remove('open'); document.body.style.overflow=''; }
+
+/* ────────────────── DETAIL OVERLAY ────────────────── */
+function openDetail(id){
+  const v = VEHICLES[id];
+  const waMsg = encodeURIComponent(`Assalamu Alaikum — I'd like to reserve a viewing of the ${v.name}`);
+  const {cls,label} = typeLabel(v.type);
+  document.getElementById('detailWrap').innerHTML = `
+    <div class="detail-info-label"><span>${label} · ${v.year}</span></div>
+    <div class="detail-top">
+      <div class="detail-img"><img src="${v.img}" alt="${v.name}" loading="eager"></div>
+      <div>
+        <h2>${v.name}</h2>
+        <div class="detail-price">${v.price}</div>
+        <p class="detail-desc">${v.desc}</p>
+        <div class="detail-specs">
+          ${v.specs.map(([sv,sk])=>`<div class="detail-spec"><div class="sk">${sk}</div><div class="sv">${sv}</div></div>`).join('')}
+          <div class="detail-spec"><div class="sk">Mileage</div><div class="sv">${v.km}</div></div>
+          <div class="detail-spec"><div class="sk">Inspection</div><div class="sv">210-pt ✓</div></div>
+        </div>
+        <div class="detail-cta-row">
+          <a class="btn-primary" href="${WA}?text=${waMsg}" target="_blank" rel="noopener">Reserve Viewing</a>
+          <button class="btn-secondary" onclick="closeDetail()">Back to Showroom</button>
+        </div>
+      </div>
+    </div>
+    <div class="detail-gallery">
+      <h3>Gallery</h3>
+      <div class="detail-thumbs">
+        ${v.shots.map(s=>`<div class="detail-thumb"><img src="${s}" alt="${v.name}" loading="lazy"></div>`).join('')}
+      </div>
+    </div>`;
+  document.getElementById('detail-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('detail-overlay').querySelectorAll('.detail-thumb').forEach((el,i)=>{
+    el.addEventListener('click',()=>openLightbox(v.shots[i]));
+  });
+}
+function closeDetail(){
+  document.getElementById('detail-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
 document.getElementById('detailClose').addEventListener('click', closeDetail);
 
-/* ================= LIGHTBOX ================= */
-const lightbox    = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightboxImg');
+/* ────────────────── LIGHTBOX ────────────────── */
 function openLightbox(src){
-  lightboxImg.src = src;
-  lightbox.classList.add('open');
-  document.body.style.overflow='hidden';
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
 }
-function closeLightbox(){ lightbox.classList.remove('open'); document.body.style.overflow=''; }
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+}
 document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', e=>{ if(e.target===lightbox) closeLightbox(); });
+document.getElementById('lightbox').addEventListener('click', e=>{ if(e.target===document.getElementById('lightbox')) closeLightbox(); });
 
-addEventListener('keydown', e=>{
-  if(e.key==='Escape'){
-    closeDetail();
-    closeLightbox();
-  }
+/* ────────────────── KEYBOARD ────────────────── */
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){closeDetail(); closeLightbox();}
 });
 
-go(0);
+/* ────────────────── NAV SCROLL EFFECT ────────────────── */
+const nav = document.getElementById('nav');
+function onScroll(){
+  nav.classList.toggle('scrolled', scrollY>60);
+  document.getElementById('btt').classList.toggle('show', scrollY>400);
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+/* ────────────────── HAMBURGER ────────────────── */
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click',()=>{
+  const open = navLinks.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  navLinks.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+}));
+
+/* ────────────────── SCROLL REVEAL ────────────────── */
+function observeReveal(){
+  const els = document.querySelectorAll('.reveal:not(.visible),.reveal-left:not(.visible),.reveal-right:not(.visible)');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  },{threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  els.forEach(el=>io.observe(el));
+}
+
+/* ────────────────── BACK TO TOP ────────────────── */
+document.getElementById('btt').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* ────────────────── INIT ────────────────── */
+buildHeroCard();
+buildTicker();
+renderInventory();
+observeReveal();
 </script>
 </body>
 </html>
