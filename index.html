@@ -76,12 +76,12 @@ body::-webkit-scrollbar-thumb{background:var(--champagne)}
 }
 
 /* ════════ HERO ════════ */
-#hero{height:100vh;position:relative;overflow:hidden;background:radial-gradient(ellipse 90% 70% at 50% 120%,rgba(201,178,132,.07),transparent 70%),var(--black)}
-#stage{position:absolute;inset:0;z-index:1}
-#stageFallback{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s}
-#stageFallback::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,10,.55),rgba(8,8,10,.9))}
-.hero-grad-top{position:absolute;top:0;left:0;right:0;height:30vh;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(8,8,10,.85),transparent)}
-.hero-grad-bot{position:absolute;bottom:0;left:0;right:0;height:55vh;z-index:2;pointer-events:none;background:linear-gradient(0deg,var(--black) 8%,rgba(8,8,10,.6) 45%,transparent)}
+#hero{height:100vh;position:relative;overflow:hidden;background:var(--black)}
+#heroVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:0;transition:opacity 1.4s ease}
+#heroVideo.loaded{opacity:1}
+.hero-overlay{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,8,10,.55) 0%,rgba(8,8,10,.18) 40%,rgba(8,8,10,.22) 60%,rgba(8,8,10,.92) 100%)}
+.hero-grad-top{position:absolute;top:0;left:0;right:0;height:25vh;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(8,8,10,.8),transparent)}
 .hero-content{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:flex-end;padding:0 4vw 8vh;pointer-events:none}
 .hero-eyebrow{opacity:0;transform:translateY(12px);transition:all .9s ease .2s}
 .hero-eyebrow.in{opacity:1;transform:none}
@@ -275,10 +275,11 @@ footer{background:var(--ink);border-top:1px solid var(--line);padding:3rem 4vw;d
 
 <!-- ════════ HERO ════════ -->
 <section id="hero">
-  <div id="stageFallback"></div>
-  <div id="stage"></div>
+  <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/cars/audi-etron-2020-1.jpeg">
+    <source src="assets/hero.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
   <div class="hero-grad-top"></div>
-  <div class="hero-grad-bot"></div>
   <div class="hero-content">
     <p class="eyebrow hero-eyebrow" id="heroEyebrow">17-A Jail Road · Lahore</p>
     <h1 class="hero-title" id="heroTitle">
@@ -391,156 +392,16 @@ footer{background:var(--ink);border-top:1px solid var(--line);padding:3rem 4vw;d
   <img id="lbImg" src="" alt="">
 </div>
 
-<!-- ════════ THREE.JS (hero) ════════ -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
-</script>
-<script type="module">
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
-const FALLBACK_IMG='https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=85&fit=crop';
-const stageEl=document.getElementById('stage');
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let usingFallback=false;
-
-function showFallback(){
-  usingFallback=true;
-  const fb=document.getElementById('stageFallback');
-  fb.style.backgroundImage=`url("${FALLBACK_IMG}")`;
-  fb.style.opacity='1';
-  stageEl.style.display='none';
-}
-
-let renderer,scene,camera,car;
-try{
-  scene=new THREE.Scene();
-  scene.fog=new THREE.Fog(0x08080a,9,32);
-  camera=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.1,120);
-  renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-  renderer.setClearColor(0x000000,0);
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  renderer.setSize(innerWidth,innerHeight);
-  renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure=1.05;
-  stageEl.appendChild(renderer.domElement);
-
-  // dark reflective floor
-  const floor=new THREE.Mesh(
-    new THREE.PlaneGeometry(120,120),
-    new THREE.MeshStandardMaterial({color:0x0b0b0e,metalness:.7,roughness:.35})
-  );
-  floor.rotation.x=-Math.PI/2;scene.add(floor);
-
-  // lighting — studio
-  scene.add(new THREE.AmbientLight(0x20202c,1.6));
-  const key=new THREE.SpotLight(0xfff2d6,600,50,Math.PI/5,.55,1.2);
-  key.position.set(5,11,7);scene.add(key);
-  const champ=new THREE.SpotLight(0xc9b284,260,55,Math.PI/4,.6,1);
-  champ.position.set(-9,7,-4);scene.add(champ);
-  const fill=new THREE.DirectionalLight(0xffffff,1.1);
-  fill.position.set(-4,6,8);scene.add(fill);
-  const rim=new THREE.PointLight(0xc9b284,120,24);
-  rim.position.set(0,3,-7);scene.add(rim);
-  // ground glow pools
-  for(let i=0;i<5;i++){
-    const p=new THREE.PointLight(0xc9b284,16,8);
-    p.position.set(-32+i*8,3.5,0);scene.add(p);
-  }
-
-  // parking ring
-  const ring=new THREE.Mesh(
-    new THREE.TorusGeometry(3.2,.012,16,128),
-    new THREE.MeshBasicMaterial({color:0xc9b284,transparent:true,opacity:0})
-  );
-  ring.rotation.x=Math.PI/2;ring.position.y=.02;scene.add(ring);
-
-  car=new THREE.Group();scene.add(car);
-  const wheels=[];
-
-  function fallbackCar(){
-    const g=new THREE.Group();
-    const paint=new THREE.MeshStandardMaterial({color:0x111116,metalness:.95,roughness:.18});
-    const glass=new THREE.MeshStandardMaterial({color:0x0d1016,metalness:1,roughness:.05});
-    const body=new THREE.Mesh(new THREE.BoxGeometry(4.4,.62,1.9),paint);body.position.y=.58;g.add(body);
-    const hood=new THREE.Mesh(new THREE.BoxGeometry(1.3,.34,1.74),paint);hood.position.set(1.65,.46,0);g.add(hood);
-    const cabin=new THREE.Mesh(new THREE.BoxGeometry(2.1,.54,1.66),glass);cabin.position.set(-.25,1.08,0);g.add(cabin);
-    const trim=new THREE.Mesh(new THREE.BoxGeometry(4.42,.03,1.92),new THREE.MeshBasicMaterial({color:0xc9b284}));trim.position.y=.29;g.add(trim);
-    const wg=new THREE.CylinderGeometry(.44,.44,.32,28);
-    const wm=new THREE.MeshStandardMaterial({color:0x09090a,metalness:.6,roughness:.5});
-    [[1.55,.44,1],[1.55,.44,-1],[-1.55,.44,1],[-1.55,.44,-1]].forEach(p=>{
-      const w=new THREE.Mesh(wg,wm);w.rotation.x=Math.PI/2;w.position.set(...p);g.add(w);wheels.push(w);
-    });
-    return g;
-  }
-
-  function applyGltf(gltf){
-    const m=gltf.scene;
-    m.updateMatrixWorld(true);
-    let box=new THREE.Box3().setFromObject(m);
-    const size=box.getSize(new THREE.Vector3());
-    const scale=4.9/Math.max(size.x,size.y,size.z);
-    m.scale.setScalar(scale);
-    m.rotation.y=Math.PI/2;
-    m.updateMatrixWorld(true);
-    box=new THREE.Box3().setFromObject(m);
-    const c=box.getCenter(new THREE.Vector3());
-    m.position.x-=c.x;m.position.z-=c.z;m.position.y-=box.min.y;
-    m.traverse(o=>{if(o.isMesh&&o.material){o.material.envMapIntensity=1.2;}});
-    car.add(m);
-  }
-
-  fetch('assets/car.glb')
-    .then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer();})
-    .then(buf=>new GLTFLoader().parse(buf,'',applyGltf,()=>car.add(fallbackCar())))
-    .catch(()=>car.add(fallbackCar()));
-
-  // ── CINEMATIC STATE ──
-  const S={carX:-30,carRotY:0,camX:0,camY:1.6,camZ:11,lookY:.7,ringO:0,spin:0};
-
-  // intro: drive in from the left, decelerate, settle, then continuous slow 360
-  if(!reduced){
-    const tl=gsap.timeline({delay:2.4});
-    tl.to(S,{carX:0,duration:2.6,ease:'power3.out'},0)
-      .to(S,{camX:-4,camY:1.2,camZ:8.5,duration:2.6,ease:'power2.out'},0)
-      .to(S,{ringO:1,duration:1,ease:'power1.out'},1.8)
-      .to(S,{camX:0,camY:2.2,camZ:10,lookY:.8,duration:2.4,ease:'power2.inOut'},2.4)
-      .to(S,{spin:1,duration:.1},3.2); // enable continuous spin
-  }else{
-    S.carX=0;S.ringO=1;
-  }
-
-  // mouse parallax
-  let mxN=0,myN=0;
-  addEventListener('mousemove',e=>{mxN=(e.clientX/innerWidth-.5);myN=(e.clientY/innerHeight-.5);});
-
-  renderer.setAnimationLoop(()=>{
-    car.position.x=S.carX;
-    const moving=Math.abs(S.carX)>.04;
-    if(S.spin&&!reduced) S.carRotY+=0.0042;     // graceful 360
-    car.rotation.y=S.carRotY;
-    wheels.forEach(w=>{if(moving)w.rotation.z-=.2;});
-    car.position.y=moving?Math.sin(Date.now()*.018)*.01:0;
-    ring.material.opacity=S.ringO;
-    // camera with subtle parallax
-    camera.position.set(S.camX+mxN*1.4,S.camY-myN*.6,S.camZ);
-    camera.lookAt(0,S.lookY,0);
-    renderer.render(scene,camera);
-  });
-
-  addEventListener('resize',()=>{
-    camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
-    renderer.setSize(innerWidth,innerHeight);
-  });
-
-  // if WebGL context lost, fall back
-  renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();showFallback();});
-}catch(err){
-  console.warn('3D stage unavailable, using fallback image',err);
-  showFallback();
-}
+<!-- ════════ HERO VIDEO ════════ -->
+<script>
+(function(){
+  const v=document.getElementById('heroVideo');
+  function onReady(){v.classList.add('loaded');}
+  if(v.readyState>=2) onReady();
+  else v.addEventListener('canplay',onReady,{once:true});
+  // fallback: show poster after 3s if video hasn't loaded
+  setTimeout(()=>v.classList.add('loaded'),3000);
+})();
 </script>
 
 <!-- ════════ APP (inventory, detail, ui) ════════ -->
