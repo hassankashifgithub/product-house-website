@@ -211,7 +211,8 @@ section{position:relative}
 
 /* ============ BEFORE / AFTER ============ */
 #beforeafter{padding:clamp(5rem,12vw,10rem) 0;background:var(--bone)}
-.ba-stage{position:relative;width:100%;aspect-ratio:16/10;max-height:84vh;overflow:hidden;border-radius:3px;user-select:none}
+.ba-stage{position:relative;width:100%;aspect-ratio:16/10;max-height:84vh;overflow:hidden;border-radius:3px;user-select:none;
+  background:linear-gradient(135deg,var(--shell),var(--bone-2) 55%,var(--cream))}
 .ba-stage .ba-img{position:absolute;inset:0}
 .ba-stage .ba-img img{width:100%;height:100%;object-fit:cover;object-position:center 20%}
 .ba-stage .ba-after{clip-path:inset(0 0 0 50%)}
@@ -602,8 +603,8 @@ LOOKS.forEach(l=>{
   lbTrack.appendChild(d);
 });
 
-/* load all images */
-document.querySelectorAll('.imgwrap img[data-key]').forEach(loadImg);
+/* load all images (including before/after imgs that sit outside .imgwrap) */
+document.querySelectorAll('img[data-key]').forEach(loadImg);
 
 /* ============ CUSTOM CURSOR ============ */
 const cdot=document.getElementById('cdot'),cring=document.getElementById('cring');
