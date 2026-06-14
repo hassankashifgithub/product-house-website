@@ -513,6 +513,24 @@ footer{background:var(--ink);color:rgba(251,248,242,.7);padding:clamp(4rem,8vw,7
 <div class="toast" id="toast">Added to the list ✦</div>
 
 <script>
+/* ============ PRELOADER (runs first; never blocks on hanging images) ============ */
+(function(){
+  var loader=document.getElementById('loader'), lbar=document.getElementById('lbar');
+  var revealed=false, p=0;
+  function reveal(){
+    if(revealed) return; revealed=true;
+    if(loader) loader.classList.add('done');
+    var spans=document.querySelectorAll('#heroTitle .l span');
+    for(var i=0;i<spans.length;i++){spans[i].style.transition='transform 1s var(--ease) '+(i*0.12)+'s';spans[i].style.transform='translateY(0)';}
+    var hs=document.getElementById('heroSub'); if(hs) hs.classList.add('in');
+  }
+  var iv=setInterval(function(){p=Math.min(100,p+Math.random()*26); if(lbar) lbar.style.width=p+'%'; if(p>=100){clearInterval(iv); setTimeout(reveal,300);} },130);
+  /* hard safety nets — the loader can never stay stuck */
+  setTimeout(reveal,2600);
+  window.addEventListener('load',function(){p=100; if(lbar) lbar.style.width='100%'; setTimeout(reveal,200);});
+  window.__naissanceReveal=reveal;
+})();
+
 /* ============ IMAGE CONFIG (Higgsfield CDN) ============ */
 const CDN='https://d8j0ntlcm91z4.cloudfront.net/user_3F7cJC9sHMJTomb42gmHIrWkcHF/';
 const IMAGES={
@@ -586,18 +604,6 @@ LOOKS.forEach(l=>{
 
 /* load all images */
 document.querySelectorAll('.imgwrap img[data-key]').forEach(loadImg);
-
-/* ============ PRELOADER ============ */
-window.addEventListener('load',()=>{
-  const lbar=document.getElementById('lbar'); let p=0;
-  const iv=setInterval(()=>{p=Math.min(100,p+Math.random()*22);lbar.style.width=p+'%';
-    if(p>=100){clearInterval(iv);setTimeout(()=>{
-      document.getElementById('loader').classList.add('done');
-      document.querySelectorAll('#heroTitle .l span').forEach((s,i)=>{s.style.transition='transform 1s var(--ease) '+(i*.12)+'s';s.style.transform='translateY(0)';});
-      document.getElementById('heroSub').classList.add('in');
-    },380);}
-  },140);
-});
 
 /* ============ CUSTOM CURSOR ============ */
 const cdot=document.getElementById('cdot'),cring=document.getElementById('cring');
