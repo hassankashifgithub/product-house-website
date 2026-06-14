@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Victory Cars — Lahore's premier luxury and electric vehicle dealership. Hand-selected imports since 1992.">
-  <title>Victory Cars — Lahore's Premier Luxury Automotive</title>
+  <meta name="description" content="Victory Cars, Lahore's premier luxury and electric vehicle dealership. Hand-selected imports since 1992.">
+  <title>Victory Cars - Lahore's Premier Luxury Automotive</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cache1.pakwheels.com">
@@ -174,17 +174,55 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #08080A;
     }
 
+    /* Animated image slideshow background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-bg-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      animation: heroCycle 24s infinite;
+      will-change: opacity, transform;
+    }
+
+    .hero-bg-slide:nth-child(1) { animation-delay: 0s; }
+    .hero-bg-slide:nth-child(2) { animation-delay: 6s; }
+    .hero-bg-slide:nth-child(3) { animation-delay: 12s; }
+    .hero-bg-slide:nth-child(4) { animation-delay: 18s; }
+
+    @keyframes heroCycle {
+      0%   { opacity: 0;   transform: scale(1.08); }
+      6%   { opacity: 1;   transform: scale(1.04); }
+      25%  { opacity: 1;   transform: scale(1.0); }
+      33%  { opacity: 0;   transform: scale(0.96); }
+      100% { opacity: 0;   transform: scale(1.08); }
+    }
+
+    /* Optional video layer: only visible if file loads */
     .hero-video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.6s ease;
     }
 
+    .hero-video.loaded { opacity: 1; }
+
     .hero-overlay-top {
+      z-index: 2;
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 30%;
@@ -198,11 +236,12 @@
       height: 40%;
       background: linear-gradient(to top, rgba(8,8,10,0.95), transparent);
       pointer-events: none;
+      z-index: 2;
     }
 
     .hero-content {
       position: relative;
-      z-index: 2;
+      z-index: 3;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -282,6 +321,7 @@
       gap: 6px;
       opacity: 0;
       animation: fadeInUp 0.8s ease 1.5s forwards;
+      z-index: 3;
     }
 
     .scroll-line {
@@ -377,6 +417,7 @@
       width: 60%;
       flex-shrink: 0;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .slide-photo-wrap::after {
@@ -389,11 +430,35 @@
       pointer-events: none;
     }
 
+    .slide-photo-wrap:hover .slide-photo { transform: scale(1.025); }
+
     .slide-photo {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .slide-photo-count {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(8,8,10,0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--ivory);
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      padding: 6px 12px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+      z-index: 3;
+      border: 1px solid rgba(201,178,132,0.2);
     }
 
     .slide-info {
@@ -1033,7 +1098,15 @@
 
 <!-- HERO -->
 <section id="hero">
-  <video class="hero-video" autoplay muted loop playsinline poster="assets/hero-poster.jpg" aria-hidden="true">
+  <!-- Animated image slideshow, loads immediately, no file dependency -->
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-bg-slide" style="background-image:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=85')"></div>
+    <div class="hero-bg-slide" style="background-image:url('https://images.unsplash.com/photo-1542362567-b07e54358753?w=1920&q=85')"></div>
+    <div class="hero-bg-slide" style="background-image:url('https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1920&q=85')"></div>
+    <div class="hero-bg-slide" style="background-image:url('https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1920&q=85')"></div>
+  </div>
+  <!-- Optional local video: if present it fades in over the slideshow -->
+  <video class="hero-video" autoplay muted loop playsinline aria-hidden="true" id="hero-video">
     <source src="assets/hero.mp4" type="video/mp4">
   </video>
   <div class="hero-overlay-top"></div>
@@ -1174,7 +1247,7 @@
       <p class="detail-car-model" id="detail-model"></p>
       <div class="detail-specs-grid" id="detail-specs"></div>
       <p class="detail-desc" id="detail-desc"></p>
-      <div class="detail-price">POA &mdash; Price on Application</div>
+      <div class="detail-price">POA, Price on Application</div>
       <div class="detail-btns">
         <a href="tel:+923218403799" class="btn btn-gold">Call the Showroom</a>
         <a href="#" class="btn btn-outline-gold" id="detail-wa-btn" target="_blank" rel="noopener">WhatsApp Enquiry</a>
@@ -1196,14 +1269,14 @@ const CARS = [
     cat:'suv', fuel:'Petrol', year:2023, km:'200 km', engine:'3500 cc', trans:'Automatic', reg:'Un-Registered',
     img:'https://cache3.pakwheels.com/ad_pictures/1414/toyota-land-cruiser-zx-gasoline-3-5l-2023-141418974.webp',
     shots:['https://cache3.pakwheels.com/ad_pictures/1414/toyota-land-cruiser-zx-gasoline-3-5l-2023-141418974.webp','https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&q=82','https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=82','https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1200&q=82'],
-    desc:'Effectively delivery-mileage. The current-generation flagship Land Cruiser ZX with the 3.5L gasoline twin-turbo V6 — untouched, unregistered, and ready for plates.'
+    desc:'Effectively delivery-mileage. The current-generation flagship Land Cruiser ZX with the 3.5L gasoline twin-turbo V6, untouched, unregistered, and ready for plates.'
   },
   {
     name:'Mercedes-Benz G-Class', model:'2025 · G 580 EQ Edition',
     cat:'electric', fuel:'Electric', year:2025, km:'100 km', engine:'Electric', trans:'Automatic', reg:'Un-Registered',
     img:'https://cache1.pakwheels.com/ad_pictures/1414/mercedes-benz-g-class-g-580-eq-2025-141419214.webp',
     shots:['https://cache1.pakwheels.com/ad_pictures/1414/mercedes-benz-g-class-g-580-eq-2025-141419214.webp','https://images.unsplash.com/photo-1542362567-b07e54358753?w=1200&q=82','https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=82','https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&q=82'],
-    desc:'The icon, electrified. The all-electric G 580 with EQ Technology — 100 km on the clock. Among the rarest vehicles in the country.'
+    desc:'The icon, electrified. The all-electric G 580 with EQ Technology. 100 km on the clock. Among the rarest vehicles in the country.'
   },
   {
     name:'Lexus UX 300e', model:'2021 · 300e',
@@ -1217,14 +1290,14 @@ const CARS = [
     cat:'suv', fuel:'Petrol', year:2021, km:'7,000 km', engine:'4600 cc', trans:'Automatic', reg:'Un-Registered',
     img:'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1100&q=82',
     shots:['https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1200&q=82','https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&q=82','https://images.unsplash.com/photo-1612825173281-9a193378527e?w=1200&q=82','https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=82'],
-    desc:'The legendary 200-series ZX with the 4.6L V8 — only 7,000 km and entirely original.'
+    desc:'The legendary 200-series ZX with the 4.6L V8. Only 7,000 km and entirely original.'
   },
   {
     name:'Mercedes-Benz EQC 400', model:'2019 · 400 4MATIC',
     cat:'electric', fuel:'Electric', year:2019, km:'42,000 km', engine:'80 kWh', trans:'Automatic', reg:'Un-Registered',
     img:'https://images.unsplash.com/photo-1617704548623-340376564e68?w=1100&q=82',
     shots:['https://images.unsplash.com/photo-1617704548623-340376564e68?w=1200&q=82','https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=1200&q=82','https://images.unsplash.com/photo-1542362567-b07e54358753?w=1200&q=82','https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1200&q=82'],
-    desc:"Mercedes-Benz's first dedicated electric SUV. Dual motors, 80 kWh pack. The S-Class that taught Lahore what silence felt like — now with four-wheel drive."
+    desc:"Mercedes-Benz's first dedicated electric SUV. Dual motors, 80 kWh pack. The S-Class that taught Lahore what silence felt like, now with four-wheel drive."
   },
   {
     name:'Audi e-tron Sportback', model:'2021 · 50 quattro 230kW',
@@ -1252,7 +1325,7 @@ const CARS = [
     cat:'sedan', fuel:'Petrol', year:2023, km:'12,000 km', engine:'1500 cc', trans:'Automatic', reg:'Un-Registered',
     img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1100&q=82',
     shots:['https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1200&q=82','https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=1200&q=82','https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=1200&q=82','https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1200&q=82'],
-    desc:'2023, 12,000 km. The W213 Avantgarde in the condition it deserves — unregistered, unmarked, and ready to be claimed.'
+    desc:'2023, 12,000 km. The W213 Avantgarde in the condition it deserves. Unregistered, unmarked, and ready to be claimed.'
   },
   {
     name:'Mercedes-Benz E 180 AMG', model:'2021 · W213 E 180 AMG',
@@ -1266,7 +1339,7 @@ const CARS = [
     cat:'suv', fuel:'Petrol', year:2020, km:'11,000 km', engine:'2700 cc', trans:'Automatic', reg:'Un-Registered',
     img:'https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=1100&q=82',
     shots:['https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=1200&q=82','https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&q=82','https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1200&q=82','https://images.unsplash.com/photo-1612825173281-9a193378527e?w=1200&q=82'],
-    desc:"11,000 km. The Prado TX-L 2.7 — the thinking family's flagship four-wheel drive. Proven, unhurried, and built to outlast everything around it."
+    desc:"11,000 km. The Prado TX-L 2.7, the thinking family's flagship four-wheel drive. Proven, unhurried, and built to outlast everything around it."
   },
   {
     name:'Toyota Prado TX-L', model:'2020 · TX L Package 2.7',
@@ -1280,14 +1353,14 @@ const CARS = [
     cat:'suv', fuel:'Petrol', year:2020, km:'21,387 km', engine:'2700 cc', trans:'Automatic', reg:'Un-Registered',
     img:'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1100&q=82',
     shots:['https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=1200&q=82','https://images.unsplash.com/photo-1631295868223-63265b40d9e4?w=1200&q=82','https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=1200&q=82','https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=82'],
-    desc:'21,387 km of original Prado ownership. The 2.7L four-cylinder in excellent standing — reliable, capable, entirely unspoiled.'
+    desc:'21,387 km of original Prado ownership. The 2.7L four-cylinder in excellent standing. Reliable, capable, entirely unspoiled.'
   },
   {
     name:'Mercedes-Benz S 350', model:'2004 · S-Class S350',
     cat:'sedan', fuel:'Petrol', year:2004, km:'72,000 km', engine:'3500 cc', trans:'Automatic', reg:'Registered',
     img:'https://cache2.pakwheels.com/ad_pictures/1207/mercedes-benz-s-class-s-350-2004-120739005.webp',
     shots:['https://cache2.pakwheels.com/ad_pictures/1207/mercedes-benz-s-class-s-350-2004-120739005.webp','https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=1200&q=82','https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=1200&q=82','https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1200&q=82'],
-    desc:'The W220 S 350. A modern classic — the 3.5L V6, garage-kept, 72,000 km. The S-Class that defined what Lahore considered arrival.'
+    desc:'The W220 S 350. A modern classic. The 3.5L V6, garage-kept, 72,000 km. The S-Class that defined what Lahore considered arrival.'
   }
 ];
 
@@ -1355,8 +1428,12 @@ function buildCarousel() {
 
     slide.innerHTML =
       '<div class="slide-watermark" aria-hidden="true">'+watermarkName(car.name)+'</div>' +
-      '<div class="slide-photo-wrap">' +
-        '<img class="slide-photo" src="'+car.img+'" alt="'+car.year+' '+car.name+' — front three-quarter view" loading="'+(idx===0?'eager':'lazy')+'" decoding="async">' +
+      '<div class="slide-photo-wrap view-detail-btn" data-idx="'+idx+'" role="button" tabindex="0" aria-label="View '+car.shots.length+' photos of '+car.name+'">' +
+        '<img class="slide-photo" src="'+car.img+'" alt="'+car.year+' '+car.name+'" loading="'+(idx===0?'eager':'lazy')+'" decoding="async">' +
+        '<div class="slide-photo-count" aria-hidden="true">' +
+          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>' +
+          car.shots.length + ' photos' +
+        '</div>' +
       '</div>' +
       '<div class="slide-info">' +
         '<div>' +
@@ -1367,7 +1444,7 @@ function buildCarousel() {
           '<div class="slide-price">POA</div>' +
         '</div>' +
         '<div class="slide-btns">' +
-          '<button class="btn btn-dark view-detail-btn" data-idx="'+idx+'">View Details</button>' +
+          '<button class="btn btn-dark view-detail-btn" data-idx="'+idx+'">View Gallery</button>' +
           '<a class="btn btn-outline-gold" href="'+waLink(car)+'" target="_blank" rel="noopener">Enquire on WhatsApp</a>' +
         '</div>' +
       '</div>';
@@ -1375,8 +1452,16 @@ function buildCarousel() {
     track.appendChild(slide);
   });
 
-  track.querySelectorAll('.view-detail-btn').forEach(btn => {
-    btn.addEventListener('click', () => openDetail(parseInt(btn.dataset.idx, 10)));
+  track.querySelectorAll('.view-detail-btn').forEach(el => {
+    el.addEventListener('click', () => openDetail(parseInt(el.dataset.idx, 10)));
+    if (el.tagName !== 'BUTTON') {
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openDetail(parseInt(el.dataset.idx, 10));
+        }
+      });
+    }
   });
 
   setCarouselPosition(false);
@@ -1456,7 +1541,7 @@ function openDetail(idx) {
     const img = document.createElement('img');
     img.className = 'filmstrip-thumb' + (i === 0 ? ' active' : '');
     img.src = src;
-    img.alt = detailCar.name + ' — view ' + (i+1);
+    img.alt = detailCar.name + ', view ' + (i+1);
     img.loading = 'lazy';
     img.decoding = 'async';
     img.addEventListener('click', () => { detailImgIdx = i; refreshDetailGallery(); });
@@ -1472,7 +1557,7 @@ function openDetail(idx) {
 function refreshDetailGallery() {
   const mainImg = document.getElementById('detail-main-img');
   mainImg.src = detailCar.shots[detailImgIdx];
-  mainImg.alt = detailCar.name + ' — view ' + (detailImgIdx+1);
+  mainImg.alt = detailCar.name + ', view ' + (detailImgIdx+1);
   document.querySelectorAll('.filmstrip-thumb').forEach((t,i) => t.classList.toggle('active', i === detailImgIdx));
 }
 
@@ -1517,7 +1602,7 @@ function closeDetail() {
 function openLightbox() {
   if (!detailCar) return;
   document.getElementById('lightbox-img').src = detailCar.shots[detailImgIdx];
-  document.getElementById('lightbox-img').alt = detailCar.name + ' — full size';
+  document.getElementById('lightbox-img').alt = detailCar.name + ', full size';
   document.getElementById('lightbox').classList.add('open');
 }
 
@@ -1641,6 +1726,14 @@ if (motionOK) {
 } else {
   document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
 }
+
+// --- Video fade-in if local file is present ---
+(function() {
+  const vid = document.getElementById('hero-video');
+  if (vid) {
+    vid.addEventListener('canplay', () => vid.classList.add('loaded'), {once:true});
+  }
+})();
 
 // --- Init ---
 buildCarousel();
