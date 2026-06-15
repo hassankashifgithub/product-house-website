@@ -685,6 +685,184 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
 }
 .lightbox-close:hover{color:var(--accent);transform:rotate(90deg)}
 
+/* ---------- Hero cinematic ambient layers ---------- */
+/* Three floating radial gradients animated on transform only. GPU composited, zero layout impact. */
+.hero-ambient{position:absolute;inset:0;z-index:2;pointer-events:none}
+.hero-ambient-a{
+  background:radial-gradient(ellipse 65% 58% at 70% 44%,rgba(28,42,62,0.85) 0%,transparent 68%);
+  animation:haFloat 14s ease-in-out infinite;
+}
+.hero-ambient-b{
+  background:radial-gradient(ellipse 38% 50% at 12% 62%,rgba(159,232,214,0.07) 0%,transparent 58%);
+  animation:haFloat 18s ease-in-out 2s infinite reverse;
+}
+.hero-ambient-c{
+  background:radial-gradient(circle at 50% 95%,rgba(159,232,214,0.05) 0%,transparent 38%);
+  animation:haFloat 22s ease-in-out 5s infinite;
+}
+@keyframes haFloat{
+  0%,100%{transform:translate(0,0)}
+  28%{transform:translate(-14px,-10px)}
+  60%{transform:translate(10px,14px)}
+  82%{transform:translate(-7px,6px)}
+}
+
+/* ---------- View toggle (grid vs. showcase) ---------- */
+.view-toggle-wrap{display:flex;gap:4px}
+.view-toggle-btn{
+  width:40px;height:40px;border:1px solid var(--line);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;color:var(--mute);
+  transition:color 0.2s ease,border-color 0.2s ease,background 0.2s ease;
+}
+.view-toggle-btn:hover{color:var(--bone);border-color:rgba(244,241,234,0.3)}
+.view-toggle-btn.active{color:var(--ink);background:var(--accent);border-color:var(--accent)}
+
+/* ---------- NFS Showcase (single-car cinematic spotlight) ---------- */
+#nfs-showcase{
+  position:relative;min-height:78vh;overflow:hidden;
+  border:1px solid var(--line);border-radius:3px;background:var(--ink);
+}
+.nfs-bg{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.nfs-glayer{position:absolute;inset:0}
+.nfs-glayer-1{
+  background:radial-gradient(ellipse 55% 65% at 78% 50%,rgba(22,38,56,1) 0%,transparent 62%);
+  animation:nfsG1 10s ease-in-out infinite;
+}
+.nfs-glayer-2{
+  background:radial-gradient(ellipse 38% 50% at 16% 50%,rgba(159,232,214,0.09) 0%,transparent 60%);
+  animation:nfsG1 14s ease-in-out 3s infinite reverse;
+}
+.nfs-glayer-electric{
+  opacity:0;
+  background:radial-gradient(ellipse 50% 60% at 80% 38%,rgba(100,210,188,0.14) 0%,transparent 58%);
+  transition:opacity 0.9s ease;
+}
+.nfs-glayer-electric.on{opacity:1}
+@keyframes nfsG1{0%,100%{transform:translate(0,0)}50%{transform:translate(-12px,9px)}}
+.nfs-grain{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size:180px 180px;opacity:0.04;mix-blend-mode:overlay;
+}
+.nfs-stage{
+  position:relative;z-index:3;
+  display:grid;grid-template-columns:1fr 1fr;min-height:78vh;
+}
+@media(max-width:720px){.nfs-stage{grid-template-columns:1fr}}
+.nfs-info{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(36px,5vw,70px) clamp(28px,4vw,54px);
+}
+@media(max-width:720px){.nfs-info{padding:30px 24px 20px;order:2}}
+.nfs-counter{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--mute);margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.nfs-counter::before{
+  content:'';flex-shrink:0;width:36px;height:1px;
+  background:linear-gradient(to right,var(--accent),transparent);
+}
+.nfs-cat{
+  display:inline-flex;align-items:center;width:fit-content;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;
+  text-transform:uppercase;padding:5px 12px;border-radius:2px;margin-bottom:14px;
+  border:1px solid rgba(159,232,214,0.35);color:var(--accent);
+}
+.nfs-cat.petrol{color:var(--mute);border-color:var(--line)}
+.nfs-name{
+  font-family:var(--font-display);font-weight:300;
+  font-size:clamp(34px,5vw,68px);line-height:0.96;
+  color:var(--bone);letter-spacing:-0.02em;margin-bottom:8px;
+}
+.nfs-variant-txt{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;
+  color:var(--mute);margin-bottom:28px;
+}
+.nfs-specs{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:14px 18px;margin-bottom:30px;
+}
+@media(max-width:480px){.nfs-specs{grid-template-columns:repeat(2,1fr)}}
+.nfs-spec-item dt{
+  font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;
+  text-transform:uppercase;color:var(--mute);
+}
+.nfs-spec-item dd{
+  font-family:var(--font-mono);font-size:14px;font-weight:500;
+  color:var(--bone);margin-top:4px;
+}
+.nfs-btns{display:flex;flex-wrap:wrap;gap:10px}
+/* Staggered reveal on car change */
+.nfs-cat,.nfs-name,.nfs-variant-txt,.nfs-specs,.nfs-btns{
+  opacity:0;transform:translateY(12px);
+  transition:opacity 0.45s var(--ease),transform 0.45s var(--ease);
+}
+.nfs-cat.in{opacity:1;transform:none;transition-delay:0s}
+.nfs-name.in{opacity:1;transform:none;transition-delay:0.07s}
+.nfs-variant-txt.in{opacity:1;transform:none;transition-delay:0.12s}
+.nfs-specs.in{opacity:1;transform:none;transition-delay:0.17s}
+.nfs-btns.in{opacity:1;transform:none;transition-delay:0.22s}
+.nfs-visual{
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(30px,4vw,60px);position:relative;
+}
+@media(max-width:720px){.nfs-visual{padding:20px;min-height:220px;order:1}}
+.nfs-car-img{
+  width:100%;max-height:360px;object-fit:contain;border-radius:2px;
+  opacity:0;transform:translateX(16px) scale(0.97);
+  transition:opacity 0.5s ease 0.06s,transform 0.5s ease 0.06s;
+}
+.nfs-car-img.in{opacity:1;transform:none}
+.nfs-no-img{
+  width:100%;aspect-ratio:16/9;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;text-align:center;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(159,232,214,0.07),transparent 55%),
+    linear-gradient(145deg,#0c0e12,#14181f);
+  border:1px solid var(--line);border-radius:3px;padding:30px;
+  opacity:0;transform:translateX(16px) scale(0.97);
+  transition:opacity 0.5s ease 0.06s,transform 0.5s ease 0.06s;
+}
+.nfs-no-img.in{opacity:1;transform:none}
+.nfs-no-img-name{
+  font-family:var(--font-display);font-weight:300;
+  font-size:clamp(20px,3vw,32px);color:var(--bone);line-height:1.1;
+}
+.nfs-no-img-line{width:50px;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
+.nfs-no-img-label{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--mute);
+}
+.nfs-nav{
+  position:absolute;top:50%;z-index:5;
+  width:50px;height:50px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(11,12,14,0.65);border:1px solid var(--line);color:var(--bone);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  transition:background 0.2s ease,border-color 0.2s ease,color 0.2s ease,transform 0.2s ease;
+  transform:translateY(-50%);
+}
+.nfs-nav:hover{
+  background:rgba(11,12,14,0.88);border-color:var(--accent);color:var(--accent);
+  transform:translateY(-50%) scale(1.08);
+}
+.nfs-nav-prev{left:clamp(12px,2.5vw,26px)}
+.nfs-nav-next{right:clamp(12px,2.5vw,26px)}
+@media(max-width:480px){.nfs-nav{width:38px;height:38px}}
+.nfs-track{
+  position:relative;z-index:4;
+  display:flex;align-items:center;justify-content:center;
+  gap:5px;padding:0 20px clamp(18px,2.5vw,28px);flex-wrap:wrap;
+}
+.nfs-dot{
+  width:5px;height:5px;border-radius:50%;border:none;padding:0;cursor:pointer;
+  background:rgba(244,241,234,0.18);
+  transition:background 0.25s ease,transform 0.25s ease;
+}
+.nfs-dot.active{background:var(--accent);transform:scale(1.4)}
+.nfs-dot:hover:not(.active){background:rgba(244,241,234,0.45)}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important}
@@ -695,6 +873,9 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   .hero-scroll-cue::after{animation:none}
   .badge-ev-charge::after{animation:none;transform:translateX(-30%)}
   #cursor-ring{display:none}
+  .hero-ambient-a,.hero-ambient-b,.hero-ambient-c{animation:none}
+  .nfs-glayer-1,.nfs-glayer-2{animation:none}
+  .nfs-cat,.nfs-name,.nfs-variant-txt,.nfs-specs,.nfs-btns,.nfs-car-img,.nfs-no-img{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -733,7 +914,12 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
        <img src="assets/hero-poster.webp" alt="" fetchpriority="high" width="1920" height="1080" data-placeholder="true"> -->
   <div class="hero-bg" aria-hidden="true" data-placeholder="true"></div>
 
-  <!-- Layer 2: optional looping video. Fades in over the poster only once it can play. -->
+  <!-- Layer 2: cinematic ambient light (floating radial gradients, no video required). -->
+  <div class="hero-ambient hero-ambient-a" aria-hidden="true"></div>
+  <div class="hero-ambient hero-ambient-b" aria-hidden="true"></div>
+  <div class="hero-ambient hero-ambient-c" aria-hidden="true"></div>
+
+  <!-- Layer 3: optional looping video. Fades in over the poster only once it can play. -->
   <!-- REPLACE: add real sources. Keep under 3MB, 1080p, around 6 to 10 seconds.
        <source src="assets/hero.mp4" type="video/mp4">
        <source src="assets/hero.webm" type="video/webm"> -->
@@ -791,10 +977,59 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
     <button class="search-toggle" id="search-toggle" type="button" aria-label="Open search" aria-controls="search-wrap">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
     </button>
+    <!-- View toggle: grid or single-car showcase -->
+    <div class="view-toggle-wrap" role="group" aria-label="View mode">
+      <button class="view-toggle-btn active" id="view-grid-btn" type="button" aria-label="Grid view" aria-pressed="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
+      </button>
+      <button class="view-toggle-btn" id="view-showcase-btn" type="button" aria-label="Showcase view" aria-pressed="false">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg>
+      </button>
+    </div>
   </div>
 
   <div class="cars-grid" id="cars-grid" role="list" aria-label="Vehicle collection"></div>
   <p class="collection-empty" id="collection-empty" aria-live="polite" hidden>No vehicles match this filter. Try a different category.</p>
+
+  <!-- NFS-style single-car showcase. Hidden until user activates showcase view. -->
+  <div id="nfs-showcase" hidden aria-label="Vehicle showcase" role="region">
+    <!-- Animated ambient background -->
+    <div class="nfs-bg" aria-hidden="true">
+      <div class="nfs-glayer nfs-glayer-1"></div>
+      <div class="nfs-glayer nfs-glayer-2"></div>
+      <div class="nfs-glayer nfs-glayer-electric" id="nfs-electric-glow"></div>
+    </div>
+    <div class="nfs-grain" aria-hidden="true"></div>
+    <!-- Two-column stage: info left, visual right -->
+    <div class="nfs-stage">
+      <div class="nfs-info">
+        <div class="nfs-counter" id="nfs-counter" aria-live="polite">01 / 13</div>
+        <span class="nfs-cat" id="nfs-cat">Electric</span>
+        <h2 class="nfs-name" id="nfs-name-el"></h2>
+        <p class="nfs-variant-txt" id="nfs-variant-el"></p>
+        <dl class="nfs-specs" id="nfs-specs-el"></dl>
+        <div class="nfs-btns" id="nfs-btns-el">
+          <button class="btn-primary" id="nfs-view-btn" type="button">View details</button>
+          <a class="btn-wa btn-sm" id="nfs-wa-link" href="#" target="_blank" rel="noopener">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="nfs-visual" id="nfs-visual">
+        <!-- populated by JS -->
+      </div>
+    </div>
+    <!-- Navigation arrows -->
+    <button class="nfs-nav nfs-nav-prev" id="nfs-prev-btn" type="button" aria-label="Previous vehicle">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M14 5L8 11l6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="nfs-nav nfs-nav-next" id="nfs-next-btn" type="button" aria-label="Next vehicle">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M8 5l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <!-- Dot track -->
+    <div class="nfs-track" id="nfs-track" aria-hidden="true"></div>
+  </div>
 </section>
 
 <!-- ============ THE STANDARD ============ -->
@@ -1749,6 +1984,194 @@ if (!isTouch && !reduceMotion){
 
 /* Initial sort to default order */
 renderCompareTray();
+
+/* ============================================================
+   SHOWCASE VIEW. Need for Speed style single-car spotlight.
+   One car fills the section. Left/right arrows or swipe to cycle.
+   ============================================================ */
+var showcaseEl  = document.getElementById('nfs-showcase');
+var showcaseIdx = 0;
+var showcaseActive = false;
+
+function getShowcaseCars(){
+  if (currentFilter === 'all') return CARS.slice();
+  return CARS.filter(function(c){ return c.cat === currentFilter; });
+}
+
+function buildShowcaseDots(){
+  var cars  = getShowcaseCars();
+  var track = document.getElementById('nfs-track');
+  track.innerHTML = '';
+  cars.forEach(function(car, i){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'nfs-dot' + (i === showcaseIdx ? ' active' : '');
+    btn.setAttribute('aria-label', 'Go to ' + car.name);
+    btn.dataset.idx = i;
+    btn.addEventListener('click', function(){ goShowcase(parseInt(this.dataset.idx, 10)); });
+    track.appendChild(btn);
+  });
+}
+
+function renderNFSCar(instant){
+  var cars = getShowcaseCars();
+  if (!cars.length) return;
+  var idx = showcaseIdx;
+  var car = cars[idx];
+
+  var counterEl  = document.getElementById('nfs-counter');
+  var catEl      = document.getElementById('nfs-cat');
+  var nameEl     = document.getElementById('nfs-name-el');
+  var varEl      = document.getElementById('nfs-variant-el');
+  var specsEl    = document.getElementById('nfs-specs-el');
+  var btnsEl     = document.getElementById('nfs-btns-el');
+  var visualEl   = document.getElementById('nfs-visual');
+  var glowEl     = document.getElementById('nfs-electric-glow');
+  var animEls    = [catEl, nameEl, varEl, specsEl, btnsEl];
+
+  function setOut(){
+    animEls.forEach(function(el){ el.classList.remove('in'); });
+    var vis = visualEl.querySelector('.nfs-car-img, .nfs-no-img');
+    if (vis) vis.classList.remove('in');
+  }
+
+  function populate(){
+    var n = idx + 1;
+    var t = cars.length;
+    counterEl.textContent = (n < 10 ? '0' : '') + n + ' / ' + (t < 10 ? '0' : '') + t;
+
+    catEl.textContent = car.fuel;
+    catEl.className   = 'nfs-cat' + (car.cat !== 'electric' ? ' petrol' : '');
+    glowEl.classList.toggle('on', car.cat === 'electric');
+    nameEl.textContent = car.name;
+    varEl.textContent  = car.variant;
+
+    var specs = [
+      ['Year', car.year], ['Mileage', car.km], ['Engine', car.engine],
+      ['Trans.', car.trans], ['Fuel', car.fuel], ['Reg.', car.reg]
+    ];
+    specsEl.innerHTML = specs.map(function(s){
+      return '<div class="nfs-spec-item"><dt>' + esc(s[0]) + '</dt><dd>' + esc(String(s[1])) + '</dd></div>';
+    }).join('');
+
+    document.getElementById('nfs-view-btn').dataset.id = car.id;
+    document.getElementById('nfs-wa-link').href = waLink(car);
+
+    visualEl.innerHTML = '';
+    var visEl;
+    if (car.images && car.images.length){
+      visEl = document.createElement('img');
+      visEl.className = 'nfs-car-img';
+      visEl.src = car.images[0];
+      visEl.alt = car.name + ', ' + car.variant;
+      visEl.width = 800;
+      visEl.height = 500;
+    } else {
+      visEl = document.createElement('div');
+      visEl.className = 'nfs-no-img';
+      visEl.setAttribute('data-placeholder', 'true');
+      visEl.innerHTML =
+        '<div class="nfs-no-img-name">' + esc(car.name) + '</div>' +
+        '<div class="nfs-no-img-line"></div>' +
+        '<span class="nfs-no-img-label">Photo pending</span>';
+    }
+    visualEl.appendChild(visEl);
+
+    /* Update dots */
+    document.querySelectorAll('.nfs-dot').forEach(function(d, i){
+      d.classList.toggle('active', i === idx);
+    });
+
+    /* Staggered reveal */
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        animEls.forEach(function(el){ el.classList.add('in'); });
+        visEl.classList.add('in');
+      });
+    });
+  }
+
+  if (instant || reduceMotion){
+    setOut();
+    populate();
+  } else {
+    setOut();
+    setTimeout(populate, 300);
+  }
+}
+
+function goShowcase(n){
+  var cars = getShowcaseCars();
+  showcaseIdx = (n + cars.length) % cars.length;
+  renderNFSCar(false);
+}
+
+function activateShowcase(){
+  showcaseActive = true;
+  grid.style.display = 'none';
+  document.getElementById('collection-empty').hidden = true;
+  showcaseEl.hidden = false;
+  var cars = getShowcaseCars();
+  if (showcaseIdx >= cars.length) showcaseIdx = 0;
+  buildShowcaseDots();
+  renderNFSCar(true);
+  document.getElementById('view-grid-btn').classList.remove('active');
+  document.getElementById('view-grid-btn').setAttribute('aria-pressed','false');
+  document.getElementById('view-showcase-btn').classList.add('active');
+  document.getElementById('view-showcase-btn').setAttribute('aria-pressed','true');
+}
+
+function deactivateShowcase(){
+  showcaseActive = false;
+  showcaseEl.hidden = true;
+  grid.style.display = '';
+  document.getElementById('view-grid-btn').classList.add('active');
+  document.getElementById('view-grid-btn').setAttribute('aria-pressed','true');
+  document.getElementById('view-showcase-btn').classList.remove('active');
+  document.getElementById('view-showcase-btn').setAttribute('aria-pressed','false');
+  applyVisibility();
+}
+
+document.getElementById('view-grid-btn').addEventListener('click', deactivateShowcase);
+document.getElementById('view-showcase-btn').addEventListener('click', activateShowcase);
+
+document.getElementById('nfs-prev-btn').addEventListener('click', function(){ goShowcase(showcaseIdx - 1); });
+document.getElementById('nfs-next-btn').addEventListener('click', function(){ goShowcase(showcaseIdx + 1); });
+
+document.getElementById('nfs-view-btn').addEventListener('click', function(){
+  var id = this.dataset.id;
+  if (id) openModal(id, this);
+});
+
+/* Rebuild showcase when filter changes while showcase is active */
+document.querySelector('.filter-group').addEventListener('click', function(e){
+  if (!showcaseActive) return;
+  var btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  /* currentFilter already updated by the earlier handler. Rebuild. */
+  var cars = getShowcaseCars();
+  if (showcaseIdx >= cars.length) showcaseIdx = 0;
+  buildShowcaseDots();
+  renderNFSCar(true);
+});
+
+/* Arrow keys cycle cars when showcase is active and no modal is open */
+document.addEventListener('keydown', function(e){
+  if (!showcaseActive) return;
+  if (!overlay.hidden || !compareModal.hidden) return;
+  if (e.key === 'ArrowLeft'){ e.preventDefault(); goShowcase(showcaseIdx - 1); }
+  else if (e.key === 'ArrowRight'){ e.preventDefault(); goShowcase(showcaseIdx + 1); }
+});
+
+/* Touch swipe in showcase */
+(function(){
+  var sx = 0;
+  showcaseEl.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, { passive: true });
+  showcaseEl.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 48){ goShowcase(dx > 0 ? showcaseIdx - 1 : showcaseIdx + 1); }
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
