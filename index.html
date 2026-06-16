@@ -219,11 +219,17 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
   background:radial-gradient(ellipse 90% 70% at 50% 38%,#0d1018,#030405);
 }
 .hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* Source clip is portrait (9:16), so it is framed centered rather than
+   cropped full-bleed, letting the pure-black studio backdrop show at the sides. */
 .hero-video{
-  position:absolute;inset:0;z-index:2;width:100%;height:100%;
-  object-fit:cover;opacity:0;transition:opacity 1s ease;
+  position:absolute;top:50%;left:50%;z-index:2;
+  height:88%;width:auto;max-width:94%;
+  transform:translate(-50%,-50%);
+  object-fit:contain;opacity:0;transition:opacity 1.1s ease;
+  filter:contrast(1.05) brightness(0.97);
 }
-.hero-video.loaded{opacity:0.9}
+.hero-video.loaded{opacity:1}
+@media(max-width:720px){.hero-video{height:74%}}
 .hero-vignette{
   position:absolute;inset:0;z-index:3;pointer-events:none;
   background:
@@ -1000,13 +1006,10 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
 
 <!-- ============ HERO ============ -->
 <section id="hero" aria-label="Victory Cars">
-  <!-- Layer 1: poster background. Currently a CSS gradient placeholder. -->
-  <!-- REPLACE: add a real hero poster as the first child below, for example:
-       <img src="assets/hero-poster.webp" alt="" fetchpriority="high" width="1920" height="1080" data-placeholder="true"> -->
-  <div class="hero-bg" aria-hidden="true" data-placeholder="true"></div>
+  <!-- Layer 1: pure black studio backdrop -->
+  <div class="hero-bg" aria-hidden="true"></div>
 
   <!-- Layer 2: professional studio lighting rig (three-point: key, fill, rim + floor) -->
-  <!-- Replace assets/hero.mp4 below for the real 360 cinematic loop. These lights sit behind it. -->
   <div class="hero-studio" aria-hidden="true">
     <div class="hero-studio-key"></div>
     <div class="hero-studio-fill"></div>
@@ -1015,11 +1018,10 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
     <div class="hero-studio-flare"></div>
   </div>
 
-  <!-- Layer 3: optional looping video. Fades in over the poster only once it can play. -->
-  <!-- REPLACE: add real sources. Keep under 3MB, 1080p, around 6 to 10 seconds.
-       <source src="assets/hero.mp4" type="video/mp4">
-       <source src="assets/hero.webm" type="video/webm"> -->
-  <video class="hero-video" autoplay muted loop playsinline preload="none" aria-hidden="true"></video>
+  <!-- Layer 3: looping video. Fades in over the poster once it can play. -->
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true">
+    <source src="assets/hero.mp4" type="video/mp4">
+  </video>
 
   <!-- Layer 3: static vignette -->
   <div class="hero-vignette" aria-hidden="true"></div>
