@@ -820,18 +820,40 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
 .nfs-cat-pill.petrol{color:var(--mute);border-color:var(--line)}
 /* Main stage: arrows flanking the car visual */
 .nfs-main{
-  position:relative;z-index:3;flex:1;
+  position:relative;z-index:3;flex:1;overflow:hidden;
   display:flex;align-items:center;
   padding:clamp(16px,2vw,28px) clamp(14px,2.5vw,32px);
   min-height:46vh;gap:clamp(10px,2vw,24px);
 }
+/* Giant low-opacity model-name watermark behind the car */
+.nfs-ghost{
+  position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;pointer-events:none;user-select:none;
+  font-family:var(--font-display);font-weight:300;
+  font-size:clamp(70px,16vw,220px);color:rgba(244,241,234,0.03);
+  letter-spacing:-0.04em;line-height:1;white-space:nowrap;
+  transform:translateX(var(--slide,0px));
+  transition:opacity 0.5s ease,transform 0.7s var(--ease);
+}
+/* Sliver of the previous/next car name peeking in at the stage edges */
+.nfs-peek{
+  position:absolute;top:0;bottom:0;z-index:1;width:14%;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0.14;pointer-events:none;overflow:hidden;
+  font-family:var(--font-display);font-weight:300;
+  font-size:clamp(13px,2vw,20px);color:var(--bone);
+  letter-spacing:-0.01em;text-align:center;white-space:nowrap;
+  transition:opacity 0.3s ease;
+}
+.nfs-peek-prev{left:0}
+.nfs-peek-next{right:0}
 .nfs-visual{
   flex:1;display:flex;align-items:center;justify-content:center;
-  position:relative;
+  position:relative;z-index:2;
 }
 .nfs-car-img{
   max-width:100%;max-height:54vh;object-fit:contain;
-  opacity:0;transform:scale(0.96);
+  opacity:0;transform:scale(0.96) translateX(var(--slide,0px));
   transition:opacity 0.55s ease 0.06s,transform 0.55s ease 0.06s;
 }
 .nfs-car-img.in{opacity:1;transform:none}
@@ -842,17 +864,10 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   background:linear-gradient(160deg,#0c0f14,#0e1219);
   border:1px solid var(--line);border-radius:2px;
   position:relative;overflow:hidden;
-  opacity:0;transform:scale(0.96);
+  opacity:0;transform:scale(0.96) translateX(var(--slide,0px));
   transition:opacity 0.55s ease 0.06s,transform 0.55s ease 0.06s;
 }
 .nfs-empty-stage.in{opacity:1;transform:none}
-.nfs-empty-ghost{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-display);font-weight:300;
-  font-size:clamp(48px,12vw,180px);color:rgba(244,241,234,0.025);
-  letter-spacing:-0.04em;line-height:1;pointer-events:none;
-  user-select:none;white-space:nowrap;overflow:hidden;
-}
 .nfs-empty-note{
   position:relative;z-index:1;
   font-family:var(--font-mono);font-size:10px;letter-spacing:0.26em;
@@ -860,7 +875,7 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
 }
 /* Side nav arrows */
 .nfs-nav{
-  flex-shrink:0;width:52px;height:52px;border-radius:50%;
+  position:relative;z-index:4;flex-shrink:0;width:52px;height:52px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   background:rgba(8,9,11,0.6);border:1px solid var(--line);
   color:var(--bone);font-size:22px;line-height:1;
@@ -868,7 +883,18 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   transition:background 0.2s,border-color 0.2s,color 0.2s,transform 0.2s;
 }
 .nfs-nav:hover{background:rgba(8,9,11,0.9);border-color:var(--accent);color:var(--accent);transform:scale(1.1)}
-@media(max-width:560px){.nfs-nav{width:36px;height:36px;font-size:16px}}
+@media(max-width:560px){.nfs-nav{width:36px;height:36px;font-size:16px}.nfs-peek{width:6%}}
+/* Position dots */
+.nfs-dots{
+  position:relative;z-index:3;display:flex;justify-content:center;align-items:center;
+  gap:7px;flex-wrap:wrap;padding:0 clamp(24px,5vw,72px) clamp(14px,2vw,18px);
+}
+.nfs-dot{
+  width:6px;height:6px;border-radius:50%;background:rgba(244,241,234,0.18);
+  border:none;padding:0;cursor:pointer;transition:background 0.25s,width 0.25s,border-radius 0.25s;
+}
+.nfs-dot:hover{background:rgba(244,241,234,0.4)}
+.nfs-dot.active{background:var(--accent);width:18px;border-radius:3px}
 /* Spec strip */
 .nfs-spec-strip{
   position:relative;z-index:3;
@@ -940,7 +966,7 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   .badge-ev-charge::after{animation:none;transform:translateX(-30%)}
   #cursor-ring{display:none}
   .hero-studio-key,.hero-studio-fill,.hero-studio-rim,.hero-studio-floor,.hero-studio-flare{animation:none}
-  .nfs-name,.nfs-variant-txt,.nfs-cat-pill,.nfs-spec-strip,.nfs-cta-row,.nfs-car-img,.nfs-empty-stage{opacity:1;transform:none}
+  .nfs-name,.nfs-variant-txt,.nfs-cat-pill,.nfs-spec-strip,.nfs-cta-row,.nfs-car-img,.nfs-empty-stage,.nfs-ghost{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -1073,12 +1099,17 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
       </div>
       <span class="nfs-cat-pill" id="nfs-cat-pill">Electric</span>
     </div>
-    <!-- Main stage: left arrow, car visual, right arrow -->
+    <!-- Main stage: watermark, peeking neighbours, left arrow, car visual, right arrow -->
     <div class="nfs-main">
+      <div class="nfs-ghost" id="nfs-ghost" aria-hidden="true"></div>
+      <div class="nfs-peek nfs-peek-prev" id="nfs-peek-prev" aria-hidden="true"></div>
       <button class="nfs-nav" id="nfs-prev-btn" type="button" aria-label="Previous vehicle">&#8592;</button>
       <div class="nfs-visual" id="nfs-visual"><!-- populated by JS --></div>
       <button class="nfs-nav" id="nfs-next-btn" type="button" aria-label="Next vehicle">&#8594;</button>
+      <div class="nfs-peek nfs-peek-next" id="nfs-peek-next" aria-hidden="true"></div>
     </div>
+    <!-- Position dots -->
+    <div class="nfs-dots" id="nfs-dots" role="tablist" aria-label="Vehicle position"></div>
     <!-- Spec strip -->
     <div class="nfs-spec-strip" id="nfs-spec-strip"></div>
     <!-- CTAs -->
@@ -2061,6 +2092,9 @@ function getShowcaseCars(){
   return CARS.filter(function(c){ return c.cat === currentFilter; });
 }
 
+/* Last word of the name, e.g. "G-Class", "ZX", "Sportback" */
+function shortModelName(car){ return car.name.split(' ').slice(-1)[0]; }
+
 /* Build the scrollable model strip at the bottom */
 function buildModelStrip(){
   var cars  = getShowcaseCars();
@@ -2073,10 +2107,9 @@ function buildModelStrip(){
     btn.setAttribute('role','listitem');
     btn.setAttribute('aria-label', 'View ' + car.name);
     btn.dataset.idx = i;
-    var shortName = car.name.split(' ').slice(-1)[0]; /* last word e.g. "G-Class", "ZX", "Sportback" */
     btn.innerHTML =
       '<span class="nfs-model-btn-year">' + esc(String(car.year)) + '</span>' +
-      '<span class="nfs-model-btn-name">' + esc(shortName) + '</span>';
+      '<span class="nfs-model-btn-name">' + esc(shortModelName(car)) + '</span>';
     btn.addEventListener('click', function(){ goShowcase(parseInt(this.dataset.idx, 10)); });
     track.appendChild(btn);
   });
@@ -2085,7 +2118,25 @@ function buildModelStrip(){
   if (active) active.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
 }
 
-function renderNFSCar(instant){
+/* Build the position dots, one per car */
+function buildDots(){
+  var cars = getShowcaseCars();
+  var wrap = document.getElementById('nfs-dots');
+  wrap.innerHTML = '';
+  cars.forEach(function(car, i){
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'nfs-dot' + (i === showcaseIdx ? ' active' : '');
+    dot.setAttribute('role','tab');
+    dot.setAttribute('aria-label', 'Go to ' + car.name);
+    dot.setAttribute('aria-selected', i === showcaseIdx ? 'true' : 'false');
+    dot.dataset.idx = i;
+    dot.addEventListener('click', function(){ goShowcase(parseInt(this.dataset.idx, 10)); });
+    wrap.appendChild(dot);
+  });
+}
+
+function renderNFSCar(instant, dir){
   var cars    = getShowcaseCars();
   if (!cars.length) return;
   var idx     = showcaseIdx;
@@ -2096,13 +2147,18 @@ function renderNFSCar(instant){
   var specEl  = document.getElementById('nfs-spec-strip');
   var ctaEl   = document.getElementById('nfs-cta-row');
   var visualEl= document.getElementById('nfs-visual');
+  var ghostEl = document.getElementById('nfs-ghost');
+  var peekPrev= document.getElementById('nfs-peek-prev');
+  var peekNext= document.getElementById('nfs-peek-next');
   var glowEl  = document.getElementById('nfs-electric-glow');
   var animEls = [nameEl, varEl, pillEl, specEl, ctaEl];
+  var slide   = dir === 'prev' ? '-40px' : dir === 'next' ? '40px' : '0px';
 
   function setOut(){
     animEls.forEach(function(el){ el.classList.remove('in'); });
     var vis = visualEl.querySelector('.nfs-car-img,.nfs-empty-stage');
     if (vis) vis.classList.remove('in');
+    ghostEl.style.opacity = '0';
   }
 
   function populate(){
@@ -2128,12 +2184,25 @@ function renderNFSCar(instant){
     document.getElementById('nfs-view-btn').dataset.id = car.id;
     document.getElementById('nfs-wa-link').href = waLink(car);
 
-    /* Update model strip active state */
+    /* Update model strip and dots active state */
     document.querySelectorAll('.nfs-model-btn').forEach(function(b, i){
       b.classList.toggle('active', i === idx);
     });
     var activeBtn = document.querySelector('.nfs-model-btn.active');
     if (activeBtn) activeBtn.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
+    document.querySelectorAll('.nfs-dot').forEach(function(d, i){
+      d.classList.toggle('active', i === idx);
+      d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+    });
+
+    /* Watermark and peeking neighbours */
+    ghostEl.style.setProperty('--slide', slide);
+    ghostEl.textContent = shortModelName(car);
+    requestAnimationFrame(function(){ ghostEl.style.opacity = '1'; });
+    var prevCar = cars[(idx - 1 + cars.length) % cars.length];
+    var nextCar = cars[(idx + 1) % cars.length];
+    peekPrev.textContent = cars.length > 1 ? shortModelName(prevCar) : '';
+    peekNext.textContent = cars.length > 1 ? shortModelName(nextCar) : '';
 
     /* Visual area */
     visualEl.innerHTML = '';
@@ -2149,10 +2218,9 @@ function renderNFSCar(instant){
       visEl = document.createElement('div');
       visEl.className  = 'nfs-empty-stage';
       visEl.setAttribute('data-placeholder','true');
-      visEl.innerHTML  =
-        '<div class="nfs-empty-ghost">' + esc(car.name) + '</div>' +
-        '<span class="nfs-empty-note">Photography on request</span>';
+      visEl.innerHTML  = '<span class="nfs-empty-note">Photography on request</span>';
     }
+    visEl.style.setProperty('--slide', slide);
     visualEl.appendChild(visEl);
 
     requestAnimationFrame(function(){
@@ -2167,10 +2235,12 @@ function renderNFSCar(instant){
   else { setOut(); setTimeout(populate, 280); }
 }
 
-function goShowcase(n){
+function goShowcase(n, dir){
   var cars = getShowcaseCars();
-  showcaseIdx = (n + cars.length) % cars.length;
-  renderNFSCar(false);
+  var next = (n + cars.length) % cars.length;
+  if (!dir) dir = next > showcaseIdx ? 'next' : (next < showcaseIdx ? 'prev' : null);
+  showcaseIdx = next;
+  renderNFSCar(false, dir);
 }
 
 function activateShowcase(){
@@ -2181,6 +2251,7 @@ function activateShowcase(){
   var cars = getShowcaseCars();
   if (showcaseIdx >= cars.length) showcaseIdx = 0;
   buildModelStrip();
+  buildDots();
   renderNFSCar(true);
   document.getElementById('view-grid-btn').classList.remove('active');
   document.getElementById('view-grid-btn').setAttribute('aria-pressed','false');
@@ -2201,8 +2272,8 @@ function deactivateShowcase(){
 
 document.getElementById('view-grid-btn').addEventListener('click', deactivateShowcase);
 document.getElementById('view-showcase-btn').addEventListener('click', activateShowcase);
-document.getElementById('nfs-prev-btn').addEventListener('click', function(){ goShowcase(showcaseIdx - 1); });
-document.getElementById('nfs-next-btn').addEventListener('click', function(){ goShowcase(showcaseIdx + 1); });
+document.getElementById('nfs-prev-btn').addEventListener('click', function(){ goShowcase(showcaseIdx - 1, 'prev'); });
+document.getElementById('nfs-next-btn').addEventListener('click', function(){ goShowcase(showcaseIdx + 1, 'next'); });
 document.getElementById('nfs-view-btn').addEventListener('click', function(){
   var id = this.dataset.id; if (id) openModal(id, this);
 });
@@ -2214,14 +2285,15 @@ document.querySelector('.filter-group').addEventListener('click', function(e){
   var cars = getShowcaseCars();
   if (showcaseIdx >= cars.length) showcaseIdx = 0;
   buildModelStrip();
+  buildDots();
   renderNFSCar(true);
 });
 
 /* Keyboard arrows cycle cars */
 document.addEventListener('keydown', function(e){
   if (!showcaseActive || !overlay.hidden || !compareModal.hidden) return;
-  if (e.key === 'ArrowLeft'){ e.preventDefault(); goShowcase(showcaseIdx - 1); }
-  else if (e.key === 'ArrowRight'){ e.preventDefault(); goShowcase(showcaseIdx + 1); }
+  if (e.key === 'ArrowLeft'){ e.preventDefault(); goShowcase(showcaseIdx - 1, 'prev'); }
+  else if (e.key === 'ArrowRight'){ e.preventDefault(); goShowcase(showcaseIdx + 1, 'next'); }
 });
 
 /* Touch swipe */
@@ -2230,7 +2302,7 @@ document.addEventListener('keydown', function(e){
   showcaseEl.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
   showcaseEl.addEventListener('touchend',function(e){
     var dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)>48) goShowcase(dx>0?showcaseIdx-1:showcaseIdx+1);
+    if(Math.abs(dx)>48) goShowcase(dx>0?showcaseIdx-1:showcaseIdx+1, dx>0?'prev':'next');
   },{passive:true});
 })();
 
