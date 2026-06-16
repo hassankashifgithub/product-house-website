@@ -368,6 +368,15 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
 }
 .card-img-placeholder svg{opacity:0.5}
 .placeholder-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase}
+/* Crafted car illustration used when a car has no photo yet */
+.card-art{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10px 16px;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(159,232,214,0.06), transparent 60%),
+    linear-gradient(140deg,#0d0f13,#15191f);
+}
+.card-art svg{width:100%;height:100%}
+.car-card:hover .card-art svg{transform:scale(1.04);transition:transform 0.6s var(--ease)}
 
 .card-badges{position:absolute;top:12px;left:12px;display:flex;flex-wrap:wrap;gap:6px;z-index:2}
 .badge{
@@ -587,6 +596,12 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   color:var(--mute);
 }
 .gallery-placeholder span{font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase}
+.gallery-placeholder svg{width:88%;height:74%}
+.gallery-art-note{
+  position:absolute;bottom:16px;left:0;right:0;text-align:center;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--mute);
+}
 .gal-nav{
   position:absolute;top:50%;transform:translateY(-50%);z-index:3;
   width:44px;height:44px;border-radius:50%;
@@ -706,6 +721,20 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   60%{transform:translate(10px,14px)}
   82%{transform:translate(-7px,6px)}
 }
+/* Hero subject: a large car illustration so the hero has a focal point without a video */
+.hero-car{
+  position:absolute;right:-6%;top:54%;transform:translateY(-50%);
+  width:min(68%,860px);z-index:2;pointer-events:none;opacity:0;
+  transition:opacity 1.4s ease 0.3s;
+  animation:heroCarFloat 9s ease-in-out infinite;
+}
+.hero-car.in{opacity:0.62}
+.hero-car svg{width:100%;height:auto}
+@keyframes heroCarFloat{0%,100%{transform:translateY(-50%)}50%{transform:translateY(-53%)}}
+@media (max-width:780px){
+  .hero-car{width:128%;right:-22%;top:64%}
+  .hero-car.in{opacity:0.3}
+}
 
 /* ---------- View toggle (grid vs. showcase) ---------- */
 .view-toggle-wrap{display:flex;gap:4px}
@@ -815,16 +844,17 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
 }
 .nfs-car-img.in{opacity:1;transform:none}
 .nfs-no-img{
-  width:100%;aspect-ratio:16/9;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:14px;text-align:center;
+  position:relative;width:100%;aspect-ratio:16/9;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px;text-align:center;
   background:
     radial-gradient(circle at 50% 45%,rgba(159,232,214,0.07),transparent 55%),
     linear-gradient(145deg,#0c0e12,#14181f);
-  border:1px solid var(--line);border-radius:3px;padding:30px;
+  border:1px solid var(--line);border-radius:3px;padding:24px;
   opacity:0;transform:translateX(16px) scale(0.97);
   transition:opacity 0.5s ease 0.06s,transform 0.5s ease 0.06s;
 }
 .nfs-no-img.in{opacity:1;transform:none}
+.nfs-no-img svg{width:100%;max-height:320px}
 .nfs-no-img-name{
   font-family:var(--font-display);font-weight:300;
   font-size:clamp(20px,3vw,32px);color:var(--bone);line-height:1.1;
@@ -918,6 +948,9 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   <div class="hero-ambient hero-ambient-a" aria-hidden="true"></div>
   <div class="hero-ambient hero-ambient-b" aria-hidden="true"></div>
   <div class="hero-ambient hero-ambient-c" aria-hidden="true"></div>
+
+  <!-- Hero subject: large crafted car illustration. Replaced by video/poster if owner adds one. -->
+  <div class="hero-car" id="hero-car" aria-hidden="true"></div>
 
   <!-- Layer 3: optional looping video. Fades in over the poster only once it can play. -->
   <!-- REPLACE: add real sources. Keep under 3MB, 1080p, around 6 to 10 seconds.
@@ -1332,6 +1365,68 @@ function waLink(car){
 }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+/* ============================================================
+   CAR ILLUSTRATION. A crafted SVG side profile per body style.
+   This is brand artwork, not a claim about the specific vehicle.
+   It renders so no tile is ever empty. Real photos, once added to
+   a car's images array, replace it automatically.
+   ============================================================ */
+function carArtSvg(car, sfx){
+  var ev = car.cat === 'electric';
+  var sedan = car.cat === 'sedan';
+  var uid = (sfx || 'a') + '-' + car.id;
+  var ac   = ev ? '#9FE8D6' : '#C7CBD2';
+  var sill = ev ? 'rgba(159,232,214,0.85)' : 'rgba(244,241,234,0.16)';
+  var hub  = ev ? '#9FE8D6' : '#9aa0a8';
+  var glassTop = ev ? '#173039' : '#0f141b';
+  var cfg = sedan
+    ? { bx:78, by:158, bw:470, bh:44, brx:22,
+        cabin:'M198 160 L250 120 L386 120 L452 160 Z',
+        glass:'M224 156 L258 130 L380 130 L426 156 Z',
+        bp:322, bpt:130, bpb:156, wy:200, wr:31, rim:16, wx:[178,452],
+        hly:170, sheen:'M150 200 L214 150 L246 150 L182 200 Z' }
+    : { bx:88, by:150, bw:452, bh:56, brx:16,
+        cabin:'M152 152 L198 106 L398 106 L452 152 Z',
+        glass:'M178 148 L210 118 L386 118 L420 148 Z',
+        bp:300, bpt:118, bpb:148, wy:206, wr:34, rim:17, wx:[168,460],
+        hly:160, sheen:'M150 200 L220 110 L252 110 L182 200 Z' };
+  var bRight = cfg.bx + cfg.bw, bBottom = cfg.by + cfg.bh;
+  function spokes(cx){
+    var s = '', r1 = 5, r2 = cfg.rim - 2;
+    for (var k=0;k<5;k++){
+      var a = (Math.PI*2/5)*k - Math.PI/2;
+      s += '<line x1="' + (cx+Math.cos(a)*r1).toFixed(1) + '" y1="' + (cfg.wy+Math.sin(a)*r1).toFixed(1) +
+           '" x2="' + (cx+Math.cos(a)*r2).toFixed(1) + '" y2="' + (cfg.wy+Math.sin(a)*r2).toFixed(1) +
+           '" stroke="rgba(255,255,255,0.18)" stroke-width="1.4"/>';
+    }
+    return s;
+  }
+  function wheel(cx){
+    return '<circle cx="'+cx+'" cy="'+cfg.wy+'" r="'+cfg.wr+'" fill="#0a0c10" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>'+
+           '<circle cx="'+cx+'" cy="'+cfg.wy+'" r="'+cfg.rim+'" fill="#15181e" stroke="'+hub+'" stroke-width="2"/>'+
+           spokes(cx)+
+           '<circle cx="'+cx+'" cy="'+cfg.wy+'" r="3.2" fill="'+hub+'"/>';
+  }
+  return '<svg viewBox="0 0 600 300" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="'+esc(car.name)+' illustration">'+
+    '<defs>'+
+      '<linearGradient id="b-'+uid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b424e"/><stop offset="0.5" stop-color="#262b33"/><stop offset="1" stop-color="#14171d"/></linearGradient>'+
+      '<linearGradient id="g-'+uid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+glassTop+'"/><stop offset="1" stop-color="#1d2431"/></linearGradient>'+
+      '<radialGradient id="s-'+uid+'" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="rgba(0,0,0,0.5)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/></radialGradient>'+
+    '</defs>'+
+    '<ellipse cx="312" cy="'+(cfg.wy+40)+'" rx="252" ry="16" fill="url(#s-'+uid+')"/>'+
+    '<path d="'+cfg.cabin+'" fill="url(#b-'+uid+')"/>'+
+    '<rect x="'+cfg.bx+'" y="'+cfg.by+'" width="'+cfg.bw+'" height="'+cfg.bh+'" rx="'+cfg.brx+'" fill="url(#b-'+uid+')"/>'+
+    '<path d="'+cfg.glass+'" fill="url(#g-'+uid+')"/>'+
+    '<line x1="'+cfg.bp+'" y1="'+cfg.bpt+'" x2="'+cfg.bp+'" y2="'+cfg.bpb+'" stroke="rgba(255,255,255,0.10)" stroke-width="2"/>'+
+    '<path d="'+cfg.sheen+'" fill="rgba(255,255,255,0.05)"/>'+
+    '<rect x="'+(cfg.bx+10)+'" y="'+(bBottom-7)+'" width="'+(cfg.bw-20)+'" height="3" rx="1.5" fill="'+sill+'"/>'+
+    '<rect x="'+(bRight-22)+'" y="'+cfg.hly+'" width="16" height="7" rx="3" fill="'+ac+'"/>'+
+    '<rect x="'+(cfg.bx+8)+'" y="'+cfg.hly+'" width="10" height="6" rx="2" fill="rgba(244,120,120,0.65)"/>'+
+    (ev ? '<path d="M'+(bRight-10)+' '+(cfg.hly-13)+' l-9 14 h6 l-4 11 13 -16 h-6 z" fill="#9FE8D6"/>' : '')+
+    wheel(cfg.wx[0]) + wheel(cfg.wx[1]) +
+  '</svg>';
+}
+
 /* ---------- State ---------- */
 var currentFilter = 'all';
 var currentSort = 'added';
@@ -1359,10 +1454,8 @@ function cardImageHtml(car){
     // REPLACE path is a real asset once provided. Add srcset and sizes for production.
     return '<img src="' + esc(car.images[0]) + '" alt="' + esc(car.name + ', ' + car.variant) + '" width="640" height="400" loading="lazy" decoding="async" fetchpriority="low">';
   }
-  // Placeholder. data-placeholder on wrapper below.
-  return '<div class="card-img-placeholder" aria-hidden="true">' +
-    '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M21 16l-5-5L5 19"/></svg>' +
-    '<span class="placeholder-label">Photo pending</span></div>';
+  // No photo yet. Show crafted illustration so the tile is never empty.
+  return '<div class="card-art" aria-hidden="true">' + carArtSvg(car, 'card') + '</div>';
 }
 
 function buildCard(car, index){
@@ -1572,7 +1665,9 @@ function renderGallery(){
     counter.textContent = (galleryIdx+1) + ' / ' + galleryImages.length;
   } else {
     ph.style.display = '';
-    counter.textContent = '0 / 0';
+    ph.innerHTML = carArtSvg(carById(openCarId), 'modal') +
+      '<span class="gallery-art-note">Illustration. Actual photographs available on request.</span>';
+    counter.textContent = '';
   }
   var multi = galleryImages.length > 1;
   document.getElementById('gal-prev').style.display = multi ? '' : 'none';
@@ -1886,6 +1981,14 @@ function initHero(){
   var content = document.getElementById('hero-content');
   document.getElementById('hero-count').textContent = CARS.length + ' vehicles in the current collection';
 
+  // Inject the hero car illustration (the electric G-Class for the signature teal).
+  var heroCarEl = document.getElementById('hero-car');
+  var heroCar = carById('g-class-g580-2025') || CARS[0];
+  if (heroCarEl && !heroCarEl.querySelector('svg')){
+    heroCarEl.innerHTML = carArtSvg(heroCar, 'hero');
+    requestAnimationFrame(function(){ heroCarEl.classList.add('in'); });
+  }
+
   if (reduceMotion){
     content.classList.add('in');
     document.getElementById('light-hairline').classList.add('show');
@@ -2071,9 +2174,8 @@ function renderNFSCar(instant){
       visEl.className = 'nfs-no-img';
       visEl.setAttribute('data-placeholder', 'true');
       visEl.innerHTML =
-        '<div class="nfs-no-img-name">' + esc(car.name) + '</div>' +
-        '<div class="nfs-no-img-line"></div>' +
-        '<span class="nfs-no-img-label">Photo pending</span>';
+        carArtSvg(car, 'nfs') +
+        '<span class="nfs-no-img-label">Illustration. Photos on request.</span>';
     }
     visualEl.appendChild(visEl);
 
