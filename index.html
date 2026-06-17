@@ -1211,6 +1211,14 @@ var srBusy = false;
       img.width = 900; img.height = 600;
       img.loading = i === 0 ? 'eager' : 'lazy';
       img.decoding = 'async';
+      (function(s, c, el){
+        el.onerror = function(){
+          var dr = document.createElement('div');
+          dr.className = 'sr-dark-room';
+          dr.innerHTML = '<span class="sr-dark-name">'+esc(c.name)+'</span><span class="sr-dark-year">'+esc(String(c.year))+'</span>';
+          if(s.contains(el)) s.replaceChild(dr, el);
+        };
+      })(slide, car, img);
       slide.appendChild(img);
     } else {
       var dark = document.createElement('div');
@@ -1339,6 +1347,152 @@ document.addEventListener('keydown', function(e){
 
 document.getElementById('sr-photos').addEventListener('click', function(){
   var id = this.dataset.id; if(id) openModal(id, this);
+});
+
+/* ============================================================
+   MODAL / GALLERY / LIGHTBOX
+   ============================================================ */
+
+function openModal(id, trigger){
+  var car = carById(id);
+  if(!car) return;
+  openCarId = id;
+  modalTrigger = trigger || null;
+
+  document.getElementById('modal-badges').innerHTML = badgesHtml(car);
+  document.getElementById('modal-name').textContent = car.name;
+  document.getElementById('modal-variant').textContent = car.variant;
+
+  var gradeEl = document.getElementById('modal-grade');
+  if(car.grade){ gradeEl.hidden = false; gradeEl.textContent = car.grade; }
+  else { gradeEl.hidden = true; }
+
+  document.getElementById('modal-desc').textContent = car.desc || '';
+
+  var specs = [
+    ['Year', car.year], ['Mileage', car.km], ['Engine', car.engine],
+    ['Fuel', car.fuel], ['Trans.', car.trans], ['Reg.', car.reg]
+  ];
+  document.getElementById('spec-plate-grid').innerHTML = specs.map(function(s){
+    return '<div><dt>'+esc(String(s[0]))+'</dt><dd>'+esc(String(s[1]))+'</dd></div>';
+  }).join('');
+
+  var isPoa = !car.price || car.price === 'POA';
+  var pb = document.querySelector('#modal-overlay .modal-price-block');
+  if(pb){
+    pb.querySelector('.modal-price-label').textContent = isPoa ? 'Price on application' : 'Asking price';
+    pb.querySelector('.modal-price-value').textContent = isPoa ? 'POA' : car.price;
+  }
+
+  document.getElementById('modal-wa').href = waLink(car);
+
+  setGallery(car.images || [], 0);
+
+  overlay.hidden = false;
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ document.getElementById('modal-close').focus(); }, 50);
+
+  trapHandler = function(e){
+    if(e.key === 'Escape'){ closeModal(); return; }
+    if(e.key !== 'Tab') return;
+    var focusable = Array.from(overlay.querySelectorAll('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])')).filter(function(el){ return !el.closest('[hidden]'); });
+    if(focusable.length < 2) return;
+    var first = focusable[0], last = focusable[focusable.length - 1];
+    if(e.shiftKey){ if(document.activeElement === first){ e.preventDefault(); last.focus(); } }
+    else { if(document.activeElement === last){ e.preventDefault(); first.focus(); } }
+  };
+  document.addEventListener('keydown', trapHandler);
+}
+
+function closeModal(){
+  overlay.hidden = true;
+  document.body.style.overflow = '';
+  openCarId = null;
+  if(trapHandler){ document.removeEventListener('keydown', trapHandler); trapHandler = null; }
+  if(modalTrigger){ try{ modalTrigger.focus(); }catch(e){} modalTrigger = null; }
+}
+
+function setGallery(images, idx){
+  galleryImages = images;
+  galleryIdx = Math.max(0, Math.min(idx, Math.max(0, images.length - 1)));
+  var main   = document.getElementById('gallery-main');
+  var ph     = document.getElementById('gallery-placeholder');
+  var counter = document.getElementById('gal-counter');
+  var thumbs = document.getElementById('gal-thumbs');
+  var prevBtn = document.getElementById('gal-prev');
+  var nextBtn = document.getElementById('gal-next');
+
+  var existing = main.querySelector('.gal-real-img');
+  if(existing) existing.remove();
+
+  if(!images.length){
+    ph.hidden = false;
+    counter.textContent = '';
+    thumbs.innerHTML = '';
+    prevBtn.hidden = true; nextBtn.hidden = true;
+    return;
+  }
+  ph.hidden = true;
+  prevBtn.hidden = images.length < 2;
+  nextBtn.hidden = images.length < 2;
+
+  var img = document.createElement('img');
+  img.className = 'gal-real-img';
+  img.src = images[galleryIdx];
+  img.alt = '';
+  img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:contain;';
+  main.insertBefore(img, main.firstChild);
+
+  counter.textContent = (galleryIdx + 1) + ' / ' + images.length;
+
+  thumbs.innerHTML = '';
+  images.forEach(function(src, i){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Photo ' + (i + 1));
+    btn.setAttribute('role', 'listitem');
+    btn.className = 'thumb-btn' + (i === galleryIdx ? ' active' : '');
+    var t = document.createElement('img');
+    t.src = src; t.alt = ''; t.loading = 'lazy';
+    btn.appendChild(t);
+    btn.addEventListener('click', function(){ galleryGo(i); });
+    thumbs.appendChild(btn);
+  });
+}
+
+function galleryGo(idx){
+  if(!galleryImages.length) return;
+  galleryIdx = (idx + galleryImages.length) % galleryImages.length;
+  var main = document.getElementById('gallery-main');
+  var img = main.querySelector('.gal-real-img');
+  if(img) img.src = galleryImages[galleryIdx];
+  document.getElementById('gal-counter').textContent = (galleryIdx + 1) + ' / ' + galleryImages.length;
+  document.querySelectorAll('#gal-thumbs .thumb-btn').forEach(function(btn, i){
+    btn.classList.toggle('active', i === galleryIdx);
+  });
+}
+
+function openLightbox(src){
+  var lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.hidden = false;
+  document.getElementById('lightbox-close').focus();
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+overlay.addEventListener('click', function(e){ if(e.target === overlay) closeModal(); });
+document.getElementById('gal-prev').addEventListener('click', function(){ galleryGo(galleryIdx - 1); });
+document.getElementById('gal-next').addEventListener('click', function(){ galleryGo(galleryIdx + 1); });
+document.getElementById('gal-zoom').addEventListener('click', function(){
+  if(galleryImages[galleryIdx]) openLightbox(galleryImages[galleryIdx]);
+});
+document.getElementById('lightbox-close').addEventListener('click', function(){
+  var lb = document.getElementById('lightbox');
+  lb.hidden = true;
+  document.getElementById('lightbox-img').src = '';
+});
+document.getElementById('lightbox').addEventListener('click', function(e){
+  if(e.target === this){ this.hidden = true; document.getElementById('lightbox-img').src = ''; }
 });
 
 </script>
