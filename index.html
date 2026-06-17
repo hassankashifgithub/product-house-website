@@ -1097,6 +1097,68 @@ var CARS = [
 var PHONE_INTL = '+923218403799';
 var WA_NUMBER = '923218403799';
 var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---- Intro overlay ---- */
+(function(){
+  var intro = document.getElementById('intro');
+  var skip  = document.getElementById('intro-skip');
+  function dismiss(){
+    intro.classList.add('intro-done');
+    setTimeout(function(){ intro.style.display = 'none'; }, 750);
+  }
+  function run(){
+    intro.classList.add('intro-in');
+    var t = reduceMotion ? 600 : 2600;
+    setTimeout(dismiss, t);
+  }
+  skip.addEventListener('click', dismiss);
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    setTimeout(run, 60);
+  }
+  /* Hard fallback: never block for more than 5s regardless of load state */
+  setTimeout(dismiss, 5000);
+})();
+
+/* ---- Hero video ---- */
+(function(){
+  var vid = document.querySelector('.hero-video');
+  if(!vid) return;
+  function onReady(){ vid.classList.add('loaded'); }
+  if(vid.readyState >= 3){ onReady(); return; }
+  vid.addEventListener('canplay', onReady, { once:true });
+  vid.addEventListener('error', function(){ vid.style.display='none'; }, { once:true });
+})();
+
+/* ---- Nav scroll behaviour ---- */
+(function(){
+  var nav = document.getElementById('nav');
+  if(!nav) return;
+  var last = 0;
+  function onScroll(){
+    var y = window.scrollY;
+    nav.classList.toggle('nav-scrolled', y > 60);
+    nav.classList.toggle('nav-hidden', y > last + 10 && y > 200);
+    nav.classList.toggle('nav-visible', y < last - 10 || y < 60);
+    last = y;
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+})();
+
+/* ---- Scroll-reveal ---- */
+(function(){
+  if(!window.IntersectionObserver) return;
+  var els = document.querySelectorAll('[data-reveal]');
+  if(!els.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('revealed'); io.unobserve(e.target); }
+    });
+  }, { threshold:0.12 });
+  els.forEach(function(el){ io.observe(el); });
+})();
 var saveData = (navigator.connection && navigator.connection.saveData) === true;
 var isTouch = window.matchMedia('(hover: none)').matches || window.matchMedia('(pointer: coarse)').matches;
 
