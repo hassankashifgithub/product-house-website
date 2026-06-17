@@ -298,165 +298,89 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
   .hero-meta{font-size:11px}
 }
 
-/* ---------- Collection ---------- */
-.collection-controls{
-  display:flex;flex-wrap:wrap;align-items:center;gap:14px;
-  margin-bottom:42px;padding-bottom:22px;border-bottom:1px solid var(--line);
+/* ---------- Showroom ---------- */
+#showroom{position:relative;height:100vh;min-height:600px;background:#000;overflow:hidden}
+.sr-track{position:absolute;inset:0}
+.sr-slide{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;padding-bottom:220px;
+  transition:transform 0.75s cubic-bezier(0.4,0,0.2,1),opacity 0.75s cubic-bezier(0.4,0,0.2,1),filter 0.75s cubic-bezier(0.4,0,0.2,1);
+  will-change:transform,opacity;
 }
-.filter-group{display:flex;flex-wrap:wrap;gap:6px}
-.filter-btn{
-  font-family:var(--font-mono);font-size:12px;letter-spacing:0.08em;
-  text-transform:uppercase;color:var(--mute);padding:9px 16px;
-  border:1px solid var(--line);border-radius:2px;
-  transition:color 0.2s ease,border-color 0.2s ease,background 0.2s ease;
+.sr-slide[data-state="active"]{transform:translateX(0) scale(1);opacity:1;filter:none;z-index:2;pointer-events:auto}
+.sr-slide[data-state="prev"]{transform:translateX(-80%) scale(0.78);opacity:0.38;filter:blur(3px);z-index:1;pointer-events:auto;cursor:pointer}
+.sr-slide[data-state="next"]{transform:translateX(80%) scale(0.78);opacity:0.38;filter:blur(3px);z-index:1;pointer-events:auto;cursor:pointer}
+.sr-slide[data-state="far-left"]{transform:translateX(-200%) scale(0.7);opacity:0;z-index:0;pointer-events:none;transition:none}
+.sr-slide[data-state="far-right"]{transform:translateX(200%) scale(0.7);opacity:0;z-index:0;pointer-events:none;transition:none}
+.sr-img{max-height:62vh;max-width:78vw;width:auto;height:auto;object-fit:contain;display:block;user-select:none;-webkit-user-drag:none}
+.sr-dark-room{
+  height:58vh;width:72vw;max-width:940px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  border:1px solid rgba(244,241,234,0.05);
+  background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(159,232,214,0.03),transparent 70%);
 }
-.filter-btn:hover{color:var(--bone);border-color:rgba(244,241,234,0.3)}
-.filter-btn.active{color:var(--ink);background:var(--accent);border-color:var(--accent)}
-.sort-select{
-  margin-left:auto;font-size:13px;color:var(--bone);
-  background:var(--surface);border:1px solid var(--line);border-radius:2px;
-  padding:10px 14px;cursor:pointer;transition:border-color 0.2s ease;
-}
-.sort-select:hover{border-color:rgba(244,241,234,0.3)}
-.search-toggle{
-  width:40px;height:40px;border:1px solid var(--line);border-radius:2px;
-  display:flex;align-items:center;justify-content:center;color:var(--mute);
-  transition:color 0.2s ease,border-color 0.2s ease;
-}
-.search-toggle:hover{color:var(--accent);border-color:var(--accent)}
-.search-wrap{
-  display:flex;align-items:center;gap:8px;flex:1 1 200px;
-  background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:0 12px;
-}
-.search-wrap .search-icon{color:var(--mute);flex-shrink:0}
-.search-input{
-  flex:1;background:none;border:none;color:var(--bone);
-  font-size:14px;padding:11px 0;outline:none;
-}
-.search-input::placeholder{color:var(--mute)}
-
-.cars-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
-  gap:clamp(18px,2.4vw,30px);
-}
-@media (max-width:560px){.cars-grid{grid-template-columns:1fr}}
-
-.collection-empty{
-  text-align:center;color:var(--mute);font-size:15px;
-  padding:60px 0;font-family:var(--font-mono);letter-spacing:0.04em;
-}
-
-/* ---------- Car card ---------- */
-.car-card{
-  position:relative;background:var(--surface);border:1px solid var(--line);
-  border-radius:3px;overflow:hidden;display:flex;flex-direction:column;
-  transition:border-color 0.35s ease,transform 0.35s var(--ease),box-shadow 0.35s ease;
-}
-.car-card:hover{
-  border-color:rgba(159,232,214,0.4);transform:translateY(-4px);
-  box-shadow:0 22px 50px rgba(0,0,0,0.5),0 0 0 1px rgba(159,232,214,0.12);
-}
-.car-card.card-hidden{display:none}
-
-.card-img-wrap{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--surface2)}
-.card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s var(--ease)}
-.car-card:hover .card-img-wrap img{transform:scale(1.05)}
-.card-img-placeholder{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:10px;
-  background:
-    radial-gradient(circle at 50% 38%, rgba(159,232,214,0.05), transparent 60%),
-    linear-gradient(140deg,#0d0f13,#15191f);
-  color:var(--mute);
-}
-.card-img-placeholder svg{opacity:0.5}
-.placeholder-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase}
-/* No-photo card placeholder */
-.card-no-photo{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:8px;padding:20px 16px;text-align:center;
-  background:
-    radial-gradient(circle at 50% 38%, rgba(159,232,214,0.06), transparent 60%),
-    linear-gradient(140deg,#0d0f13,#15191f);
-}
-.card-no-photo-name{
+.sr-dark-name{
   font-family:var(--font-display);font-weight:300;
-  font-size:clamp(15px,2.2vw,22px);line-height:1.1;color:rgba(244,241,234,0.55);
-  letter-spacing:-0.01em;
+  font-size:clamp(28px,5.5vw,80px);line-height:1;letter-spacing:-0.025em;
+  color:rgba(244,241,234,0.18);text-align:center;
 }
-.card-no-photo-year{
-  font-family:var(--font-mono);font-size:10px;letter-spacing:0.22em;
-  text-transform:uppercase;color:var(--mute);
+.sr-dark-year{font-family:var(--font-mono);font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:rgba(244,241,234,0.1)}
+.sr-panel{
+  position:absolute;bottom:0;left:0;right:0;z-index:10;
+  padding:80px var(--pad) 34px;
+  background:linear-gradient(to top,rgba(0,0,0,0.96) 0%,rgba(0,0,0,0.82) 40%,rgba(0,0,0,0.4) 70%,transparent 100%);
+  pointer-events:none;
 }
-
-.card-badges{position:absolute;top:12px;left:12px;display:flex;flex-wrap:wrap;gap:6px;z-index:2}
-.badge{
-  font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;
-  text-transform:uppercase;padding:5px 9px;border-radius:2px;
-  background:rgba(11,12,14,0.78);color:var(--bone);border:1px solid var(--line);
-  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-  display:inline-flex;align-items:center;
+.sr-panel-row1{max-width:var(--maxw);margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;pointer-events:auto}
+.sr-panel-left{flex:1;min-width:0}
+.sr-counter{font-family:var(--font-mono);font-size:10px;letter-spacing:0.24em;text-transform:uppercase;color:rgba(244,241,234,0.3);margin-bottom:10px;display:block;transition:opacity 0.25s ease}
+.sr-name{font-family:var(--font-display);font-weight:300;font-size:clamp(22px,4vw,52px);line-height:1;letter-spacing:-0.02em;color:var(--bone);margin-bottom:7px;transition:opacity 0.25s ease,transform 0.25s ease}
+.sr-variant{font-family:var(--font-mono);font-size:11px;letter-spacing:0.07em;color:var(--mute);margin-bottom:18px;transition:opacity 0.25s ease}
+.sr-specs{display:flex;gap:22px;flex-wrap:wrap;transition:opacity 0.25s ease}
+.sr-spec-k{font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(244,241,234,0.28);display:block}
+.sr-spec-v{font-family:var(--font-mono);font-size:13px;color:var(--bone);display:block;margin-top:2px}
+.sr-panel-right{display:flex;flex-direction:column;align-items:flex-end;gap:14px;flex-shrink:0;transition:opacity 0.25s ease}
+.sr-price-lbl{font-family:var(--font-mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,241,234,0.28)}
+.sr-price{font-family:var(--font-mono);font-size:clamp(15px,1.8vw,20px);letter-spacing:0.04em;color:var(--accent);font-weight:500}
+.sr-price.poa{color:var(--mute)}
+.sr-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.sr-panel.transitioning .sr-counter,
+.sr-panel.transitioning .sr-name,
+.sr-panel.transitioning .sr-variant,
+.sr-panel.transitioning .sr-specs,
+.sr-panel.transitioning .sr-panel-right{opacity:0;transform:translateY(6px)}
+.sr-arrow{
+  position:absolute;top:50%;transform:translateY(calc(-50% - 110px));z-index:10;
+  width:52px;height:52px;border-radius:50%;
+  border:1px solid rgba(244,241,234,0.14);background:rgba(11,12,14,0.45);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  color:var(--bone);display:flex;align-items:center;justify-content:center;
+  transition:border-color 0.25s,background 0.25s,transform 0.25s;
 }
+.sr-arrow:hover{border-color:var(--accent);background:rgba(11,12,14,0.75);transform:translateY(calc(-50% - 112px))}
+.sr-prev{left:var(--pad)}.sr-next{right:var(--pad)}
+@media(max-width:560px){.sr-arrow{width:40px;height:40px}.sr-prev{left:16px}.sr-next{right:16px}}
+.sr-dots{
+  position:absolute;top:22px;left:50%;transform:translateX(-50%);z-index:10;
+  display:flex;gap:7px;align-items:center;max-width:90vw;flex-wrap:wrap;justify-content:center;
+}
+.sr-dot{width:5px;height:5px;border-radius:50%;background:rgba(244,241,234,0.2);border:none;padding:0;cursor:pointer;transition:background 0.25s,transform 0.25s;flex-shrink:0}
+.sr-dot.active{background:var(--accent);transform:scale(1.5)}
+@media(max-width:640px){
+  .sr-panel-row1{flex-direction:column;align-items:flex-start;gap:16px}
+  .sr-panel-right{align-items:flex-start}
+  .sr-actions{justify-content:flex-start}
+  .sr-slide{padding-bottom:300px}
+  .sr-img{max-height:46vh;max-width:90vw}
+  .sr-dark-room{height:42vh;width:86vw}
+}
+.badge{font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 9px;border-radius:2px;background:rgba(11,12,14,0.78);color:var(--bone);border:1px solid var(--line);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:inline-flex;align-items:center}
 .badge-ev{color:var(--accent);border-color:rgba(159,232,214,0.4)}
 .badge-grade{color:#0B0C0E;background:var(--accent);border-color:var(--accent)}
 .badge-low{color:var(--bone);border-color:rgba(244,241,234,0.3)}
-.badge-ev-charge{
-  display:inline-block;width:16px;height:3px;margin-left:6px;
-  background:rgba(159,232,214,0.25);position:relative;overflow:hidden;border-radius:1px;
-}
-.badge-ev-charge::after{
-  content:'';position:absolute;inset:0;background:var(--accent);
-  transform:translateX(-100%);animation:evCharge 1.9s var(--ease) infinite alternate;
-}
+.badge-ev-charge{display:inline-block;width:16px;height:3px;margin-left:6px;background:rgba(159,232,214,0.25);position:relative;overflow:hidden;border-radius:1px}
+.badge-ev-charge::after{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-100%);animation:evCharge 1.9s var(--ease) infinite alternate}
 @keyframes evCharge{from{transform:translateX(-100%)}to{transform:translateX(0)}}
-
-.card-fav{
-  position:absolute;top:12px;right:12px;z-index:2;
-  width:34px;height:34px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;color:var(--bone);
-  background:rgba(11,12,14,0.7);border:1px solid var(--line);
-  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-  transition:color 0.2s ease,border-color 0.2s ease,transform 0.2s ease;
-}
-.card-fav:hover{transform:scale(1.1);border-color:var(--accent)}
-.card-fav[aria-pressed="true"]{color:var(--accent);border-color:var(--accent)}
-.card-fav[aria-pressed="true"] svg{fill:var(--accent)}
-
-.card-peek{
-  position:absolute;inset:0;z-index:1;pointer-events:none;
-  display:flex;align-items:flex-end;gap:18px;padding:16px 18px;
-  background:linear-gradient(to top,rgba(11,12,14,0.9) 0%,transparent 58%);
-  opacity:0;transition:opacity 0.3s ease;
-}
-.car-card:hover .card-peek,.car-card:focus-within .card-peek{opacity:1}
-.peek-stat{display:flex;flex-direction:column;gap:2px}
-.peek-stat .k{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mute)}
-.peek-stat .v{font-family:var(--font-mono);font-size:13px;color:var(--bone)}
-
-.card-body{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}
-.card-name{font-size:23px;color:var(--bone);margin-bottom:3px}
-.card-variant{font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;color:var(--mute);margin-bottom:16px}
-.card-specs{display:grid;grid-template-columns:1fr 1fr;gap:11px 14px;margin-bottom:18px}
-.spec-item dt{font-family:var(--font-mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mute)}
-.spec-item dd{font-family:var(--font-mono);font-size:13px;color:var(--bone);margin-top:2px}
-.card-footer{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:16px;border-top:1px solid var(--line)}
-.card-price{display:flex;flex-direction:column}
-.price-label{font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--mute)}
-.card-price strong{font-family:var(--font-mono);font-size:16px;font-weight:500;color:var(--accent);letter-spacing:0.04em}
-.card-actions{display:flex;align-items:center;gap:8px}
-.card-wa{
-  width:40px;height:40px;border-radius:2px;display:flex;align-items:center;justify-content:center;
-  background:rgba(37,211,102,0.12);color:var(--wa);border:1px solid rgba(37,211,102,0.3);
-  transition:background 0.2s ease,transform 0.2s ease;
-}
-.card-wa:hover{background:var(--wa);color:#04230f;transform:translateY(-2px)}
-.card-view{
-  font-size:13px;font-weight:500;letter-spacing:0.03em;padding:11px 18px;
-  border:1px solid var(--line);border-radius:2px;color:var(--bone);
-  transition:border-color 0.2s ease,color 0.2s ease,background 0.2s ease;
-}
-.card-view:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ---------- Reveal animations ---------- */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s var(--ease),transform 0.7s var(--ease)}
@@ -560,26 +484,6 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   .mbar-btn svg{color:var(--bone)}
   .mbar-wa svg{color:var(--wa)}
 }
-
-/* ---------- Compare tray ---------- */
-#compare-tray{
-  position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:840;
-  display:flex;align-items:center;gap:16px;
-  background:rgba(20,22,26,0.96);border:1px solid var(--line);border-radius:4px;
-  padding:12px 18px;box-shadow:0 16px 40px rgba(0,0,0,0.5);
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-  max-width:calc(100vw - 40px);
-}
-.compare-tray-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--mute)}
-.compare-items{display:flex;gap:8px}
-.compare-chip{
-  font-family:var(--font-mono);font-size:11px;color:var(--bone);
-  background:var(--surface2);border:1px solid var(--line);border-radius:2px;
-  padding:5px 9px;display:flex;align-items:center;gap:6px;
-}
-.compare-chip button{color:var(--mute);font-size:14px;line-height:1}
-.compare-chip button:hover{color:var(--accent)}
-@media (max-width:640px){#compare-tray{bottom:74px}.compare-tray-label{display:none}}
 
 /* ---------- Modal ---------- */
 #modal-overlay{
@@ -775,193 +679,6 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   50%{opacity:1;transform:scale(1.3)}
 }
 
-/* ---------- View toggle (grid vs. showcase) ---------- */
-.view-toggle-wrap{display:flex;gap:4px}
-.view-toggle-btn{
-  width:40px;height:40px;border:1px solid var(--line);border-radius:2px;
-  display:flex;align-items:center;justify-content:center;color:var(--mute);
-  transition:color 0.2s ease,border-color 0.2s ease,background 0.2s ease;
-}
-.view-toggle-btn:hover{color:var(--bone);border-color:rgba(244,241,234,0.3)}
-.view-toggle-btn.active{color:var(--ink);background:var(--accent);border-color:var(--accent)}
-
-/* ---------- Cinematic Showcase (Arcar-style, single car, full-height) ---------- */
-#nfs-showcase{
-  position:relative;background:#030405;
-  display:flex;flex-direction:column;min-height:100vh;overflow:hidden;
-}
-/* Subtle EV glow activates per car */
-.nfs-ev-glow{
-  position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0;
-  background:radial-gradient(ellipse 55% 55% at 70% 36%,rgba(100,210,188,0.13),transparent 58%);
-  transition:opacity 1s ease;
-}
-.nfs-ev-glow.on{opacity:1}
-/* Header row */
-.nfs-head{
-  position:relative;z-index:3;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:clamp(28px,4vw,48px) clamp(24px,5vw,72px) clamp(12px,1.5vw,20px);
-  flex-wrap:wrap;gap:12px;border-bottom:1px solid var(--line);
-}
-.nfs-counter{
-  font-family:var(--font-mono);font-size:11px;letter-spacing:0.24em;
-  text-transform:uppercase;color:var(--accent);flex-shrink:0;
-}
-.nfs-title-block{text-align:center;flex:1;min-width:180px}
-.nfs-name{
-  font-family:var(--font-display);font-weight:300;
-  font-size:clamp(26px,4.5vw,62px);line-height:1;
-  color:var(--bone);letter-spacing:-0.02em;
-}
-.nfs-variant-txt{
-  font-family:var(--font-mono);font-size:11px;letter-spacing:0.07em;
-  color:var(--mute);margin-top:5px;
-}
-.nfs-cat-pill{
-  flex-shrink:0;font-family:var(--font-mono);font-size:10px;letter-spacing:0.12em;
-  text-transform:uppercase;padding:5px 13px;border-radius:2px;
-  border:1px solid rgba(159,232,214,0.35);color:var(--accent);
-}
-.nfs-cat-pill.petrol{color:var(--mute);border-color:var(--line)}
-/* Main stage: arrows flanking the car visual */
-.nfs-main{
-  position:relative;z-index:3;flex:1;overflow:hidden;
-  display:flex;align-items:center;
-  padding:clamp(16px,2vw,28px) clamp(14px,2.5vw,32px);
-  min-height:46vh;gap:clamp(10px,2vw,24px);
-}
-/* Giant low-opacity model-name watermark behind the car */
-.nfs-ghost{
-  position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;
-  overflow:hidden;pointer-events:none;user-select:none;
-  font-family:var(--font-display);font-weight:300;
-  font-size:clamp(70px,16vw,220px);color:rgba(244,241,234,0.03);
-  letter-spacing:-0.04em;line-height:1;white-space:nowrap;
-  transform:translateX(var(--slide,0px));
-  transition:opacity 0.5s ease,transform 0.7s var(--ease);
-}
-/* Sliver of the previous/next car name peeking in at the stage edges */
-.nfs-peek{
-  position:absolute;top:0;bottom:0;z-index:1;width:14%;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0.14;pointer-events:none;overflow:hidden;
-  font-family:var(--font-display);font-weight:300;
-  font-size:clamp(13px,2vw,20px);color:var(--bone);
-  letter-spacing:-0.01em;text-align:center;white-space:nowrap;
-  transition:opacity 0.3s ease;
-}
-.nfs-peek-prev{left:0}
-.nfs-peek-next{right:0}
-.nfs-visual{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  position:relative;z-index:2;
-}
-.nfs-car-img{
-  max-width:100%;max-height:54vh;object-fit:contain;
-  opacity:0;transform:scale(0.96) translateX(var(--slide,0px));
-  transition:opacity 0.55s ease 0.06s,transform 0.55s ease 0.06s;
-}
-.nfs-car-img.in{opacity:1;transform:none}
-/* No-photo stage: ghost name text behind the note */
-.nfs-empty-stage{
-  width:100%;aspect-ratio:16/9;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(160deg,#0c0f14,#0e1219);
-  border:1px solid var(--line);border-radius:2px;
-  position:relative;overflow:hidden;
-  opacity:0;transform:scale(0.96) translateX(var(--slide,0px));
-  transition:opacity 0.55s ease 0.06s,transform 0.55s ease 0.06s;
-}
-.nfs-empty-stage.in{opacity:1;transform:none}
-.nfs-empty-note{
-  position:relative;z-index:1;
-  font-family:var(--font-mono);font-size:10px;letter-spacing:0.26em;
-  text-transform:uppercase;color:var(--mute);
-}
-/* Side nav arrows */
-.nfs-nav{
-  position:relative;z-index:4;flex-shrink:0;width:52px;height:52px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(8,9,11,0.6);border:1px solid var(--line);
-  color:var(--bone);font-size:22px;line-height:1;
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  transition:background 0.2s,border-color 0.2s,color 0.2s,transform 0.2s;
-}
-.nfs-nav:hover{background:rgba(8,9,11,0.9);border-color:var(--accent);color:var(--accent);transform:scale(1.1)}
-@media(max-width:560px){.nfs-nav{width:36px;height:36px;font-size:16px}.nfs-peek{width:6%}}
-/* Position dots */
-.nfs-dots{
-  position:relative;z-index:3;display:flex;justify-content:center;align-items:center;
-  gap:7px;flex-wrap:wrap;padding:0 clamp(24px,5vw,72px) clamp(14px,2vw,18px);
-}
-.nfs-dot{
-  width:6px;height:6px;border-radius:50%;background:rgba(244,241,234,0.18);
-  border:none;padding:0;cursor:pointer;transition:background 0.25s,width 0.25s,border-radius 0.25s;
-}
-.nfs-dot:hover{background:rgba(244,241,234,0.4)}
-.nfs-dot.active{background:var(--accent);width:18px;border-radius:3px}
-/* Spec strip */
-.nfs-spec-strip{
-  position:relative;z-index:3;
-  display:flex;justify-content:center;flex-wrap:wrap;
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-}
-.nfs-spec-item{
-  text-align:center;padding:clamp(12px,1.8vw,18px) clamp(16px,3vw,40px);
-  border-right:1px solid var(--line);
-}
-.nfs-spec-item:last-child{border-right:none}
-.nfs-spec-item dt{
-  font-family:var(--font-mono);font-size:9px;letter-spacing:0.18em;
-  text-transform:uppercase;color:var(--mute);
-}
-.nfs-spec-item dd{
-  font-family:var(--font-mono);font-size:15px;font-weight:500;
-  color:var(--bone);margin-top:4px;
-}
-/* CTA row */
-.nfs-cta-row{
-  position:relative;z-index:3;
-  display:flex;justify-content:center;gap:12px;
-  padding:clamp(14px,2vw,22px) clamp(24px,5vw,72px);
-}
-/* Staggered reveal per car change */
-.nfs-name,.nfs-variant-txt,.nfs-cat-pill,.nfs-spec-strip,.nfs-cta-row{
-  opacity:0;transform:translateY(10px);
-  transition:opacity 0.45s var(--ease),transform 0.45s var(--ease);
-}
-.nfs-name.in{opacity:1;transform:none;transition-delay:0s}
-.nfs-variant-txt.in{opacity:1;transform:none;transition-delay:0.07s}
-.nfs-cat-pill.in{opacity:1;transform:none;transition-delay:0.04s}
-.nfs-spec-strip.in{opacity:1;transform:none;transition-delay:0.14s}
-.nfs-cta-row.in{opacity:1;transform:none;transition-delay:0.2s}
-/* Model strip */
-.nfs-model-strip{
-  position:relative;z-index:3;
-  display:flex;overflow-x:auto;scrollbar-width:none;
-  border-top:1px solid var(--line);
-}
-.nfs-model-strip::-webkit-scrollbar{display:none}
-.nfs-model-btn{
-  flex:0 0 auto;padding:12px 22px;
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  border-right:1px solid var(--line);
-  transition:background 0.2s,color 0.2s;
-}
-.nfs-model-btn:hover{background:rgba(244,241,234,0.04)}
-.nfs-model-btn.active{background:rgba(159,232,214,0.06)}
-.nfs-model-btn-year{
-  font-family:var(--font-mono);font-size:9px;letter-spacing:0.16em;
-  text-transform:uppercase;color:var(--mute);
-}
-.nfs-model-btn-name{
-  font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;
-  color:var(--mute);transition:color 0.2s;
-}
-.nfs-model-btn.active .nfs-model-btn-name{color:var(--accent)}
-
-/* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important}
   .reveal{opacity:1;transform:none}
@@ -972,8 +689,10 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   .badge-ev-charge::after{animation:none;transform:translateX(-30%)}
   #cursor-ring{display:none}
   .hero-studio-key,.hero-studio-fill,.hero-studio-rim,.hero-studio-floor,.hero-studio-flare{animation:none}
-  .nfs-name,.nfs-variant-txt,.nfs-cat-pill,.nfs-spec-strip,.nfs-cta-row,.nfs-car-img,.nfs-empty-stage,.nfs-ghost{opacity:1;transform:none}
+  .sr-slide{transition:none}
+  .sr-panel .sr-counter,.sr-panel .sr-name,.sr-panel .sr-variant,.sr-panel .sr-specs,.sr-panel .sr-panel-right{opacity:1;transform:none}
 }
+
 </style>
 </head>
 <body>
@@ -997,7 +716,7 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
 <header id="nav">
   <a href="#hero" class="nav-wordmark" aria-label="Victory Cars home">Victory<span>.</span> Cars</a>
   <nav class="nav-links" aria-label="Primary">
-    <a href="#collection" class="nav-link" data-section="collection">Collection</a>
+    <a href="#showroom" class="nav-link" data-section="showroom">Showroom</a>
     <a href="#standard" class="nav-link" data-section="standard">The standard</a>
     <a href="#visit" class="nav-link" data-section="visit">Visit</a>
     <a href="tel:+923218403799" class="btn-ghost btn-sm nav-cta">Call the showroom</a>
@@ -1039,7 +758,7 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
     <h1 class="hero-headline">One room.<br>The finest cars.</h1>
     <p class="hero-sub">A private collection of luxury and electric vehicles, presented as they deserve to be seen.</p>
     <div class="hero-actions">
-      <a href="#collection" class="btn-primary">View the collection</a>
+      <a href="#showroom" class="btn-primary">View the collection</a>
       <a href="tel:+923218403799" class="btn-ghost">Call the showroom</a>
     </div>
   </div>
@@ -1048,79 +767,33 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
   <p class="hero-scroll-cue" aria-hidden="true"><span>Scroll</span></p>
 </section>
 
-<!-- ============ COLLECTION ============ -->
-<section id="collection" class="section" aria-labelledby="collection-title" style="content-visibility:auto;contain-intrinsic-size:0 1600px">
-  <div class="section-header">
-    <p class="section-eyebrow">The collection</p>
-    <div class="section-line" aria-hidden="true"></div>
-    <h2 class="section-title" id="collection-title">Every car, chosen.</h2>
-  </div>
-
-  <div class="collection-controls">
-    <div class="filter-group" role="group" aria-label="Filter by category">
-      <button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">All</button>
-      <button class="filter-btn" type="button" data-filter="electric" aria-pressed="false">Electric</button>
-      <button class="filter-btn" type="button" data-filter="suv" aria-pressed="false">SUV</button>
-      <button class="filter-btn" type="button" data-filter="sedan" aria-pressed="false">Sedan</button>
-    </div>
-    <select class="sort-select" id="sort-select" aria-label="Sort collection">
-      <option value="added">Recently added</option>
-      <option value="newest">Newest year</option>
-      <option value="mileage">Lowest mileage</option>
-    </select>
-    <div class="search-wrap" id="search-wrap" hidden>
-      <svg class="search-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.2"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-      <input type="search" class="search-input" id="search-input" placeholder="Search by name, year or fuel" aria-label="Search vehicles">
-    </div>
-    <button class="search-toggle" id="search-toggle" type="button" aria-label="Open search" aria-controls="search-wrap">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.3"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-    </button>
-    <!-- View toggle: grid or single-car showcase -->
-    <div class="view-toggle-wrap" role="group" aria-label="View mode">
-      <button class="view-toggle-btn active" id="view-grid-btn" type="button" aria-label="Grid view" aria-pressed="true">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.3"/></svg>
-      </button>
-      <button class="view-toggle-btn" id="view-showcase-btn" type="button" aria-label="Showcase view" aria-pressed="false">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <div class="cars-grid" id="cars-grid" role="list" aria-label="Vehicle collection"></div>
-  <p class="collection-empty" id="collection-empty" aria-live="polite" hidden>No vehicles match this filter. Try a different category.</p>
-
-  <!-- Cinematic single-car showcase. Default view. -->
-  <div id="nfs-showcase" hidden aria-label="Vehicle showcase" role="region">
-    <div class="nfs-ev-glow" id="nfs-electric-glow" aria-hidden="true"></div>
-    <!-- Header: counter, name, category -->
-    <div class="nfs-head">
-      <span class="nfs-counter" id="nfs-counter" aria-live="polite">01 / 13</span>
-      <div class="nfs-title-block">
-        <h2 class="nfs-name" id="nfs-name-el"></h2>
-        <p class="nfs-variant-txt" id="nfs-variant-el"></p>
+<!-- ============ SHOWROOM ============ -->
+<section id="showroom" aria-label="Vehicle showroom" aria-roledescription="carousel">
+  <div class="sr-track" id="sr-track"></div>
+  <div class="sr-dots" id="sr-dots" role="tablist" aria-label="Vehicle position"></div>
+  <button class="sr-arrow sr-prev" id="sr-prev" type="button" aria-label="Previous vehicle">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="sr-arrow sr-next" id="sr-next" type="button" aria-label="Next vehicle">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="sr-panel" id="sr-panel">
+    <div class="sr-panel-row1">
+      <div class="sr-panel-left">
+        <span class="sr-counter" id="sr-counter">01 / 20</span>
+        <h2 class="sr-name" id="sr-name"></h2>
+        <p class="sr-variant" id="sr-variant"></p>
+        <div class="sr-specs" id="sr-specs"></div>
       </div>
-      <span class="nfs-cat-pill" id="nfs-cat-pill">Electric</span>
+      <div class="sr-panel-right" id="sr-panel-right">
+        <div id="sr-price"></div>
+        <div class="sr-actions">
+          <a class="btn-wa btn-sm" id="sr-wa" href="#" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg> Enquire</a>
+          <button class="btn-ghost btn-sm" id="sr-photos" type="button" hidden>View photos</button>
+          <a href="tel:+923218403799" class="btn-ghost btn-sm">Call</a>
+        </div>
+      </div>
     </div>
-    <!-- Main stage: watermark, peeking neighbours, left arrow, car visual, right arrow -->
-    <div class="nfs-main">
-      <div class="nfs-ghost" id="nfs-ghost" aria-hidden="true"></div>
-      <div class="nfs-peek nfs-peek-prev" id="nfs-peek-prev" aria-hidden="true"></div>
-      <button class="nfs-nav" id="nfs-prev-btn" type="button" aria-label="Previous vehicle">&#8592;</button>
-      <div class="nfs-visual" id="nfs-visual"><!-- populated by JS --></div>
-      <button class="nfs-nav" id="nfs-next-btn" type="button" aria-label="Next vehicle">&#8594;</button>
-      <div class="nfs-peek nfs-peek-next" id="nfs-peek-next" aria-hidden="true"></div>
-    </div>
-    <!-- Position dots -->
-    <div class="nfs-dots" id="nfs-dots" role="tablist" aria-label="Vehicle position"></div>
-    <!-- Spec strip -->
-    <div class="nfs-spec-strip" id="nfs-spec-strip"></div>
-    <!-- CTAs -->
-    <div class="nfs-cta-row" id="nfs-cta-row">
-      <button class="btn-primary" id="nfs-view-btn" type="button">View details</button>
-      <a class="btn-wa btn-sm" id="nfs-wa-link" href="#" target="_blank" rel="noopener">WhatsApp</a>
-    </div>
-    <!-- Model strip: scrollable list of all car names -->
-    <div class="nfs-model-strip" id="nfs-track" role="list" aria-label="All vehicles"></div>
   </div>
 </section>
 
@@ -1221,7 +894,7 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
       <address class="footer-address">17-A Jail Road<br>Lahore, Pakistan</address>
     </div>
     <nav class="footer-nav" aria-label="Footer">
-      <a href="#collection">The collection</a>
+      <a href="#showroom">The showroom</a>
       <a href="#standard">The standard</a>
       <a href="#visit">Visit</a>
       <a href="tel:+923218403799">0321 840 3799</a>
@@ -1263,19 +936,11 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487 2.404 1.038 2.891.832 3.413.781.521-.05 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
     <span>WhatsApp</span>
   </a>
-  <a href="#collection" class="mbar-btn">
+  <a href="#showroom" class="mbar-btn">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 11l1.5-4.5A2 2 0 018.4 5h7.2a2 2 0 011.9 1.5L19 11M5 11h14M5 11v6a1 1 0 001 1h1a1 1 0 001-1v-1h8v1a1 1 0 001 1h1a1 1 0 001-1v-6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7.5" cy="14.5" r="0.8" fill="currentColor"/><circle cx="16.5" cy="14.5" r="0.8" fill="currentColor"/></svg>
     <span>Browse</span>
   </a>
 </nav>
-
-<!-- Compare tray -->
-<div id="compare-tray" aria-label="Compare tray" hidden>
-  <span class="compare-tray-label">Comparing</span>
-  <div id="compare-items" class="compare-items"></div>
-  <button id="compare-open" class="btn-primary btn-sm" type="button">Compare</button>
-  <button id="compare-clear" class="btn-text" type="button">Clear</button>
-</div>
 
 <!-- Quick view modal -->
 <div id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-name" hidden>
@@ -1343,10 +1008,10 @@ footer{border-top:1px solid var(--line);padding:clamp(50px,7vw,80px) var(--pad) 
    Images marked REPLACE are placeholders for the owner to swap.
    ============================================================ */
 var CARS = [
-  { id:'land-cruiser-zx-2023', name:'Toyota Land Cruiser ZX', variant:'2023, ZX Gasoline 3.5L',
-    cat:'suv', fuel:'Petrol', year:2023, km:'200 km', kmRaw:200, engine:'3500 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
-    desc:'Effectively delivery mileage. The current generation flagship Land Cruiser ZX with the 3.5L twin turbo V6, untouched, unregistered, ready for plates.',
-    images:[] },
+  { id:'lc300-2023-fresh', name:'Toyota Land Cruiser ZX', variant:'2023, LC300 ZX Fresh Import',
+    cat:'suv', fuel:'Petrol', year:2023, km:'1,200 km', kmRaw:1200, engine:'3500 cc', trans:'Automatic', reg:'Un-registered', price:'Rs 71,500,000',
+    desc:'2023 LC300 ZX, fresh import 2026. Pearl white with beige leather. Full house. 1,200 km.',
+    images:['assets/cars/lc300-2023-1.jpg'] },
   { id:'g-class-g580-2025', name:'Mercedes-Benz G-Class', variant:'2025, G 580 EQ Edition',
     cat:'electric', fuel:'Electric', year:2025, km:'100 km', kmRaw:100, engine:'Electric', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'The icon, electrified. The all electric G 580 with EQ technology, 100 km on the clock, among the rarest vehicles in the country.',
@@ -1362,21 +1027,29 @@ var CARS = [
     images:[] },
   { id:'eqc-400-2019', name:'Mercedes-Benz EQC 400', variant:'2019, 400 4MATIC',
     cat:'electric', fuel:'Electric', year:2019, km:'42,000 km', kmRaw:42000, engine:'80 kWh', trans:'Automatic', reg:'Un-registered', price:'POA',
-    desc:'Mercedes-Benz first dedicated electric SUV. Dual motors, 80 kWh pack, four wheel drive, and the quiet of an S-Class.',
+    desc:'Mercedes-Benz first dedicated electric SUV. Dual motors, 80 kWh pack, four wheel drive.',
     images:[] },
   { id:'audi-etron-sportback-2021', name:'Audi e-tron Sportback', variant:'2021, 50 quattro 230kW',
     cat:'electric', fuel:'Electric', year:2021, km:'38,000 km', kmRaw:38000, engine:'230 kW', trans:'Automatic', reg:'Un-registered', price:'POA',
-    desc:'The coupe roofed e-tron Sportback 50 quattro. 230 kW, all weather quattro drive, a resolved Audi cabin.',
+    desc:'The coupe-roofed e-tron Sportback 50 quattro. 230 kW, all-weather quattro drive, a resolved Audi cabin.',
     listing:'https://www.pakwheels.com/used-cars/audi-e-tron-2021-for-sale-in-lahore-11541403',
     images:[] },
   { id:'audi-etron-2020', name:'Audi e-tron', variant:'2020, 50 quattro 230kW',
-    cat:'electric', fuel:'Electric', year:2020, km:'54,000 km', kmRaw:54000, engine:'230 kW', trans:'Automatic', reg:'Un-registered', price:'POA',
-    desc:'The SUV that proved electric could be a proper Audi. Vault quiet cabin, quattro grip, no compromise.',
-    images:[] },
+    cat:'electric', fuel:'Electric', year:2020, km:'54,000 km', kmRaw:54000, engine:'230 kW', trans:'Automatic', reg:'Lahore 2021', price:'Rs 15,800,000',
+    desc:'Audi showroom delivery February 2021. Diamond white metallic, Carrara brown leather. Bang and Olufsen surround sound, panoramic sunroof, 360-degree cameras, 21-inch alloys.',
+    images:['assets/cars/audi-etron-2020-1.jpg'] },
   { id:'audi-q7-2018', name:'Audi Q7', variant:'2018, 45 TFSI quattro',
     cat:'suv', fuel:'Petrol', year:2018, km:'55,283 km', kmRaw:55283, engine:'3000 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'Full size Audi presence. 3.0L TFSI, quattro, seven seats. Commands a room without raising its voice.',
     images:[] },
+  { id:'e200-2023', name:'Mercedes-Benz E 200', variant:'2023, W213 E 200',
+    cat:'sedan', fuel:'Petrol', year:2023, km:'Verify', kmRaw:0, engine:'1500 cc', trans:'Automatic', reg:'Un-registered', price:'Rs 42,500,000',
+    desc:'UK import via Karachi port. 1,500 cc twin turbo, panoramic sunroof, dezino nappa leather, airmatic suspension, 19-inch alloys. Bumper to bumper original.',
+    images:['assets/cars/e200-2023-1.jpg'] },
+  { id:'e180-exclusive-2021', name:'Mercedes-Benz E 180', variant:'2021, Exclusive S Luxury Line',
+    cat:'sedan', fuel:'Petrol', year:2021, km:'17,000 km', kmRaw:17000, engine:'1600 cc', trans:'Automatic', reg:'Karachi 2021', price:'Rs 25,000,000',
+    desc:'Shahnawaz import. Polar white, Sahara beige interior. Facelift. PPF protection. Panoramic sunroof, exclusive nappa leather, Burmester sound, 64-colour ambient lighting, 8-zone climate control.',
+    images:['assets/cars/e180-exclusive-2021-1.jpg'] },
   { id:'e180-2023', name:'Mercedes-Benz E 180', variant:'2023, W213 E 180 Avantgarde',
     cat:'sedan', fuel:'Petrol', year:2023, km:'12,000 km', kmRaw:12000, engine:'1500 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'2023, 12,000 km. The W213 Avantgarde in the condition it deserves. Unregistered, unmarked.',
@@ -1386,6 +1059,10 @@ var CARS = [
     desc:'The AMG Line E 180. Sporting intent, executive delivery. 16,000 km of immaculate ownership.',
     listing:'https://www.pakwheels.com/used-cars/mercedes-benz-e-class-2021-for-sale-in-lahore-11426170',
     images:[] },
+  { id:'prado-70th-2020', name:'Toyota Prado TX-L', variant:'2020, 70th Anniversary Edition',
+    cat:'suv', fuel:'Petrol', year:2020, km:'21,000 km', kmRaw:21000, engine:'2700 cc', trans:'Automatic', reg:'Un-registered', price:'Rs 30,000,000',
+    desc:'70th Anniversary Edition. Fresh import February 2026. Pearl black metallic, brono nappa leather. Auction grade 4.5A. Full TRD sport body kit. Seven seater, all seats multi-electric, heated and ventilated fronts.',
+    images:['assets/cars/prado-70th-2020-1.jpg'] },
   { id:'prado-txl-11k-2020', name:'Toyota Prado TX-L', variant:'2020, TX L Package 2.7',
     cat:'suv', fuel:'Petrol', year:2020, km:'11,000 km', kmRaw:11000, engine:'2700 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'11,000 km. The Prado TX-L 2.7, the thinking family flagship four wheel drive. Proven, unhurried.',
@@ -1401,7 +1078,12 @@ var CARS = [
     cat:'suv', fuel:'Petrol', year:2020, km:'21,387 km', kmRaw:21387, engine:'2700 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'21,387 km of original Prado ownership. The 2.7L four cylinder in excellent standing. Reliable, capable, unspoiled.',
     listing:'https://www.pakwheels.com/used-cars/toyota-prado-2020-for-sale-in-lahore-11158859',
-    images:[] }
+    images:[] },
+  { id:'s350-2004', name:'Mercedes-Benz S 350', variant:'2004, W220 S 350',
+    cat:'sedan', fuel:'Petrol', year:2004, km:'72,000 km', kmRaw:72000, engine:'3700 cc', trans:'Automatic', reg:'Islamabad 2010', price:'POA',
+    desc:'3700 cc V6. Produced December 2003, Japan import 2007, registered Islamabad 2010. First owner driven. Metallic silver, black nappa leather. Sunroof, multi-power heated massage seats, aromatic suspension, xenon headlights, electric boot, premium sound.',
+    listing:'https://www.pakwheels.com/used-cars/mercedes-benz-s-class-2004-for-sale-in-lahore-10025163',
+    images:['assets/cars/s350-2004-1.jpg','assets/cars/s350-2004-2.jpg','assets/cars/s350-2004-3.jpg','assets/cars/s350-2004-4.jpg','assets/cars/s350-2004-interior.jpg'] }
 ];
 
 /*
@@ -1424,892 +1106,179 @@ function waLink(car){
 }
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-/* ---------- State ---------- */
-var currentFilter = 'all';
-var currentSort = 'added';
-var searchQuery = '';
 var favs = new Set();
 try { favs = new Set(JSON.parse(localStorage.getItem('vc-favs') || '[]')); } catch(e){}
-var compareList = []; // in memory only, max 3
-
-/* ============================================================
-   BUILD CARDS ONCE
-   ============================================================ */
-var grid = document.getElementById('cars-grid');
-
-function badgesHtml(car){
-  var html = '';
-  if (car.cat === 'electric') html += '<span class="badge badge-ev">Electric<span class="badge-ev-charge" aria-hidden="true"></span></span>';
-  else html += '<span class="badge">' + esc(car.fuel) + '</span>';
-  if (car.grade) html += '<span class="badge badge-grade">' + esc(car.grade) + '</span>';
-  if (car.kmRaw < 10000) html += '<span class="badge badge-low">Low mileage</span>';
-  return html;
-}
-
-function cardImageHtml(car){
-  if (car.images && car.images.length){
-    // REPLACE path is a real asset once provided. Add srcset and sizes for production.
-    return '<img src="' + esc(car.images[0]) + '" alt="' + esc(car.name + ', ' + car.variant) + '" width="640" height="400" loading="lazy" decoding="async" fetchpriority="low">';
-  }
-  return '<div class="card-no-photo" aria-hidden="true">' +
-    '<span class="card-no-photo-name">' + esc(car.name) + '</span>' +
-    '<span class="card-no-photo-year">' + esc(String(car.year)) + '</span>' +
-  '</div>';
-}
-
-function buildCard(car, index){
-  var article = document.createElement('article');
-  article.className = 'car-card';
-  article.setAttribute('role','listitem');
-  article.dataset.id = car.id;
-  article.dataset.cat = car.cat;
-  article.dataset.year = car.year;
-  article.dataset.kmRaw = car.kmRaw;
-  article.dataset.index = index;
-  var hasImg = car.images && car.images.length;
-
-  article.innerHTML =
-    '<div class="card-img-wrap"' + (hasImg ? '' : ' data-placeholder="true"') + '>' +
-      cardImageHtml(car) +
-      '<div class="card-badges">' + badgesHtml(car) + '</div>' +
-      '<button class="card-fav" type="button" aria-label="Save ' + esc(car.name) + ' to shortlist" aria-pressed="' + (favs.has(car.id)?'true':'false') + '" data-id="' + car.id + '">' +
-        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>' +
-      '</button>' +
-      '<div class="card-peek" aria-hidden="true">' +
-        '<div class="peek-stat"><span class="k">Year</span><span class="v">' + esc(car.year) + '</span></div>' +
-        '<div class="peek-stat"><span class="k">Mileage</span><span class="v">' + esc(car.km) + '</span></div>' +
-        '<div class="peek-stat"><span class="k">Engine</span><span class="v">' + esc(car.engine) + '</span></div>' +
-      '</div>' +
-    '</div>' +
-    '<div class="card-body">' +
-      '<h3 class="card-name">' + esc(car.name) + '</h3>' +
-      '<p class="card-variant">' + esc(car.variant) + '</p>' +
-      '<dl class="card-specs">' +
-        '<div class="spec-item"><dt>Year</dt><dd>' + esc(car.year) + '</dd></div>' +
-        '<div class="spec-item"><dt>Mileage</dt><dd>' + esc(car.km) + '</dd></div>' +
-        '<div class="spec-item"><dt>Engine</dt><dd>' + esc(car.engine) + '</dd></div>' +
-        '<div class="spec-item"><dt>Trans.</dt><dd>' + esc(car.trans) + '</dd></div>' +
-      '</dl>' +
-      '<div class="card-footer">' +
-        '<div class="card-price"><span class="price-label">Price</span><strong>POA</strong></div>' +
-        '<div class="card-actions">' +
-          '<a class="card-wa" href="' + waLink(car) + '" target="_blank" rel="noopener" aria-label="Message on WhatsApp about ' + esc(car.name) + '">' +
-            '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487 2.404 1.038 2.891.832 3.413.781.521-.05 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>' +
-          '</a>' +
-          '<button class="card-view" type="button" data-id="' + car.id + '" aria-label="View gallery and details for ' + esc(car.name) + '">View</button>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
-  return article;
-}
-
-CARS.forEach(function(car, i){ grid.appendChild(buildCard(car, i)); });
-
-/* ---------- Card interactions (event delegation) ---------- */
-grid.addEventListener('click', function(e){
-  var view = e.target.closest('.card-view');
-  if (view){ openModal(view.dataset.id, view); return; }
-  var fav = e.target.closest('.card-fav');
-  if (fav){ toggleFav(fav.dataset.id); return; }
-});
-
-/* ============================================================
-   FLIP helper. Animate only transform.
-   ============================================================ */
-function flipReorder(items, mutate){
-  var firsts = new Map();
-  items.forEach(function(el){ firsts.set(el, el.getBoundingClientRect()); });
-  mutate();
-  if (reduceMotion) return;
-  items.forEach(function(el){
-    if (el.classList.contains('card-hidden')) return;
-    var first = firsts.get(el);
-    if (!first) return;
-    var last = el.getBoundingClientRect();
-    var dx = first.left - last.left;
-    var dy = first.top - last.top;
-    if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
-    el.style.willChange = 'transform';
-    el.style.transition = 'none';
-    el.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
-    el.getBoundingClientRect(); // force reflow
-    el.style.transition = 'transform 0.4s cubic-bezier(0.4,0,0.2,1)';
-    el.style.transform = '';
-    el.addEventListener('transitionend', function h(){
-      el.style.willChange = '';
-      el.style.transition = '';
-      el.removeEventListener('transitionend', h);
-    });
-  });
-}
-
-/* ============================================================
-   FILTER, SORT, SEARCH
-   ============================================================ */
-function applyVisibility(){
-  var cards = Array.prototype.slice.call(grid.querySelectorAll('.car-card'));
-  var visible = 0;
-  cards.forEach(function(c){
-    var car = carById(c.dataset.id);
-    var catOk = currentFilter === 'all' || c.dataset.cat === currentFilter;
-    var q = searchQuery.trim().toLowerCase();
-    var searchOk = !q || car.name.toLowerCase().indexOf(q) !== -1 ||
-      String(car.year).indexOf(q) !== -1 || car.fuel.toLowerCase().indexOf(q) !== -1 ||
-      car.variant.toLowerCase().indexOf(q) !== -1;
-    var show = catOk && searchOk;
-    c.classList.toggle('card-hidden', !show);
-    if (show) visible++;
-  });
-  document.getElementById('collection-empty').hidden = visible > 0;
-}
-
-function setFilter(cat){
-  var cards = Array.prototype.slice.call(grid.querySelectorAll('.car-card'));
-  flipReorder(cards, function(){
-    currentFilter = cat;
-    applyVisibility();
-  });
-  document.querySelectorAll('.filter-btn').forEach(function(b){
-    var active = b.dataset.filter === cat;
-    b.classList.toggle('active', active);
-    b.setAttribute('aria-pressed', active ? 'true' : 'false');
-  });
-}
-
-function setSort(by){
-  currentSort = by;
-  var cards = Array.prototype.slice.call(grid.querySelectorAll('.car-card'));
-  flipReorder(cards, function(){
-    cards.sort(function(a,b){
-      if (by === 'newest') return (+b.dataset.year) - (+a.dataset.year);
-      if (by === 'mileage') return (+a.dataset.kmRaw) - (+b.dataset.kmRaw);
-      return (+a.dataset.index) - (+b.dataset.index);
-    });
-    cards.forEach(function(c){ grid.appendChild(c); });
-  });
-}
-
-function carById(id){ for (var i=0;i<CARS.length;i++){ if (CARS[i].id===id) return CARS[i]; } return null; }
-
-document.querySelector('.filter-group').addEventListener('click', function(e){
-  var btn = e.target.closest('.filter-btn');
-  if (btn) setFilter(btn.dataset.filter);
-});
-document.getElementById('sort-select').addEventListener('change', function(e){ setSort(e.target.value); });
-
-/* Search */
-var searchWrap = document.getElementById('search-wrap');
-var searchInput = document.getElementById('search-input');
-document.getElementById('search-toggle').addEventListener('click', function(){
-  searchWrap.hidden = !searchWrap.hidden;
-  if (!searchWrap.hidden) searchInput.focus();
-});
-searchInput.addEventListener('input', function(e){ searchQuery = e.target.value; applyVisibility(); });
-document.addEventListener('keydown', function(e){
-  if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'SELECT' && document.activeElement.tagName !== 'TEXTAREA'){
-    e.preventDefault();
-    searchWrap.hidden = false;
-    searchInput.focus();
-  }
-});
-
-/* ============================================================
-   FAVORITES (localStorage with in memory fallback)
-   ============================================================ */
-function toggleFav(id){
-  if (favs.has(id)) favs.delete(id); else favs.add(id);
-  try { localStorage.setItem('vc-favs', JSON.stringify(Array.prototype.slice.call(favs))); } catch(e){}
-  var pressed = favs.has(id);
-  document.querySelectorAll('.card-fav[data-id="' + id + '"]').forEach(function(b){
-    b.setAttribute('aria-pressed', pressed ? 'true' : 'false');
-  });
-  if (openCarId === id) updateModalFav();
-}
-
-/* ============================================================
-   MODAL with gallery, focus trap, deep links
-   ============================================================ */
+var compareList = [];
 var overlay = document.getElementById('modal-overlay');
-var modalEl = document.getElementById('modal');
 var openCarId = null;
 var modalTrigger = null;
 var galleryImages = [];
 var galleryIdx = 0;
 var trapHandler = null;
 
-function specPlateHtml(car){
-  var rows = [
-    ['Year', car.year], ['Mileage', car.km], ['Engine', car.engine],
-    ['Transmission', car.trans], ['Fuel', car.fuel], ['Registration', car.reg]
-  ];
-  return rows.map(function(r){ return '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>'; }).join('');
-}
+function carById(id){ for(var i=0;i<CARS.length;i++){ if(CARS[i].id===id) return CARS[i]; } return null; }
 
-function renderGallery(){
-  var main = document.getElementById('gallery-main');
-  var ph = document.getElementById('gallery-placeholder');
-  var counter = document.getElementById('gal-counter');
-  var thumbs = document.getElementById('gal-thumbs');
-  var existingImg = main.querySelector('img');
-  if (existingImg) existingImg.remove();
-
-  if (galleryImages.length){
-    ph.style.display = 'none';
-    var img = document.createElement('img');
-    img.src = galleryImages[galleryIdx];
-    img.alt = carById(openCarId).name + ', photo ' + (galleryIdx+1);
-    img.id = 'gallery-img';
-    img.style.transform = '';
-    main.insertBefore(img, main.firstChild);
-    counter.textContent = (galleryIdx+1) + ' / ' + galleryImages.length;
-  } else {
-    ph.style.display = '';
-    var phCar = carById(openCarId);
-    ph.innerHTML =
-      '<span class="gallery-placeholder-name">' + esc(phCar ? phCar.name : '') + '</span>' +
-      '<span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--mute);margin-top:8px">Photos available on request</span>';
-    counter.textContent = '';
-  }
-  var multi = galleryImages.length > 1;
-  document.getElementById('gal-prev').style.display = multi ? '' : 'none';
-  document.getElementById('gal-next').style.display = multi ? '' : 'none';
-  document.getElementById('gal-zoom').style.display = galleryImages.length ? '' : 'none';
-
-  // thumbs
-  thumbs.innerHTML = '';
-  if (galleryImages.length > 1){
-    galleryImages.forEach(function(src, i){
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'gal-thumb' + (i === galleryIdx ? ' active' : '');
-      b.setAttribute('role','listitem');
-      b.setAttribute('aria-label', 'View photo ' + (i+1));
-      b.innerHTML = '<img src="' + esc(src) + '" alt="" loading="lazy">';
-      b.addEventListener('click', function(){ galleryIdx = i; renderGallery(); });
-      thumbs.appendChild(b);
-    });
-  }
-}
-
-function galPrev(){ if (!galleryImages.length) return; galleryIdx = (galleryIdx - 1 + galleryImages.length) % galleryImages.length; renderGallery(); }
-function galNext(){ if (!galleryImages.length) return; galleryIdx = (galleryIdx + 1) % galleryImages.length; renderGallery(); }
-document.getElementById('gal-prev').addEventListener('click', galPrev);
-document.getElementById('gal-next').addEventListener('click', galNext);
-document.getElementById('gal-zoom').addEventListener('click', function(){
-  if (galleryImages.length) openLightbox(galleryImages[galleryIdx], carById(openCarId).name);
-});
-document.getElementById('gallery-main').addEventListener('click', function(e){
-  if (e.target.id === 'gallery-img') openLightbox(galleryImages[galleryIdx], carById(openCarId).name);
-});
-
-function updateModalFav(){
-  var btn = document.getElementById('modal-fav');
-  var on = favs.has(openCarId);
-  btn.classList.toggle('active', on);
-  btn.textContent = on ? 'Saved to shortlist' : 'Save to shortlist';
-}
-function updateModalCompare(){
-  var btn = document.getElementById('modal-compare-add');
-  var on = compareList.indexOf(openCarId) !== -1;
-  btn.classList.toggle('active', on);
-  btn.textContent = on ? 'In compare' : 'Add to compare';
-}
-
-function openModal(id, trigger){
-  var car = carById(id);
-  if (!car) return;
-  openCarId = id;
-  modalTrigger = trigger || null;
-  galleryImages = (car.images && car.images.length) ? car.images.slice() : [];
-  galleryIdx = 0;
-
-  document.getElementById('modal-badges').innerHTML = badgesHtml(car);
-  document.getElementById('modal-name').textContent = car.name;
-  document.getElementById('modal-variant').textContent = car.variant;
-  var gradeEl = document.getElementById('modal-grade');
-  if (car.grade){ gradeEl.hidden = false; gradeEl.textContent = car.grade; } else { gradeEl.hidden = true; }
-  document.getElementById('modal-desc').textContent = car.desc;
-  document.getElementById('spec-plate-grid').innerHTML = specPlateHtml(car);
-  document.getElementById('modal-wa').href = waLink(car);
-  updateModalFav();
-  updateModalCompare();
-  renderGallery();
-
-  overlay.hidden = false;
-  document.body.classList.add('modal-open');
-  requestAnimationFrame(function(){ overlay.classList.add('open'); });
-  if (location.hash !== '#/car/' + id) history.pushState({car:id}, '', '#/car/' + id);
-  trapFocus(overlay);
-}
-
-function closeModal(fromPop){
-  if (openCarId === null) return;
-  overlay.classList.remove('open');
-  document.body.classList.remove('modal-open');
-  var finish = function(){ overlay.hidden = true; };
-  if (reduceMotion) finish(); else overlay.addEventListener('transitionend', function h(){ finish(); overlay.removeEventListener('transitionend', h); });
-  if (!fromPop && location.hash.indexOf('#/car/') === 0) history.pushState('', document.title, location.pathname + location.search);
-  if (trapHandler){ overlay.removeEventListener('keydown', trapHandler); trapHandler = null; }
-  var t = modalTrigger;
-  openCarId = null; modalTrigger = null;
-  if (t && t.focus) t.focus();
-}
-
-document.getElementById('modal-close').addEventListener('click', function(){ closeModal(); });
-overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
-document.getElementById('modal-fav').addEventListener('click', function(){ if (openCarId) toggleFav(openCarId); });
-document.getElementById('modal-compare-add').addEventListener('click', function(){ if (openCarId) toggleCompare(openCarId); });
-
-/* Keyboard within modal: arrows for gallery */
-overlay.addEventListener('keydown', function(e){
-  if (openCarId === null) return;
-  if (e.key === 'ArrowLeft') galPrev();
-  else if (e.key === 'ArrowRight') galNext();
-});
-
-/* Focus trap */
-function trapFocus(el){
-  var sel = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea,[tabindex]:not([tabindex="-1"])';
-  function visible(n){ return n.offsetParent !== null || n === document.activeElement; }
-  trapHandler = function(e){
-    if (e.key === 'Escape'){ closeModal(); return; }
-    if (e.key !== 'Tab') return;
-    var nodes = Array.prototype.slice.call(el.querySelectorAll(sel)).filter(visible);
-    if (!nodes.length) return;
-    var first = nodes[0], last = nodes[nodes.length-1];
-    if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
-  };
-  el.addEventListener('keydown', trapHandler);
-  var firstBtn = el.querySelector('#modal-close');
-  if (firstBtn) firstBtn.focus();
-}
-
-/* Touch swipe and pinch on gallery */
-(function(){
-  var main = document.getElementById('gallery-main');
-  var startX = 0, startDist = 0, scale = 1, pinching = false;
-  main.addEventListener('touchstart', function(e){
-    if (e.touches.length === 1){ startX = e.touches[0].clientX; pinching = false; }
-    else if (e.touches.length === 2){
-      pinching = true;
-      startDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-    }
-  }, { passive: true });
-  main.addEventListener('touchmove', function(e){
-    if (pinching && e.touches.length === 2){
-      var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-      scale = Math.min(3, Math.max(0.8, d / startDist));
-      var img = document.getElementById('gallery-img');
-      if (img) img.style.transform = 'scale(' + scale + ')';
-    }
-  }, { passive: true });
-  main.addEventListener('touchend', function(e){
-    if (pinching){
-      pinching = false; scale = 1;
-      var img = document.getElementById('gallery-img');
-      if (img) img.style.transform = '';
-      return;
-    }
-    if (e.changedTouches.length){
-      var dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 45){ if (dx > 0) galPrev(); else galNext(); }
-    }
-  }, { passive: true });
-})();
-
-/* Deep link handling */
-function handleHash(fromPop){
-  var m = location.hash.match(/^#\/car\/(.+)$/);
-  if (m){ if (openCarId !== m[1]) openModal(m[1], null); }
-  else { if (openCarId !== null) closeModal(true); }
-}
-window.addEventListener('popstate', function(){ handleHash(true); });
-
-/* ============================================================
-   LIGHTBOX
-   ============================================================ */
-var lightbox = document.getElementById('lightbox');
-var lightboxReturn = null;
-function openLightbox(src, alt){
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox-img').alt = alt || '';
-  lightbox.hidden = false;
-  lightboxReturn = document.activeElement;
-  requestAnimationFrame(function(){ lightbox.classList.add('open'); });
-  document.getElementById('lightbox-close').focus();
-}
-function closeLightbox(){
-  lightbox.classList.remove('open');
-  var finish = function(){ lightbox.hidden = true; document.getElementById('lightbox-img').src = ''; };
-  if (reduceMotion) finish(); else lightbox.addEventListener('transitionend', function h(){ finish(); lightbox.removeEventListener('transitionend', h); });
-  if (lightboxReturn && lightboxReturn.focus) lightboxReturn.focus();
-}
-document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', function(e){ if (e.target === lightbox) closeLightbox(); });
-document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !lightbox.hidden) closeLightbox(); });
-
-/* ============================================================
-   COMPARE (in memory, max 3)
-   ============================================================ */
-var compareTray = document.getElementById('compare-tray');
-function toggleCompare(id){
-  var i = compareList.indexOf(id);
-  if (i !== -1) compareList.splice(i,1);
-  else { if (compareList.length >= 3) return; compareList.push(id); }
-  renderCompareTray();
-  if (openCarId === id) updateModalCompare();
-}
-function renderCompareTray(){
-  var items = document.getElementById('compare-items');
-  items.innerHTML = '';
-  compareList.forEach(function(id){
-    var car = carById(id);
-    var chip = document.createElement('span');
-    chip.className = 'compare-chip';
-    chip.innerHTML = esc(car.name) + ' <button type="button" aria-label="Remove ' + esc(car.name) + ' from compare">&times;</button>';
-    chip.querySelector('button').addEventListener('click', function(){ toggleCompare(id); });
-    items.appendChild(chip);
-  });
-  compareTray.hidden = compareList.length === 0;
-}
-document.getElementById('compare-clear').addEventListener('click', function(){ compareList = []; renderCompareTray(); });
-document.getElementById('compare-open').addEventListener('click', openCompareModal);
-
-var compareModal = document.getElementById('compare-modal');
-function openCompareModal(){
-  if (compareList.length < 2){ return; }
-  var rows = [['Year','year'],['Mileage','km'],['Engine','engine'],['Transmission','trans'],['Fuel','fuel'],['Registration','reg'],['Price','price']];
-  var cars = compareList.map(carById);
-  var html = '<table class="compare-table"><thead><tr><th></th>';
-  cars.forEach(function(c){ html += '<th class="car-head">' + esc(c.name) + '<br><span style="font-family:var(--font-mono);font-size:10px;color:var(--mute)">' + esc(c.variant) + '</span></th>'; });
-  html += '</tr></thead><tbody>';
-  rows.forEach(function(r){
-    html += '<tr><td class="row-label">' + esc(r[0]) + '</td>';
-    cars.forEach(function(c){ html += '<td>' + esc(c[r[1]]) + '</td>'; });
-    html += '</tr>';
-  });
-  html += '</tbody></table>';
-  document.getElementById('compare-table-wrap').innerHTML = html;
-  compareModal.hidden = false;
-  document.body.classList.add('modal-open');
-  requestAnimationFrame(function(){ compareModal.classList.add('open'); });
-  document.getElementById('compare-close').focus();
-}
-function closeCompareModal(){
-  compareModal.classList.remove('open');
-  document.body.classList.remove('modal-open');
-  var finish = function(){ compareModal.hidden = true; };
-  if (reduceMotion) finish(); else compareModal.addEventListener('transitionend', function h(){ finish(); compareModal.removeEventListener('transitionend', h); });
-}
-document.getElementById('compare-close').addEventListener('click', closeCompareModal);
-compareModal.addEventListener('click', function(e){ if (e.target === compareModal) closeCompareModal(); });
-document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !compareModal.hidden) closeCompareModal(); });
-
-/* ============================================================
-   NAV, SCROLL PROGRESS, ACTIVE SECTION
-   ============================================================ */
-var nav = document.getElementById('nav');
-var progress = document.getElementById('scroll-progress');
-var lastScroll = 0;
-var rafNav = null;
-window.addEventListener('scroll', function(){
-  if (rafNav) return;
-  rafNav = requestAnimationFrame(function(){
-    var y = window.pageYOffset;
-    nav.classList.toggle('scrolled', y > 20);
-    nav.classList.toggle('nav-hidden', y > lastScroll && y > 140 && openCarId === null);
-    lastScroll = y;
-    var max = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
-    rafNav = null;
-  });
-}, { passive: true });
-
-var navLinks = document.querySelectorAll('.nav-link[data-section]');
-var sectionObs = new IntersectionObserver(function(entries){
-  entries.forEach(function(en){
-    if (en.isIntersecting){
-      navLinks.forEach(function(l){ l.classList.toggle('active', l.dataset.section === en.target.id); });
-    }
-  });
-}, { rootMargin: '-40% 0px -55% 0px' });
-['collection','standard','visit'].forEach(function(id){ var s = document.getElementById(id); if (s) sectionObs.observe(s); });
-
-/* ============================================================
-   REVEAL ON SCROLL
-   ============================================================ */
-if (!reduceMotion){
-  var revealObs = new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if (!en.isIntersecting) return;
-      var el = en.target;
-      el.style.willChange = 'opacity, transform';
-      el.classList.add('revealed');
-      el.addEventListener('transitionend', function h(){ el.style.willChange = ''; el.removeEventListener('transitionend', h); });
-      revealObs.unobserve(el);
-    });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.reveal').forEach(function(el){ revealObs.observe(el); });
-} else {
-  document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('revealed'); });
+function badgesHtml(car){
+  var html = '';
+  if(car.cat === 'electric') html += '<span class="badge badge-ev">Electric<span class="badge-ev-charge" aria-hidden="true"></span></span>';
+  else html += '<span class="badge">' + esc(car.fuel) + '</span>';
+  if(car.grade) html += '<span class="badge badge-grade">' + esc(car.grade) + '</span>';
+  if(car.kmRaw && car.kmRaw < 10000) html += '<span class="badge badge-low">Low mileage</span>';
+  return html;
 }
 
 /* ============================================================
-   SINCE 1992 COUNTER
+   SHOWROOM CAROUSEL
    ============================================================ */
-var counterEl = document.getElementById('since-num');
-var counterObs = new IntersectionObserver(function(entries){
-  if (!entries[0].isIntersecting) return;
-  counterObs.disconnect();
-  var target = parseInt(counterEl.dataset.target, 10);
-  if (reduceMotion){ counterEl.textContent = target; return; }
-  var start = performance.now(), dur = 1300;
-  function step(now){
-    var p = Math.min((now - start) / dur, 1);
-    var ease = 1 - Math.pow(1 - p, 3);
-    counterEl.textContent = Math.round(ease * target);
-    if (p < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}, { threshold: 0.5 });
-counterObs.observe(counterEl);
+var srIdx = 0;
+var srSlides = [];
+var srBusy = false;
 
-/* ============================================================
-   HERO INIT (after intro)
-   ============================================================ */
-function initHero(){
-  var content = document.getElementById('hero-content');
-  document.getElementById('hero-count').textContent = CARS.length + ' vehicles in the current collection';
-
-  if (reduceMotion){
-    content.classList.add('in');
-    document.getElementById('light-hairline').classList.add('show');
-    return;
-  }
-  requestAnimationFrame(function(){ content.classList.add('in'); });
-  var beam = document.getElementById('light-beam');
-  var hairline = document.getElementById('light-hairline');
-  beam.style.willChange = 'transform';
-  requestAnimationFrame(function(){
-    beam.classList.add('animating');
-    beam.addEventListener('transitionend', function h(){
-      beam.style.willChange = '';
-      hairline.classList.add('show');
-      beam.removeEventListener('transitionend', h);
-    });
-  });
-
-  // Video: only load if motion allowed and not Save-Data, and if sources exist.
-  var video = document.querySelector('.hero-video');
-  if (!saveData && video.querySelector('source')){
-    video.preload = 'metadata';
-    video.addEventListener('canplay', function(){ video.classList.add('loaded'); });
-    try { video.load(); } catch(e){}
-  }
-}
-
-/* Hero headline cursor parallax (desktop, motion ok) */
-if (!isTouch && !reduceMotion){
-  var heroEl = document.getElementById('hero');
-  var headline = heroEl.querySelector('.hero-headline');
-  var rafPar = null, hx = 0, hy = 0;
-  heroEl.addEventListener('mousemove', function(e){
-    hx = (e.clientX / window.innerWidth - 0.5) * 10;
-    hy = (e.clientY / window.innerHeight - 0.5) * 6;
-    if (rafPar) return;
-    rafPar = requestAnimationFrame(function(){ headline.style.transform = 'translate(' + hx + 'px,' + hy + 'px)'; rafPar = null; });
-  }, { passive: true });
-  heroEl.addEventListener('mouseleave', function(){
-    headline.style.transition = 'transform 0.5s ease';
-    headline.style.transform = '';
-    headline.addEventListener('transitionend', function h(){ headline.style.transition = ''; headline.removeEventListener('transitionend', h); });
-  }, { passive: true });
-}
-
-/* ============================================================
-   CUSTOM CURSOR (desktop, motion ok)
-   ============================================================ */
-if (!isTouch && !reduceMotion){
-  var ring = document.getElementById('cursor-ring');
-  var rafCur = null, cx = 0, cy = 0;
-  ring.classList.add('visible');
-  document.addEventListener('mousemove', function(e){
-    cx = e.clientX; cy = e.clientY;
-    if (rafCur) return;
-    rafCur = requestAnimationFrame(function(){
-      ring.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
-      rafCur = null;
-    });
-  }, { passive: true });
-  document.addEventListener('mouseover', function(e){
-    if (e.target.closest('a,button,[role="button"],input,select')) ring.classList.add('on-interactive');
-  });
-  document.addEventListener('mouseout', function(e){
-    if (e.target.closest('a,button,[role="button"],input,select')) ring.classList.remove('on-interactive');
-  });
-}
-
-/* ============================================================
-   INTRO
-   ============================================================ */
-(function intro(){
-  var introEl = document.getElementById('intro');
-  var seen = false;
-  try { seen = sessionStorage.getItem('vc-intro-seen') === '1'; } catch(e){}
-
-  function done(){
-    introEl.classList.add('intro-done');
-    try { sessionStorage.setItem('vc-intro-seen','1'); } catch(e){}
-    var finish = function(){ introEl.style.display = 'none'; initHero(); handleHash(false); };
-    if (reduceMotion) finish();
-    else introEl.addEventListener('transitionend', function h(){ finish(); introEl.removeEventListener('transitionend', h); });
-  }
-
-  if (seen || reduceMotion){
-    introEl.style.display = 'none';
-    initHero();
-    handleHash(false);
-    return;
-  }
-
-  requestAnimationFrame(function(){ introEl.classList.add('intro-in'); });
-  var timer = setTimeout(done, 1900);
-  document.getElementById('intro-skip').addEventListener('click', function(){ clearTimeout(timer); done(); });
-})();
-
-/* Initial sort to default order */
-renderCompareTray();
-
-/* ============================================================
-   SHOWCASE VIEW. Need for Speed style single-car spotlight.
-   One car fills the section. Left/right arrows or swipe to cycle.
-   ============================================================ */
-var showcaseEl  = document.getElementById('nfs-showcase');
-var showcaseIdx = 0;
-var showcaseActive = false;
-
-function getShowcaseCars(){
-  if (currentFilter === 'all') return CARS.slice();
-  return CARS.filter(function(c){ return c.cat === currentFilter; });
-}
-
-/* Last word of the name, e.g. "G-Class", "ZX", "Sportback" */
-function shortModelName(car){ return car.name.split(' ').slice(-1)[0]; }
-
-/* Build the scrollable model strip at the bottom */
-function buildModelStrip(){
-  var cars  = getShowcaseCars();
-  var track = document.getElementById('nfs-track');
-  track.innerHTML = '';
-  cars.forEach(function(car, i){
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'nfs-model-btn' + (i === showcaseIdx ? ' active' : '');
-    btn.setAttribute('role','listitem');
-    btn.setAttribute('aria-label', 'View ' + car.name);
-    btn.dataset.idx = i;
-    btn.innerHTML =
-      '<span class="nfs-model-btn-year">' + esc(String(car.year)) + '</span>' +
-      '<span class="nfs-model-btn-name">' + esc(shortModelName(car)) + '</span>';
-    btn.addEventListener('click', function(){ goShowcase(parseInt(this.dataset.idx, 10)); });
-    track.appendChild(btn);
-  });
-  /* Scroll active button into view */
-  var active = track.querySelector('.active');
-  if (active) active.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
-}
-
-/* Build the position dots, one per car */
-function buildDots(){
-  var cars = getShowcaseCars();
-  var wrap = document.getElementById('nfs-dots');
-  wrap.innerHTML = '';
-  cars.forEach(function(car, i){
-    var dot = document.createElement('button');
-    dot.type = 'button';
-    dot.className = 'nfs-dot' + (i === showcaseIdx ? ' active' : '');
-    dot.setAttribute('role','tab');
-    dot.setAttribute('aria-label', 'Go to ' + car.name);
-    dot.setAttribute('aria-selected', i === showcaseIdx ? 'true' : 'false');
-    dot.dataset.idx = i;
-    dot.addEventListener('click', function(){ goShowcase(parseInt(this.dataset.idx, 10)); });
-    wrap.appendChild(dot);
-  });
-}
-
-function renderNFSCar(instant, dir){
-  var cars    = getShowcaseCars();
-  if (!cars.length) return;
-  var idx     = showcaseIdx;
-  var car     = cars[idx];
-  var nameEl  = document.getElementById('nfs-name-el');
-  var varEl   = document.getElementById('nfs-variant-el');
-  var pillEl  = document.getElementById('nfs-cat-pill');
-  var specEl  = document.getElementById('nfs-spec-strip');
-  var ctaEl   = document.getElementById('nfs-cta-row');
-  var visualEl= document.getElementById('nfs-visual');
-  var ghostEl = document.getElementById('nfs-ghost');
-  var peekPrev= document.getElementById('nfs-peek-prev');
-  var peekNext= document.getElementById('nfs-peek-next');
-  var glowEl  = document.getElementById('nfs-electric-glow');
-  var animEls = [nameEl, varEl, pillEl, specEl, ctaEl];
-  var slide   = dir === 'prev' ? '-40px' : dir === 'next' ? '40px' : '0px';
-
-  function setOut(){
-    animEls.forEach(function(el){ el.classList.remove('in'); });
-    var vis = visualEl.querySelector('.nfs-car-img,.nfs-empty-stage');
-    if (vis) vis.classList.remove('in');
-    ghostEl.style.opacity = '0';
-  }
-
-  function populate(){
-    var n = idx + 1, t = cars.length;
-    document.getElementById('nfs-counter').textContent =
-      (n < 10 ? '0' : '') + n + ' / ' + (t < 10 ? '0' : '') + t;
-
-    nameEl.textContent = car.name;
-    varEl.textContent  = car.variant;
-    pillEl.textContent = car.fuel;
-    pillEl.className   = 'nfs-cat-pill' + (car.cat !== 'electric' ? ' petrol' : '');
-    glowEl.classList.toggle('on', car.cat === 'electric');
-
-    var specs = [
-      ['Year', car.year], ['Mileage', car.km],
-      ['Engine', car.engine], ['Trans.', car.trans]
-    ];
-    specEl.innerHTML = specs.map(function(s){
-      return '<div class="nfs-spec-item"><dt>' + esc(s[0]) +
-             '</dt><dd>' + esc(String(s[1])) + '</dd></div>';
-    }).join('');
-
-    document.getElementById('nfs-view-btn').dataset.id = car.id;
-    document.getElementById('nfs-wa-link').href = waLink(car);
-
-    /* Update model strip and dots active state */
-    document.querySelectorAll('.nfs-model-btn').forEach(function(b, i){
-      b.classList.toggle('active', i === idx);
-    });
-    var activeBtn = document.querySelector('.nfs-model-btn.active');
-    if (activeBtn) activeBtn.scrollIntoView({ block:'nearest', inline:'center', behavior:'smooth' });
-    document.querySelectorAll('.nfs-dot').forEach(function(d, i){
-      d.classList.toggle('active', i === idx);
-      d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
-    });
-
-    /* Watermark and peeking neighbours */
-    ghostEl.style.setProperty('--slide', slide);
-    ghostEl.textContent = shortModelName(car);
-    requestAnimationFrame(function(){ ghostEl.style.opacity = '1'; });
-    var prevCar = cars[(idx - 1 + cars.length) % cars.length];
-    var nextCar = cars[(idx + 1) % cars.length];
-    peekPrev.textContent = cars.length > 1 ? shortModelName(prevCar) : '';
-    peekNext.textContent = cars.length > 1 ? shortModelName(nextCar) : '';
-
-    /* Visual area */
-    visualEl.innerHTML = '';
-    var visEl;
-    if (car.images && car.images.length){
-      visEl = document.createElement('img');
-      visEl.className  = 'nfs-car-img';
-      visEl.src        = car.images[0];
-      visEl.alt        = car.name + ', ' + car.variant;
-      visEl.width      = 900;
-      visEl.height     = 560;
+(function buildShowroom(){
+  var track = document.getElementById('sr-track');
+  var dotsEl = document.getElementById('sr-dots');
+  CARS.forEach(function(car, i){
+    var slide = document.createElement('div');
+    slide.className = 'sr-slide';
+    slide.dataset.idx = String(i);
+    if(car.images && car.images.length){
+      var img = document.createElement('img');
+      img.className = 'sr-img';
+      img.src = car.images[0];
+      img.alt = car.name + ', ' + car.variant;
+      img.width = 900; img.height = 600;
+      img.loading = i === 0 ? 'eager' : 'lazy';
+      img.decoding = 'async';
+      slide.appendChild(img);
     } else {
-      visEl = document.createElement('div');
-      visEl.className  = 'nfs-empty-stage';
-      visEl.setAttribute('data-placeholder','true');
-      visEl.innerHTML  = '<span class="nfs-empty-note">Photography on request</span>';
+      var dark = document.createElement('div');
+      dark.className = 'sr-dark-room';
+      dark.innerHTML = '<span class="sr-dark-name">' + esc(car.name) + '</span>' +
+                       '<span class="sr-dark-year">' + esc(String(car.year)) + '</span>';
+      slide.appendChild(dark);
     }
-    visEl.style.setProperty('--slide', slide);
-    visualEl.appendChild(visEl);
-
-    requestAnimationFrame(function(){
-      requestAnimationFrame(function(){
-        animEls.forEach(function(el){ el.classList.add('in'); });
-        visEl.classList.add('in');
-      });
-    });
-  }
-
-  if (instant || reduceMotion){ setOut(); populate(); }
-  else { setOut(); setTimeout(populate, 280); }
-}
-
-function goShowcase(n, dir){
-  var cars = getShowcaseCars();
-  var next = (n + cars.length) % cars.length;
-  if (!dir) dir = next > showcaseIdx ? 'next' : (next < showcaseIdx ? 'prev' : null);
-  showcaseIdx = next;
-  renderNFSCar(false, dir);
-}
-
-function activateShowcase(){
-  showcaseActive = true;
-  grid.style.display  = 'none';
-  document.getElementById('collection-empty').hidden = true;
-  showcaseEl.hidden   = false;
-  var cars = getShowcaseCars();
-  if (showcaseIdx >= cars.length) showcaseIdx = 0;
-  buildModelStrip();
-  buildDots();
-  renderNFSCar(true);
-  document.getElementById('view-grid-btn').classList.remove('active');
-  document.getElementById('view-grid-btn').setAttribute('aria-pressed','false');
-  document.getElementById('view-showcase-btn').classList.add('active');
-  document.getElementById('view-showcase-btn').setAttribute('aria-pressed','true');
-}
-
-function deactivateShowcase(){
-  showcaseActive      = false;
-  showcaseEl.hidden   = true;
-  grid.style.display  = '';
-  document.getElementById('view-grid-btn').classList.add('active');
-  document.getElementById('view-grid-btn').setAttribute('aria-pressed','true');
-  document.getElementById('view-showcase-btn').classList.remove('active');
-  document.getElementById('view-showcase-btn').setAttribute('aria-pressed','false');
-  applyVisibility();
-}
-
-document.getElementById('view-grid-btn').addEventListener('click', deactivateShowcase);
-document.getElementById('view-showcase-btn').addEventListener('click', activateShowcase);
-document.getElementById('nfs-prev-btn').addEventListener('click', function(){ goShowcase(showcaseIdx - 1, 'prev'); });
-document.getElementById('nfs-next-btn').addEventListener('click', function(){ goShowcase(showcaseIdx + 1, 'next'); });
-document.getElementById('nfs-view-btn').addEventListener('click', function(){
-  var id = this.dataset.id; if (id) openModal(id, this);
-});
-
-/* Re-sync showcase when a filter changes while it is active */
-document.querySelector('.filter-group').addEventListener('click', function(e){
-  if (!showcaseActive) return;
-  if (!e.target.closest('.filter-btn')) return;
-  var cars = getShowcaseCars();
-  if (showcaseIdx >= cars.length) showcaseIdx = 0;
-  buildModelStrip();
-  buildDots();
-  renderNFSCar(true);
-});
-
-/* Keyboard arrows cycle cars */
-document.addEventListener('keydown', function(e){
-  if (!showcaseActive || !overlay.hidden || !compareModal.hidden) return;
-  if (e.key === 'ArrowLeft'){ e.preventDefault(); goShowcase(showcaseIdx - 1, 'prev'); }
-  else if (e.key === 'ArrowRight'){ e.preventDefault(); goShowcase(showcaseIdx + 1, 'next'); }
-});
-
-/* Touch swipe */
-(function(){
-  var sx = 0;
-  showcaseEl.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
-  showcaseEl.addEventListener('touchend',function(e){
-    var dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)>48) goShowcase(dx>0?showcaseIdx-1:showcaseIdx+1, dx>0?'prev':'next');
-  },{passive:true});
+    srSlides.push(slide);
+    track.appendChild(slide);
+    var dot = document.createElement('button');
+    dot.className = 'sr-dot' + (i === 0 ? ' active' : '');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', car.name);
+    dot.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    dot.setAttribute('role', 'tab');
+    dot.dataset.idx = String(i);
+    dotsEl.appendChild(dot);
+  });
+  srSetStates(0, null, true);
+  srUpdatePanel(0, true);
 })();
 
-/* Showcase is the DEFAULT view. Launch it after the intro completes. */
-setTimeout(activateShowcase, 0);
+function srSetStates(idx, dir, instant){
+  var n = srSlides.length;
+  var prev = (idx - 1 + n) % n;
+  var next = (idx + 1) % n;
+  srSlides.forEach(function(slide, i){
+    var state;
+    if(i === idx) state = 'active';
+    else if(i === prev) state = 'prev';
+    else if(i === next) state = 'next';
+    else {
+      if(dir === 'next'){ var d = (i - idx + n) % n; state = d < n / 2 ? 'far-right' : 'far-left'; }
+      else { var d2 = (idx - i + n) % n; state = d2 < n / 2 ? 'far-left' : 'far-right'; }
+    }
+    if(instant) slide.style.transition = 'none';
+    slide.dataset.state = state;
+    if(instant){
+      (function(s){ requestAnimationFrame(function(){ s.style.transition = ''; }); })(slide);
+    }
+  });
+  document.querySelectorAll('.sr-dot').forEach(function(dot, i){
+    dot.classList.toggle('active', i === idx);
+    dot.setAttribute('aria-pressed', i === idx ? 'true' : 'false');
+  });
+}
+
+function srUpdatePanel(idx, instant){
+  var car = CARS[idx];
+  var panel = document.getElementById('sr-panel');
+  function setContent(){
+    var n = CARS.length;
+    document.getElementById('sr-counter').textContent = String(idx + 1).padStart(2,'0') + ' / ' + String(n).padStart(2,'0');
+    document.getElementById('sr-name').textContent = car.name;
+    document.getElementById('sr-variant').textContent = car.variant;
+    document.getElementById('sr-specs').innerHTML =
+      [['Year',car.year],['Mileage',car.km],['Fuel',car.fuel],['Engine',car.engine]]
+        .map(function(s){ return '<div class="sr-spec"><span class="sr-spec-k">'+esc(String(s[0]))+'</span><span class="sr-spec-v">'+esc(String(s[1]))+'</span></div>'; }).join('');
+    var isPoa = !car.price || car.price === 'POA';
+    document.getElementById('sr-price').innerHTML =
+      '<span class="sr-price-lbl">Price</span>' +
+      '<span class="sr-price' + (isPoa ? ' poa' : '') + '">' + esc(isPoa ? 'Call for price' : car.price) + '</span>';
+    document.getElementById('sr-wa').href = waLink(car);
+    var pb = document.getElementById('sr-photos');
+    if(car.images && car.images.length){ pb.hidden = false; pb.dataset.id = car.id; }
+    else { pb.hidden = true; }
+    document.getElementById('hero-count').textContent = CARS.length + ' vehicles in the current collection';
+  }
+  if(instant || reduceMotion){ setContent(); return; }
+  panel.classList.add('transitioning');
+  setTimeout(function(){ setContent(); panel.classList.remove('transitioning'); }, 220);
+}
+
+function srGo(idx, dir){
+  if(srBusy && !reduceMotion) return;
+  srBusy = true;
+  var n = srSlides.length;
+  idx = (idx + n) % n;
+  if(!dir) dir = idx > srIdx ? 'next' : 'prev';
+  srIdx = idx;
+  srSetStates(idx, dir, false);
+  srUpdatePanel(idx, false);
+  setTimeout(function(){ srBusy = false; }, 820);
+}
+
+document.getElementById('sr-prev').addEventListener('click', function(){ srGo(srIdx - 1, 'prev'); });
+document.getElementById('sr-next').addEventListener('click', function(){ srGo(srIdx + 1, 'next'); });
+
+document.getElementById('sr-dots').addEventListener('click', function(e){
+  var dot = e.target.closest('.sr-dot');
+  if(!dot) return;
+  var i = parseInt(dot.dataset.idx, 10);
+  srGo(i, i > srIdx ? 'next' : 'prev');
+});
+
+document.getElementById('sr-track').addEventListener('click', function(e){
+  var slide = e.target.closest('.sr-slide');
+  if(!slide) return;
+  var state = slide.dataset.state;
+  if(state === 'prev') srGo(srIdx - 1, 'prev');
+  else if(state === 'next') srGo(srIdx + 1, 'next');
+});
+
+document.addEventListener('keydown', function(e){
+  var lb = document.getElementById('lightbox');
+  if(lb && !lb.hidden) return;
+  var ov = document.getElementById('modal-overlay');
+  if(ov && !ov.hidden) return;
+  if(e.key === 'ArrowLeft'){ e.preventDefault(); srGo(srIdx - 1, 'prev'); }
+  else if(e.key === 'ArrowRight'){ e.preventDefault(); srGo(srIdx + 1, 'next'); }
+});
+
+(function(){
+  var track = document.getElementById('sr-track');
+  var startX = 0, startY = 0;
+  track.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; startY = e.touches[0].clientY; }, { passive: true });
+  track.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40){
+      if(dx < 0) srGo(srIdx + 1, 'next'); else srGo(srIdx - 1, 'prev');
+    }
+  }, { passive: true });
+})();
+
+document.getElementById('sr-photos').addEventListener('click', function(){
+  var id = this.dataset.id; if(id) openModal(id, this);
+});
+
 </script>
 </body>
 </html>
