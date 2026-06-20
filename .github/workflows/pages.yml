@@ -2,7 +2,7 @@ name: Deploy Victory Cars to GitHub Pages
 
 on:
   push:
-    branches: [claude/victory-cars-website-ra8z9j]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
