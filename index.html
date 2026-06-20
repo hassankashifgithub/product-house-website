@@ -118,7 +118,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
 #nav.nav-scrolled{background:rgba(11,12,14,0.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding-top:15px;padding-bottom:15px;border-bottom-color:var(--line-soft)}
 #nav.nav-hidden{transform:translateY(-100%)}
 .nav-wordmark{display:flex;align-items:center;gap:10px;color:var(--bone)}
-.nav-logo-badge{height:38px;width:auto;flex-shrink:0}
+.nav-logo-badge{height:40px;width:40px;border-radius:50%;object-fit:cover;object-position:50% 22%;flex-shrink:0}
 .nav-logo-text{font-family:var(--font-display);font-size:20px;font-weight:300;letter-spacing:0.02em;line-height:1}
 .nav-links{display:flex;align-items:center;gap:clamp(18px,2.4vw,38px)}
 .nav-link{font-size:14px;color:var(--mute);letter-spacing:0.01em;transition:color 0.22s ease;position:relative}
@@ -163,9 +163,9 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
 #showroom{position:relative;height:100svh;min-height:620px;background:radial-gradient(130% 100% at 50% 25%,#15171c 0%,#0b0c0e 58%,#060708 100%);overflow:hidden}
 .sr-stage{position:absolute;inset:0;z-index:1}
 .sr-floor{position:absolute;left:50%;top:calc(50% - 60px);width:70vw;max-width:900px;height:240px;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,rgba(201,169,110,0.06),transparent 70%);pointer-events:none;z-index:1}
-.sr-ghost{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:0;font-family:var(--font-display);font-weight:300;font-size:clamp(60px,16vw,220px);line-height:0.9;color:var(--bone);opacity:0.04;white-space:nowrap;pointer-events:none;letter-spacing:-0.02em;transition:opacity 0.6s ease}
+.sr-ghost{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:0;font-family:var(--font-display);font-weight:300;font-size:clamp(72px,18vw,260px);line-height:0.9;color:var(--bone);opacity:0.055;white-space:nowrap;pointer-events:none;letter-spacing:-0.02em;transition:opacity 0.6s ease}
 .sr-track{position:absolute;inset:0;z-index:2}
-.sr-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:100px 0 250px;transition:transform 0.85s var(--ease-cinema),opacity 0.85s var(--ease-cinema),filter 0.85s var(--ease-cinema);will-change:transform,opacity,filter}
+.sr-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:80px 0 240px;transition:transform 0.85s var(--ease-cinema),opacity 0.85s var(--ease-cinema),filter 0.85s var(--ease-cinema);will-change:transform,opacity,filter}
 .sr-slide[data-state="active"]{transform:translateX(0) scale(1);opacity:1;filter:none;z-index:4;pointer-events:auto;cursor:pointer}
 .sr-slide[data-state="prev"]{transform:translateX(-70%) scale(0.74);opacity:0.34;filter:blur(2px) brightness(0.65);z-index:3;cursor:pointer;pointer-events:auto}
 .sr-slide[data-state="next"]{transform:translateX(70%) scale(0.74);opacity:0.34;filter:blur(2px) brightness(0.65);z-index:3;cursor:pointer;pointer-events:auto}
@@ -216,6 +216,15 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
   .sr-actions{justify-content:flex-start}
 }
 
+/* ---------- GT float + reflection ---------- */
+@keyframes gtFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+@keyframes gtShadow{0%,100%{opacity:0.65;transform:translateX(-50%) scaleX(1)}50%{opacity:0.28;transform:translateX(-50%) scaleX(0.76)}}
+.sr-slide[data-state="active"] .sr-img{animation:gtFloat 4.5s ease-in-out infinite}
+.sr-reflect{max-height:18vh;max-width:74vw;width:auto;height:auto;object-fit:contain;transform:scaleY(-1);margin-top:-3px;-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0.42) 0%,transparent 100%);mask-image:linear-gradient(to bottom,rgba(0,0,0,0.42) 0%,transparent 100%);pointer-events:none;flex-shrink:0}
+.sr-car-wrap{display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.sr-shadow{position:absolute;bottom:258px;left:50%;transform:translateX(-50%);width:44vw;max-width:560px;height:26px;background:radial-gradient(ellipse at center,rgba(0,0,0,0.72),transparent 70%);filter:blur(7px);pointer-events:none;z-index:3;animation:gtShadow 4.5s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.sr-slide[data-state="active"] .sr-img{animation:none}.sr-shadow{animation:none}}
+
 /* ---------- The standard ---------- */
 .standard-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,90px)}
 @media(max-width:860px){.standard-grid{grid-template-columns:1fr;gap:50px}}
@@ -251,7 +260,7 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
 footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--pad) 30px}
 .footer-inner{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
 @media(max-width:760px){.footer-inner{grid-template-columns:1fr;gap:34px}}
-.footer-logo-badge{width:76px;height:auto;display:block}
+.footer-logo-badge{width:82px;height:auto;border-radius:6px;display:block}
 .footer-tagline{font-family:var(--font-mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-top:10px}
 .footer-address{font-style:normal;color:var(--mute);margin-top:16px;line-height:1.7;font-size:15px}
 .footer-nav{display:flex;flex-direction:column;gap:12px}
@@ -349,19 +358,7 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
 <!-- Navigation -->
 <header id="nav">
   <a href="#hero" class="nav-wordmark" aria-label="Victory Cars home">
-    <svg class="nav-logo-badge" viewBox="0 0 100 118" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M14,2 L86,2 L98,14 L98,76 Q98,95 50,116 Q2,95 2,76 L2,14 Z" fill="var(--brand-maroon)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-      <polyline points="0,24 0,0 24,0" stroke="white" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
-      <polyline points="76,0 100,0 100,24" stroke="white" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
-      <path d="M16,22 Q50,9 84,22" stroke="rgba(255,255,255,0.75)" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M18,58 L27,37 L45,33 L72,33 L84,58" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M14,63 L14,59 L18,58 L84,58 L86,63" stroke="white" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
-      <circle cx="29" cy="65" r="7" stroke="white" stroke-width="1.8" fill="none"/>
-      <circle cx="71" cy="65" r="7" stroke="white" stroke-width="1.8" fill="none"/>
-      <path d="M25,58 L33,39 L44,33 L44,58 Z" stroke="white" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
-      <path d="M46,33 L70,39 L79,58 L46,58 Z" stroke="white" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
-      <path d="M37,79 L50,94 L63,79" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    <img class="nav-logo-badge" src="assets/logo-vc-sq.jpg" alt="" width="40" height="40">
     <span class="nav-logo-text">Victory Cars</span>
   </a>
   <nav class="nav-links" aria-label="Primary">
@@ -410,6 +407,7 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
     <div class="sr-ghost" id="sr-ghost"></div>
     <div class="sr-floor"></div>
   </div>
+  <div class="sr-shadow" aria-hidden="true"></div>
   <div class="sr-track" id="sr-track"></div>
   <div class="sr-dots" id="sr-dots" role="tablist" aria-label="Vehicle position"></div>
   <button class="sr-arrow sr-prev" id="sr-prev" type="button" aria-label="Previous vehicle">
@@ -536,21 +534,7 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
 <footer aria-label="Site footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <svg class="footer-logo-badge" viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Victory Cars">
-        <path d="M14,2 L86,2 L98,14 L98,88 Q98,108 50,128 Q2,108 2,88 L2,14 Z" fill="var(--brand-maroon)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-        <polyline points="0,24 0,0 24,0" stroke="white" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
-        <polyline points="76,0 100,0 100,24" stroke="white" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
-        <path d="M16,22 Q50,9 84,22" stroke="rgba(255,255,255,0.75)" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M18,58 L27,37 L45,33 L72,33 L84,58" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M14,63 L14,59 L18,58 L84,58 L86,63" stroke="white" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
-        <circle cx="29" cy="65" r="7" stroke="white" stroke-width="1.8" fill="none"/>
-        <circle cx="71" cy="65" r="7" stroke="white" stroke-width="1.8" fill="none"/>
-        <path d="M25,58 L33,39 L44,33 L44,58 Z" stroke="white" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
-        <path d="M46,33 L70,39 L79,58 L46,58 Z" stroke="white" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
-        <text x="50" y="80" text-anchor="middle" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="13" fill="white" letter-spacing="2">VICTORY</text>
-        <text x="50" y="93" text-anchor="middle" font-family="'Arial Black', Arial, sans-serif" font-weight="900" font-size="10.5" fill="white" letter-spacing="3.5">CARS</text>
-        <path d="M37,102 L50,116 L63,102" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <img class="footer-logo-badge" src="assets/logo-vc.jpg" alt="Victory Cars">
       <p class="footer-tagline">Tradition, Trust and Triumph</p>
       <address class="footer-address">17-A Jail Road<br>Lahore, Pakistan</address>
     </div>
@@ -659,73 +643,73 @@ var CARS = [
   { id:'lc300-2023-fresh', name:'Toyota Land Cruiser ZX', variant:'2023, LC300 ZX Fresh Import',
     cat:'suv', fuel:'Petrol', year:2023, km:'1,200 km', kmRaw:1200, engine:'3500 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'2023 LC300 ZX, fresh import 2026. Pearl white with beige leather. Full house. 1,200 km.',
-    img:['lc300-2023-fresh',9,'webp'] },
+    hero:4, img:['lc300-2023-fresh',9,'webp'] },
   { id:'g-class-g580-2025', name:'Mercedes-Benz G-Class', variant:'2025, G 580 EQ Edition',
     cat:'electric', fuel:'Electric', year:2025, km:'100 km', kmRaw:100, engine:'Electric', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'The icon, electrified. The all electric G 580 with EQ technology, 100 km on the clock, among the rarest vehicles in the country.',
-    img:['g-class-g580-2025',14,'webp'] },
+    hero:3, img:['g-class-g580-2025',14,'webp'] },
   { id:'lexus-ux-300e-2021', name:'Lexus UX 300e', variant:'2021, 300e',
     cat:'electric', fuel:'Electric', year:2021, km:'4,613 km', kmRaw:4613, engine:'Battery: verify', trans:'Automatic', reg:'Un-registered',
     grade:'PakWheels 10/10', price:'POA',
     desc:'A PakWheels certified 10/10 example. Fully electric Lexus UX 300e with only 4,613 km.',
-    img:['lexus-ux-300e-2021',11,'webp'] },
+    hero:1, img:['lexus-ux-300e-2021',11,'webp'] },
   { id:'land-cruiser-zx-2021', name:'Toyota Land Cruiser ZX', variant:'2021, ZX 4.6L',
     cat:'suv', fuel:'Petrol', year:2021, km:'7,000 km', kmRaw:7000, engine:'4600 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'The legendary 200 series ZX with the 4.6L V8. Only 7,000 km and entirely original.',
-    img:['land-cruiser-zx-2021',7,'webp'] },
+    hero:3, img:['land-cruiser-zx-2021',7,'webp'] },
   { id:'eqc-400-2019', name:'Mercedes-Benz EQC 400', variant:'2019, 400 4MATIC',
     cat:'electric', fuel:'Electric', year:2019, km:'42,000 km', kmRaw:42000, engine:'80 kWh', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'Mercedes-Benz first dedicated electric SUV. Dual motors, 80 kWh pack, four wheel drive.',
-    img:['eqc-400-2019',10,'webp'] },
+    hero:1, img:['eqc-400-2019',10,'webp'] },
   { id:'audi-etron-sportback-2021', name:'Audi e-tron Sportback', variant:'2021, 50 quattro 230kW',
     cat:'electric', fuel:'Electric', year:2021, km:'38,000 km', kmRaw:38000, engine:'230 kW', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'The coupe-roofed e-tron Sportback 50 quattro. 230 kW, all-weather quattro drive, a resolved Audi cabin.',
-    img:['audi-etron-sportback-2021',12,'webp'] },
+    hero:5, img:['audi-etron-sportback-2021',12,'webp'] },
   { id:'audi-etron-2020', name:'Audi e-tron', variant:'2020, 50 quattro 230kW',
     cat:'electric', fuel:'Electric', year:2020, km:'54,000 km', kmRaw:54000, engine:'230 kW', trans:'Automatic', reg:'Lahore 2021', price:'POA',
     desc:'Audi showroom delivery February 2021. Diamond white metallic, Carrara brown leather. Bang and Olufsen surround sound, panoramic sunroof, 360-degree cameras, 21-inch alloys.',
-    img:['audi-etron-2020',10,'webp'] },
+    hero:1, img:['audi-etron-2020',10,'webp'] },
   { id:'audi-q7-2018', name:'Audi Q7', variant:'2018, 45 TFSI quattro',
     cat:'suv', fuel:'Petrol', year:2018, km:'55,283 km', kmRaw:55283, engine:'3000 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'Full size Audi presence. 3.0L TFSI, quattro, seven seats. Commands a room without raising its voice.',
-    img:['audi-q7-2018',20,'webp'] },
+    hero:3, img:['audi-q7-2018',20,'webp'] },
   { id:'e200-2023', name:'Mercedes-Benz E 200', variant:'2023, W213 E 200',
     cat:'sedan', fuel:'Petrol', year:2023, km:'Verify', kmRaw:0, engine:'1500 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'UK import via Karachi port. 1,500 cc twin turbo, panoramic sunroof, dezino nappa leather, airmatic suspension, 19-inch alloys. Bumper to bumper original.',
-    img:['e200-2023',1,'jpg'] },
+    hero:1, img:['e200-2023',1,'jpg'] },
   { id:'e180-exclusive-2021', name:'Mercedes-Benz E 180', variant:'2021, Exclusive S Luxury Line',
     cat:'sedan', fuel:'Petrol', year:2021, km:'17,000 km', kmRaw:17000, engine:'1600 cc', trans:'Automatic', reg:'Karachi 2021', price:'POA',
     desc:'Shahnawaz import. Polar white, Sahara beige interior. Facelift. PPF protection. Panoramic sunroof, exclusive nappa leather, Burmester sound, 64-colour ambient lighting, 8-zone climate control.',
-    img:['e180-exclusive-2021',1,'jpg'] },
+    hero:1, img:['e180-exclusive-2021',1,'jpg'] },
   { id:'e180-2023', name:'Mercedes-Benz E 180', variant:'2023, W213 E 180 Avantgarde',
     cat:'sedan', fuel:'Petrol', year:2023, km:'12,000 km', kmRaw:12000, engine:'1500 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'2023, 12,000 km. The W213 Avantgarde in the condition it deserves. Unregistered, unmarked.',
-    img:['e180-2023',18,'webp'] },
+    hero:3, img:['e180-2023',18,'webp'] },
   { id:'e180-amg-2021', name:'Mercedes-Benz E 180 AMG', variant:'2021, W213 E 180 AMG',
     cat:'sedan', fuel:'Petrol', year:2021, km:'16,000 km', kmRaw:16000, engine:'1500 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'The AMG Line E 180. Sporting intent, executive delivery. 16,000 km of immaculate ownership.',
-    img:['e180-amg-2021',11,'webp'] },
+    hero:7, img:['e180-amg-2021',11,'webp'] },
   { id:'prado-70th-2020', name:'Toyota Prado TX-L', variant:'2020, 70th Anniversary Edition',
     cat:'suv', fuel:'Petrol', year:2020, km:'21,000 km', kmRaw:21000, engine:'2700 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'70th Anniversary Edition. Fresh import February 2026. Pearl black metallic, brono nappa leather. Auction grade 4.5A. Full TRD sport body kit. Seven seater, all seats multi-electric, heated and ventilated fronts.',
-    img:['prado-70th-2020',18,'webp'] },
+    hero:1, img:['prado-70th-2020',18,'webp'] },
   { id:'prado-txl-11k-2020', name:'Toyota Prado TX-L', variant:'2020, TX L Package 2.7',
     cat:'suv', fuel:'Petrol', year:2020, km:'11,000 km', kmRaw:11000, engine:'2700 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'11,000 km. The Prado TX-L 2.7, the thinking family flagship four wheel drive. Proven, unhurried.',
-    img:['prado-txl-11k-2020',15,'webp'] },
+    hero:2, img:['prado-txl-11k-2020',15,'webp'] },
   { id:'prado-txl-22k-2020', name:'Toyota Prado TX-L', variant:'2020, TX L Package 2.7',
     cat:'suv', fuel:'Petrol', year:2020, km:'22,226 km', kmRaw:22226, engine:'2700 cc', trans:'Automatic', reg:'Un-registered',
     grade:'PakWheels Certified 9.9/10', price:'POA',
     desc:'PakWheels certified 9.9/10. Independently inspected, near perfect grade. A verified honest example.',
-    img:['prado-txl-22k-2020',20,'webp'] },
+    hero:3, img:['prado-txl-22k-2020',20,'webp'] },
   { id:'prado-txl-21k-2020', name:'Toyota Prado TX-L', variant:'2020, TX L Package 2.7',
     cat:'suv', fuel:'Petrol', year:2020, km:'21,387 km', kmRaw:21387, engine:'2700 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'21,387 km of original Prado ownership. The 2.7L four cylinder in excellent standing. Reliable, capable, unspoiled.',
-    img:['prado-txl-22k-2020',20,'webp'] },
+    hero:3, img:['prado-txl-22k-2020',20,'webp'] },
   { id:'s350-2004', name:'Mercedes-Benz S 350', variant:'2004, W220 S 350',
     cat:'sedan', fuel:'Petrol', year:2004, km:'72,000 km', kmRaw:72000, engine:'3700 cc', trans:'Automatic', reg:'Islamabad 2010', price:'POA',
     desc:'3700 cc V6. Produced December 2003, Japan import 2007, registered Islamabad 2010. First owner driven. Metallic silver, black nappa leather. Sunroof, multi-power heated massage seats, aromatic suspension, xenon headlights, electric boot, premium sound.',
-    img:['s350-2004',13,'webp'] }
+    hero:3, img:['s350-2004',13,'webp'] }
 ];
 
 /* Build the images array for every car from its img descriptor. */
@@ -773,6 +757,8 @@ function badgesHtml(car){
   if(soundBtn && vid){
     soundBtn.addEventListener('click', function(){
       vid.muted = !vid.muted;
+      vid.volume = 1;
+      if(!vid.muted){ var p = vid.play(); if(p) p.catch(function(){}); }
       soundIcon.innerHTML = vid.muted ? ICON_MUTED : ICON_ON;
       soundBtn.setAttribute('aria-label', vid.muted ? 'Unmute video' : 'Mute video');
     });
@@ -866,22 +852,36 @@ var srPanelTimer = null;
     slide.className = 'sr-slide';
     slide.dataset.idx = String(i);
 
+    var heroIdx = (car.hero || 1) - 1;
+    var wrap = document.createElement('div');
+    wrap.className = 'sr-car-wrap';
+
     var img = document.createElement('img');
     img.className = 'sr-img';
-    img.src = car.images[0];
+    img.src = car.images[heroIdx];
     img.alt = car.name + ', ' + car.variant;
     img.loading = i === 0 ? 'eager' : 'lazy';
     img.decoding = 'async';
-    (function(s, c, el){
+    (function(s, c, el, w){
       el.addEventListener('error', function(){
-        if(!s.contains(el)) return;
+        if(!s.contains(w)) return;
         var dark = document.createElement('div');
         dark.className = 'sr-dark';
         dark.innerHTML = '<span class="sr-dark-name">' + esc(c.name) + '</span><span class="sr-dark-year">' + esc(c.variant) + '</span>';
-        s.replaceChild(dark, el);
+        s.replaceChild(dark, w);
       }, { once:true });
-    })(slide, car, img);
-    slide.appendChild(img);
+      el.addEventListener('load', function(){
+        var ref = document.createElement('img');
+        ref.className = 'sr-reflect';
+        ref.src = el.src;
+        ref.alt = '';
+        ref.setAttribute('aria-hidden', 'true');
+        ref.loading = 'lazy';
+        w.appendChild(ref);
+      }, { once:true });
+    })(slide, car, img, wrap);
+    wrap.appendChild(img);
+    slide.appendChild(wrap);
 
     srSlides.push(slide);
     track.appendChild(slide);
