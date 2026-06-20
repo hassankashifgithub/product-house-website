@@ -111,17 +111,6 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
 #scroll-progress{position:fixed;top:0;left:0;height:2px;width:100%;z-index:1000;background:linear-gradient(to right,var(--accent),var(--accent-d));transform:scaleX(0);transform-origin:left;will-change:transform}
 
 /* ---------- Intro ---------- */
-#intro{position:fixed;inset:0;z-index:1200;background:var(--ink);display:flex;align-items:center;justify-content:center;transition:opacity 0.8s var(--ease),visibility 0.8s var(--ease)}
-#intro.intro-done{opacity:0;visibility:hidden;pointer-events:none}
-.intro-inner{text-align:center;padding:0 20px}
-.intro-wordmark{font-family:var(--font-display);font-weight:300;font-size:clamp(32px,7vw,68px);color:var(--bone);letter-spacing:0.01em;opacity:0;transform:translateY(14px);transition:opacity 0.9s var(--ease),transform 0.9s var(--ease)}
-.intro-line{height:1px;width:0;margin:22px auto;background:linear-gradient(to right,transparent,var(--accent),transparent);transition:width 1s var(--ease) 0.45s}
-.intro-est{font-family:var(--font-mono);font-size:11px;letter-spacing:0.34em;text-transform:uppercase;color:var(--mute);opacity:0;transition:opacity 0.8s ease 0.8s}
-#intro.intro-in .intro-wordmark{opacity:1;transform:translateY(0)}
-#intro.intro-in .intro-line{width:min(240px,52vw)}
-#intro.intro-in .intro-est{opacity:1}
-.intro-skip{position:absolute;bottom:30px;right:30px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--mute);padding:9px 16px;border:1px solid var(--line);border-radius:3px;transition:color 0.2s,border-color 0.2s}
-.intro-skip:hover{color:var(--accent);border-color:var(--accent)}
 
 /* ---------- Nav ---------- */
 #nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:22px var(--pad);transition:transform 0.45s var(--ease),background 0.35s ease,padding 0.35s ease,backdrop-filter 0.35s ease,border-color 0.35s ease;border-bottom:1px solid transparent}
@@ -153,13 +142,13 @@ h1,h2,h3{font-family:var(--font-display);font-weight:300;line-height:1.06;letter
 .hero-vignette{position:absolute;inset:0;z-index:3;background:radial-gradient(120% 100% at 50% 40%,transparent 40%,rgba(6,7,8,0.55) 80%,rgba(6,7,8,0.9) 100%);pointer-events:none}
 .hero-grain{position:absolute;inset:0;z-index:4;opacity:0.05;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .hero-content{position:relative;z-index:5;padding:0 var(--pad);max-width:var(--maxw);margin:0 auto;width:100%}
-.hero-eyebrow{font-family:var(--font-mono);font-size:clamp(11px,1.1vw,13px);letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);opacity:0;transform:translateY(18px);transition:opacity 0.9s var(--ease) 0.15s,transform 0.9s var(--ease) 0.15s}
+.hero-eyebrow{font-family:var(--font-mono);font-size:clamp(11px,1.1vw,13px);letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);opacity:0;transform:translateY(14px);animation:heroReveal 0.6s var(--ease) 0.05s forwards}
 .hero-headline{font-size:clamp(48px,11vw,140px);line-height:0.98;color:var(--bone);margin:18px 0 0;letter-spacing:-0.02em}
-.hero-headline span{display:block;opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease) 0.3s,transform 1s var(--ease) 0.3s}
-.hero-headline span:nth-child(2){transition-delay:0.45s}
-.hero-sub{margin-top:26px;max-width:480px;color:var(--bone-dim);font-size:clamp(15px,1.4vw,19px);font-weight:300;opacity:0;transform:translateY(18px);transition:opacity 0.9s var(--ease) 0.65s,transform 0.9s var(--ease) 0.65s}
-.hero-actions{margin-top:36px;display:flex;flex-wrap:wrap;gap:14px;opacity:0;transform:translateY(18px);transition:opacity 0.9s var(--ease) 0.8s,transform 0.9s var(--ease) 0.8s}
-body.hero-ready .hero-eyebrow,body.hero-ready .hero-headline span,body.hero-ready .hero-sub,body.hero-ready .hero-actions{opacity:1;transform:none}
+.hero-headline span{display:block;opacity:0;transform:translateY(22px);animation:heroReveal 0.7s var(--ease) 0.15s forwards}
+.hero-headline span:nth-child(2){animation-delay:0.25s}
+.hero-sub{margin-top:26px;max-width:480px;color:var(--bone-dim);font-size:clamp(15px,1.4vw,19px);font-weight:300;opacity:0;transform:translateY(14px);animation:heroReveal 0.6s var(--ease) 0.35s forwards}
+.hero-actions{margin-top:36px;display:flex;flex-wrap:wrap;gap:14px;opacity:0;transform:translateY(14px);animation:heroReveal 0.6s var(--ease) 0.45s forwards}
+@keyframes heroReveal{to{opacity:1;transform:none}}
 .hero-meta{position:absolute;left:var(--pad);bottom:34px;z-index:5;font-family:var(--font-mono);font-size:12px;letter-spacing:0.1em;color:var(--mute)}
 .hero-scroll-cue{position:absolute;right:var(--pad);bottom:34px;z-index:5;font-family:var(--font-mono);font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:10px}
 .hero-scroll-cue::after{content:"";width:30px;height:1px;background:var(--mute);position:relative;overflow:hidden}
@@ -345,7 +334,7 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important}
-  .hero-eyebrow,.hero-headline span,.hero-sub,.hero-actions{opacity:1;transform:none;transition:none}
+  .hero-eyebrow,.hero-headline span,.hero-sub,.hero-actions{opacity:1;transform:none;animation:none}
   .sr-slide{transition:none}
   [data-reveal]{opacity:1;transform:none}
 }
@@ -355,19 +344,9 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
 
 <div id="scroll-progress" aria-hidden="true"></div>
 
-<!-- Intro overlay -->
-<div id="intro" aria-hidden="true">
-  <div class="intro-inner">
-    <p class="intro-wordmark">Victory Cars</p>
-    <div class="intro-line"></div>
-    <p class="intro-est">Est. 1992</p>
-  </div>
-  <button class="intro-skip" id="intro-skip" type="button">Skip</button>
-</div>
-
 <!-- Navigation -->
 <header id="nav">
-  <a href="#hero" class="nav-wordmark" aria-label="Victory Cars home">Victory<span>.</span> Cars</a>
+  <a href="#hero" class="nav-wordmark" aria-label="Victory Cars home">Victory Cars</a>
   <nav class="nav-links" aria-label="Primary">
     <a href="#showroom" class="nav-link" data-section="showroom">Showroom</a>
     <a href="#standard" class="nav-link" data-section="standard">The standard</a>
@@ -385,7 +364,7 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
     <div class="hero-studio-rim"></div>
   </div>
   <div class="hero-poster" aria-hidden="true"></div>
-  <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.jpg" aria-hidden="true">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.jpg" aria-hidden="true">
     <source src="assets/hero.mp4" type="video/mp4">
   </video>
   <div class="hero-vignette" aria-hidden="true"></div>
@@ -748,27 +727,6 @@ function badgesHtml(car){
   return html;
 }
 
-/* ---------- Intro overlay ---------- */
-(function(){
-  var intro = document.getElementById('intro');
-  var skip  = document.getElementById('intro-skip');
-  var done = false;
-  function dismiss(){
-    if(done) return; done = true;
-    intro.classList.add('intro-done');
-    document.body.classList.add('hero-ready');
-    setTimeout(function(){ intro.style.display = 'none'; }, 850);
-  }
-  function run(){
-    intro.classList.add('intro-in');
-    setTimeout(dismiss, reduceMotion ? 700 : 2500);
-  }
-  skip.addEventListener('click', dismiss);
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
-  else setTimeout(run, 60);
-  setTimeout(dismiss, 5500); /* hard fallback so the page is never blocked */
-})();
-
 /* ---------- Hero video + sound toggle + count ---------- */
 (function(){
   var vid = document.querySelector('.hero-video');
@@ -1121,7 +1079,7 @@ function setGallery(images, idx){
     btn.setAttribute('aria-label', 'Photo ' + (i + 1));
     btn.draggable = true;
     var t = document.createElement('img');
-    t.src = src; t.alt = ''; t.loading = 'lazy';
+    t.src = src; t.alt = ''; t.loading = 'eager';
     btn.appendChild(t);
     (function(idx){
       btn.addEventListener('click', function(){ galleryGo(idx); });
@@ -1160,7 +1118,10 @@ function galleryGo(idx){
   galleryIdx = ((idx % galleryImages.length) + galleryImages.length) % galleryImages.length;
   var img = document.getElementById('gallery-main').querySelector('.gal-real-img');
   if(img) img.src = galleryImages[galleryIdx];
-  document.querySelectorAll('#gal-thumbs .thumb-btn').forEach(function(b, i){ b.classList.toggle('active', i === galleryIdx); });
+  document.querySelectorAll('#gal-thumbs .thumb-btn').forEach(function(b, i){
+    b.classList.toggle('active', i === galleryIdx);
+    if(i === galleryIdx) b.scrollIntoView({ block:'nearest', inline:'nearest' });
+  });
   updateCounter();
 }
 
