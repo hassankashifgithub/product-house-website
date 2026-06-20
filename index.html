@@ -164,6 +164,9 @@ body.hero-ready .hero-eyebrow,body.hero-ready .hero-headline span,body.hero-read
 .hero-scroll-cue{position:absolute;right:var(--pad);bottom:34px;z-index:5;font-family:var(--font-mono);font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--mute);display:flex;align-items:center;gap:10px}
 .hero-scroll-cue::after{content:"";width:30px;height:1px;background:var(--mute);position:relative;overflow:hidden}
 @media(max-width:600px){.hero-scroll-cue{display:none}}
+.hero-sound{position:absolute;left:var(--pad);bottom:80px;z-index:5;width:42px;height:42px;border-radius:50%;border:1px solid rgba(244,241,234,0.2);background:rgba(11,12,14,0.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:var(--bone);transition:background 0.2s var(--ease),border-color 0.2s var(--ease),color 0.2s var(--ease)}
+.hero-sound:hover{background:rgba(159,232,214,0.15);border-color:var(--accent);color:var(--accent)}
+@media(max-width:600px){.hero-sound{bottom:90px}}
 
 /* ---------- Showroom carousel ---------- */
 #showroom{position:relative;height:100svh;min-height:620px;background:radial-gradient(130% 100% at 50% 25%,#15171c 0%,#0b0c0e 58%,#060708 100%);overflow:hidden}
@@ -172,7 +175,7 @@ body.hero-ready .hero-eyebrow,body.hero-ready .hero-headline span,body.hero-read
 .sr-ghost{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:0;font-family:var(--font-display);font-weight:300;font-size:clamp(60px,16vw,220px);line-height:0.9;color:var(--bone);opacity:0.04;white-space:nowrap;pointer-events:none;letter-spacing:-0.02em;transition:opacity 0.6s ease}
 .sr-track{position:absolute;inset:0;z-index:2}
 .sr-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:100px 0 250px;transition:transform 0.85s var(--ease-cinema),opacity 0.85s var(--ease-cinema),filter 0.85s var(--ease-cinema);will-change:transform,opacity,filter}
-.sr-slide[data-state="active"]{transform:translateX(0) scale(1);opacity:1;filter:none;z-index:4;pointer-events:auto}
+.sr-slide[data-state="active"]{transform:translateX(0) scale(1);opacity:1;filter:none;z-index:4;pointer-events:auto;cursor:pointer}
 .sr-slide[data-state="prev"]{transform:translateX(-70%) scale(0.74);opacity:0.34;filter:blur(2px) brightness(0.65);z-index:3;cursor:pointer;pointer-events:auto}
 .sr-slide[data-state="next"]{transform:translateX(70%) scale(0.74);opacity:0.34;filter:blur(2px) brightness(0.65);z-index:3;cursor:pointer;pointer-events:auto}
 .sr-slide[data-state="far-left"]{transform:translateX(-128%) scale(0.6);opacity:0;z-index:1;pointer-events:none}
@@ -195,7 +198,7 @@ body.hero-ready .hero-eyebrow,body.hero-ready .hero-headline span,body.hero-read
 .sr-next{right:clamp(14px,3vw,46px)}
 @media(max-width:600px){.sr-arrow{width:44px;height:44px;top:auto;bottom:calc(50% + 40px)}}
 
-.sr-panel{position:absolute;left:0;right:0;bottom:0;z-index:5;padding:90px var(--pad) 38px;background:linear-gradient(to top,rgba(6,7,8,0.97) 0%,rgba(6,7,8,0.86) 42%,rgba(6,7,8,0.4) 72%,transparent 100%);pointer-events:none}
+.sr-panel{position:absolute;left:0;right:0;bottom:0;z-index:5;padding:90px var(--pad) 38px;background:linear-gradient(to top,rgba(4,5,6,1) 0%,rgba(4,5,6,0.96) 50%,rgba(4,5,6,0.6) 74%,transparent 100%);pointer-events:none}
 .sr-panel-inner{max-width:var(--maxw);margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:30px;flex-wrap:wrap}
 .sr-panel-left{pointer-events:auto;min-width:260px}
 .sr-panel-right{pointer-events:auto;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:16px}
@@ -207,8 +210,8 @@ body.hero-ready .hero-eyebrow,body.hero-ready .hero-headline span,body.hero-read
 .sr-variant{margin-top:6px;color:var(--mute);font-size:clamp(14px,1.4vw,16px);font-weight:300}
 .sr-specs{margin-top:20px;display:flex;gap:clamp(18px,3vw,40px);flex-wrap:wrap}
 .sr-spec{display:flex;flex-direction:column;gap:3px}
-.sr-spec-k{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--faint)}
-.sr-spec-v{font-size:15px;color:var(--bone-dim);font-weight:500}
+.sr-spec-k{font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mute)}
+.sr-spec-v{font-size:15px;color:var(--bone);font-weight:500}
 .sr-price-lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--faint);display:block;margin-bottom:4px}
 .sr-price{font-family:var(--font-display);font-size:clamp(24px,3.4vw,40px);color:var(--accent);font-weight:400;line-height:1}
 .sr-price.poa{color:var(--bone-dim);font-style:italic;font-size:clamp(20px,2.6vw,30px)}
@@ -299,10 +302,11 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
 .gal-zoom{position:absolute;bottom:12px;right:12px;z-index:3;width:34px;height:34px;border-radius:4px;background:rgba(11,12,14,0.6);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--bone);transition:background 0.2s ease,color 0.2s ease}
 .gal-zoom:hover{background:var(--accent);color:var(--ink)}
 .gal-thumbs{display:flex;gap:8px;padding:12px;overflow-x:auto;scrollbar-width:thin}
-.thumb-btn{flex:0 0 auto;width:64px;height:48px;border-radius:4px;overflow:hidden;border:1px solid transparent;opacity:0.55;transition:opacity 0.2s ease,border-color 0.2s ease;padding:0}
+.thumb-btn{flex:0 0 auto;width:64px;height:48px;border-radius:4px;overflow:hidden;border:1px solid transparent;opacity:0.55;transition:opacity 0.2s ease,border-color 0.2s ease;padding:0;cursor:grab}
 .thumb-btn img{width:100%;height:100%;object-fit:cover}
 .thumb-btn.active{opacity:1;border-color:var(--accent)}
 .thumb-btn:hover{opacity:1}
+.thumb-btn.drag-over{outline:2px solid var(--accent);outline-offset:2px;opacity:1}
 .modal-info{position:relative;padding:clamp(24px,3vw,40px);overflow-y:auto}
 .modal-close{position:absolute;top:18px;right:18px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--bone);transition:background 0.2s ease,border-color 0.2s ease,color 0.2s ease}
 .modal-close:hover{background:var(--accent);color:var(--ink);border-color:var(--accent)}
@@ -399,6 +403,9 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
 
   <p class="hero-meta" aria-live="polite"><span id="hero-count"></span></p>
   <p class="hero-scroll-cue" aria-hidden="true"><span>Scroll</span></p>
+  <button class="hero-sound" id="hero-sound" type="button" aria-label="Unmute video">
+    <svg id="hero-sound-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+  </button>
 </section>
 
 <!-- ============ SHOWROOM ============ -->
@@ -641,7 +648,7 @@ footer{border-top:1px solid var(--line-soft);padding:clamp(50px,7vw,80px) var(--
    ============================================================ */
 var CARS = [
   { id:'lc300-2023-fresh', name:'Toyota Land Cruiser ZX', variant:'2023, LC300 ZX Fresh Import',
-    cat:'suv', fuel:'Petrol', year:2023, km:'1,200 km', kmRaw:1200, engine:'3500 cc', trans:'Automatic', reg:'Un-registered', price:'Rs 71,500,000',
+    cat:'suv', fuel:'Petrol', year:2023, km:'1,200 km', kmRaw:1200, engine:'3500 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'2023 LC300 ZX, fresh import 2026. Pearl white with beige leather. Full house. 1,200 km.',
     img:['lc300-2023-fresh',9,'webp'] },
   { id:'g-class-g580-2025', name:'Mercedes-Benz G-Class', variant:'2025, G 580 EQ Edition',
@@ -666,7 +673,7 @@ var CARS = [
     desc:'The coupe-roofed e-tron Sportback 50 quattro. 230 kW, all-weather quattro drive, a resolved Audi cabin.',
     img:['audi-etron-sportback-2021',12,'webp'] },
   { id:'audi-etron-2020', name:'Audi e-tron', variant:'2020, 50 quattro 230kW',
-    cat:'electric', fuel:'Electric', year:2020, km:'54,000 km', kmRaw:54000, engine:'230 kW', trans:'Automatic', reg:'Lahore 2021', price:'Rs 15,800,000',
+    cat:'electric', fuel:'Electric', year:2020, km:'54,000 km', kmRaw:54000, engine:'230 kW', trans:'Automatic', reg:'Lahore 2021', price:'POA',
     desc:'Audi showroom delivery February 2021. Diamond white metallic, Carrara brown leather. Bang and Olufsen surround sound, panoramic sunroof, 360-degree cameras, 21-inch alloys.',
     img:['audi-etron-2020',10,'webp'] },
   { id:'audi-q7-2018', name:'Audi Q7', variant:'2018, 45 TFSI quattro',
@@ -674,11 +681,11 @@ var CARS = [
     desc:'Full size Audi presence. 3.0L TFSI, quattro, seven seats. Commands a room without raising its voice.',
     img:['audi-q7-2018',20,'webp'] },
   { id:'e200-2023', name:'Mercedes-Benz E 200', variant:'2023, W213 E 200',
-    cat:'sedan', fuel:'Petrol', year:2023, km:'Verify', kmRaw:0, engine:'1500 cc', trans:'Automatic', reg:'Un-registered', price:'Rs 42,500,000',
+    cat:'sedan', fuel:'Petrol', year:2023, km:'Verify', kmRaw:0, engine:'1500 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'UK import via Karachi port. 1,500 cc twin turbo, panoramic sunroof, dezino nappa leather, airmatic suspension, 19-inch alloys. Bumper to bumper original.',
     img:['e200-2023',1,'jpg'] },
   { id:'e180-exclusive-2021', name:'Mercedes-Benz E 180', variant:'2021, Exclusive S Luxury Line',
-    cat:'sedan', fuel:'Petrol', year:2021, km:'17,000 km', kmRaw:17000, engine:'1600 cc', trans:'Automatic', reg:'Karachi 2021', price:'Rs 25,000,000',
+    cat:'sedan', fuel:'Petrol', year:2021, km:'17,000 km', kmRaw:17000, engine:'1600 cc', trans:'Automatic', reg:'Karachi 2021', price:'POA',
     desc:'Shahnawaz import. Polar white, Sahara beige interior. Facelift. PPF protection. Panoramic sunroof, exclusive nappa leather, Burmester sound, 64-colour ambient lighting, 8-zone climate control.',
     img:['e180-exclusive-2021',1,'jpg'] },
   { id:'e180-2023', name:'Mercedes-Benz E 180', variant:'2023, W213 E 180 Avantgarde',
@@ -690,7 +697,7 @@ var CARS = [
     desc:'The AMG Line E 180. Sporting intent, executive delivery. 16,000 km of immaculate ownership.',
     img:['e180-amg-2021',11,'webp'] },
   { id:'prado-70th-2020', name:'Toyota Prado TX-L', variant:'2020, 70th Anniversary Edition',
-    cat:'suv', fuel:'Petrol', year:2020, km:'21,000 km', kmRaw:21000, engine:'2700 cc', trans:'Automatic', reg:'Un-registered', price:'Rs 30,000,000',
+    cat:'suv', fuel:'Petrol', year:2020, km:'21,000 km', kmRaw:21000, engine:'2700 cc', trans:'Automatic', reg:'Un-registered', price:'POA',
     desc:'70th Anniversary Edition. Fresh import February 2026. Pearl black metallic, brono nappa leather. Auction grade 4.5A. Full TRD sport body kit. Seven seater, all seats multi-electric, heated and ventilated fronts.',
     img:['prado-70th-2020',18,'webp'] },
   { id:'prado-txl-11k-2020', name:'Toyota Prado TX-L', variant:'2020, TX L Package 2.7',
@@ -762,7 +769,7 @@ function badgesHtml(car){
   setTimeout(dismiss, 5500); /* hard fallback so the page is never blocked */
 })();
 
-/* ---------- Hero video + count ---------- */
+/* ---------- Hero video + sound toggle + count ---------- */
 (function(){
   var vid = document.querySelector('.hero-video');
   if(vid){
@@ -770,6 +777,17 @@ function badgesHtml(car){
     if(vid.readyState >= 3) onReady();
     else vid.addEventListener('canplay', onReady, { once:true });
     vid.addEventListener('error', function(){ vid.style.display = 'none'; }, { once:true });
+  }
+  var soundBtn = document.getElementById('hero-sound');
+  var soundIcon = document.getElementById('hero-sound-icon');
+  var ICON_MUTED = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+  var ICON_ON    = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>';
+  if(soundBtn && vid){
+    soundBtn.addEventListener('click', function(){
+      vid.muted = !vid.muted;
+      soundIcon.innerHTML = vid.muted ? ICON_MUTED : ICON_ON;
+      soundBtn.setAttribute('aria-label', vid.muted ? 'Unmute video' : 'Mute video');
+    });
   }
   var countEl = document.getElementById('hero-count');
   if(countEl) countEl.textContent = CARS.length + ' vehicles in the current collection';
@@ -961,6 +979,7 @@ document.getElementById('sr-track').addEventListener('click', function(e){
   var st = slide.dataset.state;
   if(st === 'prev') srGo(srIdx - 1);
   else if(st === 'next') srGo(srIdx + 1);
+  else if(st === 'active') openModal(CARS[srIdx].id, slide);
 });
 
 /* Keyboard: only when the showroom is in view and no overlay is open */
@@ -1010,6 +1029,7 @@ var galleryImages = [];
 var galleryIdx = 0;
 var modalTrigger = null;
 var trapHandler = null;
+var dragSrc = null;
 
 function openModal(id, trigger){
   var car = carById(id); if(!car) return;
@@ -1096,13 +1116,35 @@ function setGallery(images, idx){
   galleryImages.forEach(function(src, i){
     var btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'thumb-btn' + (i === 0 ? ' active' : '');
+    btn.className = 'thumb-btn' + (i === galleryIdx ? ' active' : '');
     btn.setAttribute('role', 'listitem');
     btn.setAttribute('aria-label', 'Photo ' + (i + 1));
+    btn.draggable = true;
     var t = document.createElement('img');
     t.src = src; t.alt = ''; t.loading = 'lazy';
     btn.appendChild(t);
-    btn.addEventListener('click', function(){ galleryGo(i); });
+    (function(idx){
+      btn.addEventListener('click', function(){ galleryGo(idx); });
+      btn.addEventListener('dragstart', function(e){
+        dragSrc = idx; e.dataTransfer.effectAllowed = 'move';
+        setTimeout(function(){ btn.style.opacity = '0.35'; }, 0);
+      });
+      btn.addEventListener('dragend', function(){ btn.style.opacity = ''; dragSrc = null; });
+      btn.addEventListener('dragover', function(e){ e.preventDefault(); e.dataTransfer.dropEffect = 'move'; });
+      btn.addEventListener('dragenter', function(){ if(dragSrc !== null && dragSrc !== idx) btn.classList.add('drag-over'); });
+      btn.addEventListener('dragleave', function(){ btn.classList.remove('drag-over'); });
+      btn.addEventListener('drop', function(e){
+        e.preventDefault(); btn.classList.remove('drag-over');
+        if(dragSrc === null || dragSrc === idx) return;
+        var moved = galleryImages.splice(dragSrc, 1)[0];
+        galleryImages.splice(idx, 0, moved);
+        var newIdx = galleryIdx;
+        if(galleryIdx === dragSrc) newIdx = idx;
+        else if(dragSrc < galleryIdx && idx >= galleryIdx) newIdx = galleryIdx - 1;
+        else if(dragSrc > galleryIdx && idx <= galleryIdx) newIdx = galleryIdx + 1;
+        setGallery(galleryImages.slice(), newIdx);
+      });
+    })(i);
     thumbs.appendChild(btn);
   });
 
